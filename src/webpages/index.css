@@ -1,4 +1,33 @@
 * {
     box-sizing: border-box;
     margin: 0;
+    line-height: 1.6;
+    font-size: small;
+}
+body {
+    width: 90%;
+    margin: auto;
+    background-color: #EAF2F4;
+    color: #0B1340;    
+}
+.shadowedBox {
+    box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;
+    border-radius: 10px;
+    padding: 15px;
+}
+.secondLayerBox {
+    background-color: #F2F4F4;
+    color: #11224E;
+}
+.secondLayerBox > * {
+    background-color: inherit;
+    color: inherit;
+}
+.spaceBelow {
+    margin-bottom: 10px;
+}
+.pageTitle {
+    font-weight: bolder;
+    font-size: 30px;
+    margin-top: 10px;
 }

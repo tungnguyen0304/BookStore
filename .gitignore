@@ -9,6 +9,7 @@
 /coverage
 
 package-lock.json
+/src/to-do.txt
 
 # production
 /build
