@@ -1,10 +1,11 @@
-import React, { useState } from 'react';
+import React from 'react';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import { IconButton } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { formatPrice } from '../Utils';
 
 const imgStyle = {
     margin: 'auto',
@@ -26,11 +27,6 @@ export default function CartItem (props) {
     const onIncrease = props.onIncrease
     const onDecrease = props.onDecrease
     const onDelete = props.onDelete
-    const formatPrice = price => {
-        let parts = price.toString().split(".");
-        parts[0]=parts[0].replace(/\B(?=(\d{3})+(?!\d))/g,".");
-        return parts.join(",");
-    }
     const calSubtotal = obj => {
         return obj.price * obj.qty
     }
