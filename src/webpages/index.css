@@ -1,14 +1,13 @@
 * {
     box-sizing: border-box;
-    margin: 0;
-    line-height: 1.6;
-    font-size: small;
 }
 body {
     width: 90%;
-    margin: auto;
+    margin: 0 auto;
     background-color: #EAF2F4;
     color: #0B1340;    
+    /* font-size: small; */
+    line-height: 1.6;
 }
 .shadowedBox {
     box-shadow: rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;

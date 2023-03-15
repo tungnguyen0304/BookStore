@@ -11,6 +11,9 @@ export default function Order () {
     // const orderID = "GET from param string"
     const orderGeneralInfo = {
         id: "1",
+        phone: '0909090909',
+        name: 'Nguyen Van A',
+        address: '1, My Phuoc Tan Van, Thu Dau Mot, Binh Duong',
         datetime: "12/03/2023",
         deliveryCost: 15000,
         total: 1230000,
@@ -33,6 +36,9 @@ export default function Order () {
           </Grid>      
           <Grid item xs={12}>
             <strong>Mã số đơn hàng: {orderGeneralInfo.id}</strong><br/>
+            <strong>Ngày đặt hàng: {orderGeneralInfo.name}</strong><br/>
+            <strong>Số điện thoại: {orderGeneralInfo.phone}</strong><br/>
+            <strong>Địa chỉ nhận hàng: {orderGeneralInfo.address}</strong><br/>
             <strong>Ngày đặt hàng: {orderGeneralInfo.datetime}</strong><br/>
             <strong>Trạng thái đơn hàng: <span style={orderStatusStyle}>{orderStatus}</span></strong>
           </Grid>                      
