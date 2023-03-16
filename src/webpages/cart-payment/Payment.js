@@ -15,6 +15,8 @@ import { ThemeProvider } from '@emotion/react';
 import { Button } from '@mui/material';
 import { getLocalCartContent } from './setCartLocal';
 import { formatPrice } from '../Utils';
+import { checkPhoneNumber } from '../FormUtil';
+// import ScrollTopButton from '../ScrollTopButton';
 
 export default function Payment () {
     // user info fetched from server
@@ -41,20 +43,27 @@ export default function Payment () {
     };    
   
     const handleSubmit = (event) => {
-      event.preventDefault();
+        event.preventDefault();
 
-      const errors = {};
-      if (!values.name) errors.name = "Vui lòng điền tên người nhận";
-      if (!values.phone) errors.phone = "Vui lòng điền SĐT người nhận";
-      if (!values.address) errors.address = "Vui lòng điền địa chỉ nhận hàng";
-      if (!values.method) errors.method = "Vui lòng chọn phương thức thanh toán";
-  
-      // Set errors if any, else submit form
-      if (Object.keys(errors).length > 0) {
-        setErrors(errors);
-      } else {
-        alert(values.name + " " + values.phone + " " + values.address + " " + values.method)
-      }      
+        const errors = {};
+        if (!values.name) errors.name = "Vui lòng điền tên người nhận";
+        const phoneError = checkPhoneNumber(values.phone)
+        if (phoneError === 1) {
+            errors.phone = "Vui lòng điền SĐT người nhận"
+        } else if (phoneError === 2) {
+            errors.phone = "Số điện thoại không đúng định dạng"
+        }
+        if (!values.address) errors.address = "Vui lòng điền địa chỉ nhận hàng";
+        if (!values.method) errors.method = "Vui lòng chọn phương thức thanh toán";
+    
+        // Set errors if any, else submit form
+        if (Object.keys(errors).length > 0) {
+            setErrors(errors);
+        } else {
+            // submit to server
+            alert(values.name + " " + values.phone + " " + values.address + " " + values.method)
+        }      
+        window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
     };    
     const cartContent = getLocalCartContent()
     const subtotal = cartContent.reduce((acc, product) => acc + product.qty * product.price, 0)
