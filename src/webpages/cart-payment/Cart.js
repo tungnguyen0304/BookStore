@@ -1,7 +1,9 @@
 import { React, useState } from 'react';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import RedButton from '../button/RedButton';
+import { redButtonTheme } from '../button-theme/ButtonTheme';
+import { ThemeProvider } from '@emotion/react';
+import { Button } from '@mui/material';
 import Stack from '@mui/material/Stack';
 import CartItem from './CartItem';
 import EmptyCart from './img/emptyCart.png'
@@ -80,7 +82,13 @@ export default function Cart () {
                     Phí vận chuyển: {formatPrice(deliveryCost)} VNĐ<br/>
                     <strong>Tổng tiền: {formatPrice(total)} VNĐ</strong>
                 </div>
-                <div style={{margin:'auto'}}><RedButton text="Thanh toán"/></div>
+                <div style={{margin:'auto'}}>
+                <ThemeProvider theme={redButtonTheme}>
+                <Button type="submit" color="neutral" variant="contained">
+                    "Thanh toán"
+                </Button>
+                </ThemeProvider>                  
+                </div>
             </Stack>
           </Box>        
           </Grid>
