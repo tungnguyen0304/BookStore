@@ -4,14 +4,14 @@ import DeleteIcon from '@mui/icons-material/Delete';
 import ReviewsIcon from '@mui/icons-material/Reviews';
 import Tooltip from '@mui/material/Tooltip';
 import AlertDialogSlide from '../AlertDialogSlide';
-import SuggestionSearchBar from '../SuggestionSearchBar';
+import NormalSearchBar from '../search-bar/NormalSearchBar';
 import Grid from '@mui/material/Grid';
 
 
 const UsersTable = () => {
   // fecth from server
   const [users, setUsers] = useState([
-    {id: 1, name: 'Nguyen Van A', phone: '0939393939'},
+    {id: 1, name: 'Nguyen Van AAAAAAAAAAAAA', phone: '0939393939'},
     {id: 2, name: 'Nguyen Van B', phone: '0494848484'},
     {id: 3, name: 'Nguyen Van A', phone: '0939393939'},
     {id: 4, name: 'Nguyen Van B', phone: '0494848484'},    
@@ -57,33 +57,31 @@ const UsersTable = () => {
     { id: 2, name: 'Result 2' },
     { id: 3, name: 'Result 3' },
   ])
+  const handleSearch = () => {
+    alert("You search " + searchText)
+  }
 
 
   return (
     <>
     <Grid container sx={{ mb: 2, mt: 2 }}>
-      <Grid xs={12} sm={8} md={6}>
+      <Grid item xs={12} sm={8} md={6}>
         <div className='pageTitle'>Danh sách người dùng</div>
       </Grid>
-      <Grid xs={12} sm={4} md={6}>
-        <SuggestionSearchBar label="Nhập thông tin cần tìm" searchText={searchText} setSearchText={setSearchText}>
-          <MenuList>
-            {searchResults.map((result) => (
-              <>
-              <MenuItem key={result.id} >
-                <ListItemText>{result.name} </ListItemText>
-              </MenuItem>
-              </>
-            ))}
-          </MenuList>
-        </SuggestionSearchBar>
+      <Grid item xs={12} sm={4} md={6}>
+        <NormalSearchBar 
+        label="Nhập thông tin cần tìm" 
+        searchText={searchText} 
+        setSearchText={setSearchText} 
+        handleSearch={handleSearch}
+        />
       </Grid>      
     </Grid>
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
       <TableContainer sx={{ maxHeight: 440 }} className='admin-table'>
       <Table stickyHeader aria-label="users table">
         <TableHead>
-          <TableRow>
+          <TableRow key="header-row">
             <TableCell>ID</TableCell>
             <TableCell>Tên</TableCell>
             <TableCell>SĐT</TableCell>

@@ -60,7 +60,7 @@ export default function AlertDialogSlide({children, title,viewUserPopup, setView
         aria-labelledby="customized-dialog-title"
         open={viewUserPopup}
         TransitionComponent={Transition}
-        fullWidth='sm'
+        fullWidth={true}
       >
         <BootstrapDialogTitle id="customized-dialog-title" onClose={handleClose}>
           {title}

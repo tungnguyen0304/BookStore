@@ -1,7 +1,9 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import { styled } from '@mui/material/styles';
-import { TextField } from '@mui/material';
+import { TextField, InputAdornment, IconButton } from '@mui/material';
+import SearchIcon from '@mui/icons-material/Search';
+
 
 const SearchWrapper = styled('div')({
     width: '100%',
@@ -20,7 +22,7 @@ const ResultsWrapper = styled('div')(({ theme }) => ({
     boxShadow: 'rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px;'
 }));
 
-export default function SuggestionSearchBar ({children, label, searchText, setSearchText}) {
+export default function SuggestionSearchBar ({children, label, searchText, setSearchText, handleSearch}) {
   const [resultsVisible, setResultsVisible] = useState(false);
 
   const handleInputChange = (event) => {
@@ -43,6 +45,15 @@ export default function SuggestionSearchBar ({children, label, searchText, setSe
         value={searchText}
         onChange={handleInputChange}
         onBlur={handleBlur}
+        InputProps={{
+          endAdornment: (
+            <InputAdornment position="end">
+              <IconButton onClick={handleSearch}>
+                <SearchIcon />
+              </IconButton>
+            </InputAdornment>
+          )
+        }}        
       />
       {resultsVisible && (
         <ResultsWrapper>
@@ -56,17 +67,20 @@ SuggestionSearchBar.propTypes = {
     children: PropTypes.node,
     label: PropTypes.string,
     searchText: PropTypes.string.isRequired,
-    setSearchText: PropTypes.func.isRequired
+    setSearchText: PropTypes.func.isRequired,
+    handleSearch: PropTypes.func.isRequired
 };
 // how to use
-{/* <SuggestionSearchBar label="Nhập thông tin cần tìm" searchText={searchText} setSearchText={setSearchText}>
-<MenuList>
-  {searchResults.map((result) => (
-    <>
-    <MenuItem key={result.id} >
-      <ListItemText>{result.name} </ListItemText>
-    </MenuItem>
-    </>
-  ))}
-</MenuList>
+{/* <SuggestionSearchBar 
+label="Nhập thông tin cần tìm" 
+searchText={searchText} 
+setSearchText={setSearchText} 
+handleSearch={handleSearch}>
+  <MenuList>
+    {searchResults.map((result) => (
+      <MenuItem key={result.id} >
+        <ListItemText>{result.name} </ListItemText>
+      </MenuItem>
+    ))}
+  </MenuList>
 </SuggestionSearchBar> */}
