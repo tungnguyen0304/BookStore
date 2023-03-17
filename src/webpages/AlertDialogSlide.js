@@ -76,6 +76,6 @@ export default function AlertDialogSlide({children, title,viewUserPopup, setView
 }
 AlertDialogSlide.propTypes = {
   children: PropTypes.node,
-  viewUserPopup: PropTypes.func.isRequired,
+  viewUserPopup: PropTypes.bool.isRequired,
   setView: PropTypes.func.isRequired
 };

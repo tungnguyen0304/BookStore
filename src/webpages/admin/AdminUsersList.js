@@ -1,9 +1,12 @@
 import React, { useState } from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton, TablePagination } from '@mui/material';
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton, TablePagination, MenuItem, MenuList, ListItemText } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ReviewsIcon from '@mui/icons-material/Reviews';
 import Tooltip from '@mui/material/Tooltip';
 import AlertDialogSlide from '../AlertDialogSlide';
+import SuggestionSearchBar from '../SuggestionSearchBar';
+import Grid from '@mui/material/Grid';
+
 
 const UsersTable = () => {
   // fecth from server
@@ -25,6 +28,7 @@ const UsersTable = () => {
     {id: 15, name: 'Nguyen Van A', phone: '0939393939'},
     {id: 16, name: 'Nguyen Van B', phone: '0494848484'},                
   ])
+  // view user popup
   const [viewUserPopup, setView] = useState(false)
   const onViewDetail = (user) => {
     setView(user)
@@ -33,6 +37,7 @@ const UsersTable = () => {
     setUsers(users.filter(user => user.id !== ID))
     // delete in server
   }  
+  // table page
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -44,10 +49,36 @@ const UsersTable = () => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
+  // search bar
+  const [searchText, setSearchText] = useState('')
+  // fetch from server
+  const [searchResults] = useState([
+    { id: 1, name: 'Result 1' },
+    { id: 2, name: 'Result 2' },
+    { id: 3, name: 'Result 3' },
+  ])
+
 
   return (
     <>
-    <div className='pageTitle'>Danh sách người dùng</div>
+    <Grid container sx={{ mb: 2, mt: 2 }}>
+      <Grid xs={12} sm={8} md={6}>
+        <div className='pageTitle'>Danh sách người dùng</div>
+      </Grid>
+      <Grid xs={12} sm={4} md={6}>
+        <SuggestionSearchBar label="Nhập thông tin cần tìm" searchText={searchText} setSearchText={setSearchText}>
+          <MenuList>
+            {searchResults.map((result) => (
+              <>
+              <MenuItem key={result.id} >
+                <ListItemText>{result.name} </ListItemText>
+              </MenuItem>
+              </>
+            ))}
+          </MenuList>
+        </SuggestionSearchBar>
+      </Grid>      
+    </Grid>
     <Paper sx={{ width: '100%', overflow: 'hidden' }}>
       <TableContainer sx={{ maxHeight: 440 }} className='admin-table'>
       <Table stickyHeader aria-label="users table">
