@@ -1,6 +1,9 @@
+@import url('https://fonts.googleapis.com/css?family=Merriweather:regular,bold,italic&subset=latin,latin-ext');
 * {
     box-sizing: border-box;
+    font-family: 'Merriweather';
 }
+
 body {
     width: 90%;
     margin: 0 auto;
@@ -29,4 +32,17 @@ body {
     font-weight: bolder;
     font-size: 30px;
     margin-top: 10px;
+}
+
+.admin-table th {
+    background-color: rgb(177, 232, 232);
+}
+.admin-table, .admin-table td, .admin-table th {
+    font-family: inherit;
+}
+.admin-table tr:nth-of-type(even) {
+    background-color: #F2F4F4
+}
+.admin-table tr:hover {
+    background-color: #ddd
 }

@@ -16,7 +16,6 @@ import { Button } from '@mui/material';
 import { getLocalCartContent } from './setCartLocal';
 import { formatPrice } from '../Utils';
 import { checkPhoneNumber } from '../FormUtil';
-// import ScrollTopButton from '../ScrollTopButton';
 
 export default function Payment () {
     // user info fetched from server

@@ -90,7 +90,7 @@ export default function Cart () {
                 <div style={{margin:'auto'}}>
                 <ThemeProvider theme={redButtonTheme}>
                 <Button color="neutral" variant="contained" onClick={goToPayment}> 
-                    "Thanh toán"
+                    Thanh toán
                 </Button>
                 </ThemeProvider>                  
                 </div>

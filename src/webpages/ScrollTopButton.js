@@ -16,11 +16,7 @@ export default function ScrollTopButton() {
       }
       style={{
         background: 'none'
-      }}
-      // viewBox="0 0 0 0"
-      // width="0"
-      // height="0"   
+      }}   
     />
- 
   )
 }
