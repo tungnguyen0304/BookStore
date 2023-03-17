@@ -1,17 +1,19 @@
 import React, { useState } from 'react';
-import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper, IconButton, TablePagination, MenuItem, MenuList, ListItemText } from '@mui/material';
+import { Table, TableBody, TableCell, TableHead, TableRow, IconButton, Box } from '@mui/material';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ReviewsIcon from '@mui/icons-material/Reviews';
 import Tooltip from '@mui/material/Tooltip';
 import AlertDialogSlide from '../AlertDialogSlide';
 import NormalSearchBar from '../search-bar/NormalSearchBar';
 import Grid from '@mui/material/Grid';
+import Pagination from '@mui/material/Pagination';
 
-
-const UsersTable = () => {
-  // fecth from server
+const UsersAdminPage = () => {
+  // fecth from server 
+  const [currentPage, setCurrentPage] = useState(1);
+  const rowsPerPage = 5;
   const [users, setUsers] = useState([
-    {id: 1, name: 'Nguyen Van AAAAAAAAAAAAA', phone: '0939393939'},
+    {id: 1, name: 'Nguyen Van A', phone: '0939393939'},
     {id: 2, name: 'Nguyen Van B', phone: '0494848484'},
     {id: 3, name: 'Nguyen Van A', phone: '0939393939'},
     {id: 4, name: 'Nguyen Van B', phone: '0494848484'},    
@@ -26,8 +28,37 @@ const UsersTable = () => {
     {id: 13, name: 'Nguyen Van A', phone: '0939393939'},
     {id: 14, name: 'Nguyen Van B', phone: '0494848484'},
     {id: 15, name: 'Nguyen Van A', phone: '0939393939'},
-    {id: 16, name: 'Nguyen Van B', phone: '0494848484'},                
-  ])
+    {id: 16, name: 'Nguyen Van B', phone: '0494848484'},  
+    {id: 17, name: 'Nguyen Van A', phone: '0939393939'},
+    {id: 18, name: 'Nguyen Van B', phone: '0494848484'},
+    {id: 19, name: 'Nguyen Van A', phone: '0939393939'},
+    {id: 20, name: 'Nguyen Van B', phone: '0494848484'},    
+    {id: 21, name: 'Nguyen Van A', phone: '0939393939'},
+    {id: 22, name: 'Nguyen Van B', phone: '0494848484'},
+    {id: 23, name: 'Nguyen Van A', phone: '0939393939'},
+    {id: 24, name: 'Nguyen Van B', phone: '0494848484'},  
+    {id: 25, name: 'Nguyen Van B', phone: '0494848484'},    
+    {id: 26, name: 'Nguyen Van A', phone: '0939393939'},
+    {id: 27, name: 'Nguyen Van B', phone: '0494848484'},
+    {id: 28, name: 'Nguyen Van A', phone: '0939393939'},
+    {id: 29, name: 'Nguyen Van B', phone: '0494848484'},  
+    {id: 30, name: 'Nguyen Van B', phone: '0494848484'},    
+    {id: 31, name: 'Nguyen Van A', phone: '0939393939'},
+    {id: 32, name: 'Nguyen Van B', phone: '0494848484'},
+    {id: 33, name: 'Nguyen Van A', phone: '0939393939'},
+    {id: 34, name: 'Nguyen Van B', phone: '0494848484'},                             
+  ])  
+  // get from servers, not by users array
+  const pageCount = Math.ceil(users.length / rowsPerPage);  
+  const handlePageChange = (event, value) => {
+    setCurrentPage(value);
+    // fecth new data based on page
+  };
+
+  const startIndex = (currentPage - 1) * rowsPerPage;
+  const endIndex = startIndex + rowsPerPage;
+  const currentUsers = users.slice(startIndex, endIndex);
+
   // view user popup
   const [viewUserPopup, setView] = useState(false)
   const onViewDetail = (user) => {
@@ -36,31 +67,14 @@ const UsersTable = () => {
   const onDelete = (ID) => {
     setUsers(users.filter(user => user.id !== ID))
     // delete in server
-  }  
-  // table page
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(5);
+  }    
 
-  const handleChangePage = (event, newPage) => {
-    setPage(newPage);
-  };
-
-  const handleChangeRowsPerPage = (event) => {
-    setRowsPerPage(parseInt(event.target.value, 10));
-    setPage(0);
-  };
   // search bar
   const [searchText, setSearchText] = useState('')
-  // fetch from server
-  const [searchResults] = useState([
-    { id: 1, name: 'Result 1' },
-    { id: 2, name: 'Result 2' },
-    { id: 3, name: 'Result 3' },
-  ])
+  
   const handleSearch = () => {
     alert("You search " + searchText)
-  }
-
+  }  
 
   return (
     <>
@@ -76,10 +90,9 @@ const UsersTable = () => {
         handleSearch={handleSearch}
         />
       </Grid>      
-    </Grid>
-    <Paper sx={{ width: '100%', overflow: 'hidden' }}>
-      <TableContainer sx={{ maxHeight: 440 }} className='admin-table'>
-      <Table stickyHeader aria-label="users table">
+    </Grid>    
+    <Box>
+      <Table stickyHeader aria-label="users table" sx={{ maxHeight: 440 }} className='admin-table'>
         <TableHead>
           <TableRow key="header-row">
             <TableCell>ID</TableCell>
@@ -89,7 +102,7 @@ const UsersTable = () => {
           </TableRow>
         </TableHead>
         <TableBody>
-          {users.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((user) => (
+         {currentUsers.map((user) => (
             <TableRow key={user.id}>
               <TableCell scope="row">
                 {user.id}
@@ -112,17 +125,10 @@ const UsersTable = () => {
           ))}
         </TableBody>
       </Table>
-    </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[5, 10, 25]}
-        component="div"
-        count={users.length}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
-    </Paper>
+      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
+        <Pagination color="primary" count={pageCount} page={currentPage} onChange={handlePageChange} />
+      </Box>
+    </Box>
     <AlertDialogSlide title="Thông tin người dùng" viewUserPopup={viewUserPopup} setView={setView}>
         <Table>
             <TableRow>
@@ -163,4 +169,5 @@ const UsersTable = () => {
   );
 };
 
-export default UsersTable;
+
+export default UsersAdminPage;
