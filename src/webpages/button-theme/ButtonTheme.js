@@ -15,5 +15,14 @@ const redButtonTheme = createTheme({
     },
   },
 });
+const sndLayerButtonTheme = createTheme({
+  palette: {
+    neutral: {
+      main: '#F2F4F4',
+      contrastText: '#11224E',
+      
+    },
+  },
+});
 
-export { greenButtonTheme, redButtonTheme };
+export { greenButtonTheme, redButtonTheme, sndLayerButtonTheme };

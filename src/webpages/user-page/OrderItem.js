@@ -1,7 +1,6 @@
 import React from 'react';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import { formatPrice } from '../Utils';
 
 const imgStyle = {
     margin: 'auto',
@@ -23,6 +22,11 @@ export default function OrderItems ({product}) {
     const calSubtotal = product => {
         return product.price * product.qty
     }    
+    const VNCurrencyFormatter = new Intl.NumberFormat('vi', {
+        style: "currency",
+        currency: "VND"
+    })  
+
     return (
         <div className='shadowedBox secondLayerBox'>
         <Box sx={{ flexGrow: 1 }}>
@@ -37,11 +41,11 @@ export default function OrderItems ({product}) {
                             {product.title}
                         </div>
                         <div>Số lượng: {product.qty}</div>
-                        <div>Giá: {formatPrice(product.price)} VNĐ</div>
+                        <div>Giá: {VNCurrencyFormatter.format(product.price)}</div>
                     </div>
                 </Grid>
                 <Grid item xs={12} sm={5}>
-                    <div style={subtotalStyle}>{formatPrice(calSubtotal(product))} VNĐ</div>
+                    <div style={subtotalStyle}>{VNCurrencyFormatter.format(calSubtotal(product))}</div>
                 </Grid>
               </Grid>      
           </Grid>

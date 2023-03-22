@@ -45,18 +45,18 @@ export default function Webpages () {
             <Route path="/view_profile" element={<ViewProfile/>} />
             <Route path="/edit_profile" element={<EditProfile/>} />
             <Route path="/orders" element={<UserOrdersList/>} />
-            <Route path="/orders/order" element={<Order/>} />
+            <Route path="/orders/order/:filterParams?" element={<Order/>} />
             <Route path="/admin" element={<AdminDashboard/>} />
             <Route path="/admin/users" element={<AdminUsersList/>} />
             <Route path="/admin/comments" element={<AdminCommentsList/>} />
             <Route path="/admin/contacts" element={<AdminContacts/>} />
             <Route path="/admin/products" element={<AdminProductsList/>} />
-            <Route path="/admin/products/edit" element={<AdminEditProduct/>} />
+            <Route path="/admin/products/edit/:id?" element={<AdminEditProduct/>} />
             <Route path="/admin/products/add" element={<AdminAddProduct/>} />
             <Route path="/admin/orders" element={<AdminOrdersList/>} />    
-            <Route path="/admin/orders/order" element={<Order/>} />
+            <Route path="/admin/orders/order/:id?" element={<Order/>} />
             <Route path="/admin/posts" element={<AdminPostsList/>} />
-            <Route path="/admin/posts/edit" element={<AdminEditPost/>} />    
+            <Route path="/admin/posts/edit/:id?" element={<AdminEditPost/>} />    
             <Route path="/admin/posts/add" element={<AdminAddPost/>} />                        
             <Route path="/:name" element={<ProductOrCategoryNavigator/>} />
             <Route path="*" element={<NotFound/>} />

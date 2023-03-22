@@ -5,7 +5,6 @@ import { IconButton } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import DeleteIcon from '@mui/icons-material/Delete';
-import { formatPrice } from '../Utils';
 
 const imgStyle = {
     margin: 'auto',
@@ -30,6 +29,10 @@ export default function CartItem (props) {
     const calSubtotal = obj => {
         return obj.price * obj.qty
     }
+    const VNCurrencyFormatter = new Intl.NumberFormat('vi', {
+        style: "currency",
+        currency: "VND"
+    })    
 
     return (
         <>
@@ -46,7 +49,7 @@ export default function CartItem (props) {
                             <div style={bookTitleStyle}>
                                 {props.obj.title}
                             </div>
-                            <div>Giá: {formatPrice(props.obj.price)} VNĐ</div>
+                            <div>Giá: {VNCurrencyFormatter.format(props.obj.price)}</div>
                         </div>
                     </Grid>
                     <Grid item xs={12} sm={4}>
@@ -59,7 +62,7 @@ export default function CartItem (props) {
                         </IconButton>          
                     </Grid>
                     <Grid item xs={12} sm={3} display={{ xs: "none", sm: "block" }}>
-                        <div style={subtotalStyle}>{formatPrice(calSubtotal(props.obj))} VNĐ</div>
+                        <div style={subtotalStyle}>{VNCurrencyFormatter.format(calSubtotal(props.obj))}</div>
                     </Grid>
                 </Grid>
                 <Grid item xs={1}>

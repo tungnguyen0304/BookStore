@@ -7,9 +7,10 @@ import SearchIcon from '@mui/icons-material/Search';
 
 const SearchWrapper = styled('div')({
     width: '100%',
-    maxWidth: 400,
+    maxWidth: '80%',
+    margin: 'auto',
     position: 'relative',
-    backgroundColor: '#F2F4F4'
+    backgroundColor: '#F2F4F4',
     // backgroundColor: (props) => props.theme.palette.background.paper,
 });
 
@@ -30,6 +31,7 @@ export default function NormalSearchBar ({label, searchText, setSearchText, hand
         label={label}
         variant="outlined"
         fullWidth
+        size='small'
         value={searchText}
         onChange={handleInputChange}
         InputProps={{

@@ -42,6 +42,7 @@ export default function SuggestionSearchBar ({children, label, searchText, setSe
         label={label}
         variant="outlined"
         fullWidth
+        size='small'
         value={searchText}
         onChange={handleInputChange}
         onBlur={handleBlur}

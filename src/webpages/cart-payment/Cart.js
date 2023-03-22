@@ -9,7 +9,6 @@ import Stack from '@mui/material/Stack';
 import CartItem from './CartItem';
 import EmptyCart from './img/emptyCart.png'
 import {getLocalCartContent, decreaseInLocalCart, increaseInLocalCart, removeFromLocalCart} from './setCartLocal';
-import { formatPrice } from '../Utils';
 
 // just for test, in reality, cart is set when user click 'add to cart' button
 localStorage.setItem("cart", JSON.stringify([
@@ -59,6 +58,10 @@ export default function Cart () {
     const subtotal = cartContent.reduce((acc, product) => acc + product.qty * product.price, 0)
     const deliveryCost = 15000
     const total = subtotal + deliveryCost
+    const VNCurrencyFormatter = new Intl.NumberFormat('vi', {
+      style: "currency",
+      currency: "VND"
+    })
     const navigate = useNavigate();
     const goToPayment = () => navigate('payment');    
 
@@ -83,9 +86,9 @@ export default function Cart () {
           <Box sx={{ width: '100%' }}>
             <Stack>
                 <div className='shadowedBox secondLayerBox spaceBelow'>
-                    Thành tiền: {formatPrice(subtotal)} VNĐ<br/>
-                    Phí vận chuyển: {formatPrice(deliveryCost)} VNĐ<br/>
-                    <strong>Tổng tiền: {formatPrice(total)} VNĐ</strong>
+                    Thành tiền: {VNCurrencyFormatter.format(subtotal)}<br/>
+                    Phí vận chuyển: {VNCurrencyFormatter.format(deliveryCost)}<br/>
+                    <strong>Tổng tiền: {VNCurrencyFormatter.format(total)}</strong>
                 </div>
                 <div style={{margin:'auto'}}>
                 <ThemeProvider theme={redButtonTheme}>

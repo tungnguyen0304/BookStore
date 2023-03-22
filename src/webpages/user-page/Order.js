@@ -3,7 +3,6 @@ import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Stack from '@mui/material/Stack';
 import OrderItems from './OrderItem';
-import { formatPrice } from '../Utils';
 
 
 export default function Order () {
@@ -26,6 +25,10 @@ export default function Order () {
     ]
     const orderStatus = orderGeneralInfo.status === 0 ? 'Đã hoàn thành' : "Chưa nhận hàng"
     const orderStatusStyle = orderGeneralInfo.status === 0 ? {color: '#3B6727'} : {color: '#AC9518'}
+    const VNCurrencyFormatter = new Intl.NumberFormat('vi', {
+      style: "currency",
+      currency: "VND"
+    })    
 
     return (
         <>
@@ -54,9 +57,9 @@ export default function Order () {
           <Grid container item sm={12} md={4}>
           <Box sx={{ width: '100%' }}>
             <div className='shadowedBox secondLayerBox spaceBelow'>
-                Thành tiền: {formatPrice(orderGeneralInfo.total - orderGeneralInfo.deliveryCost)} VNĐ<br/>
-                Phí vận chuyển: {formatPrice(orderGeneralInfo.deliveryCost)} VNĐ<br/>
-                <strong>Tổng tiền: {formatPrice(orderGeneralInfo.total)} VNĐ</strong>
+                Thành tiền: {VNCurrencyFormatter.format(orderGeneralInfo.total - orderGeneralInfo.deliveryCost)}<br/>
+                Phí vận chuyển: {VNCurrencyFormatter.format(orderGeneralInfo.deliveryCost)}<br/>
+                <strong>Tổng tiền: {VNCurrencyFormatter.format(orderGeneralInfo.total)}</strong>
             </div>
           </Box>        
           </Grid>

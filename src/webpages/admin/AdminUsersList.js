@@ -78,7 +78,7 @@ const UsersAdminPage = () => {
 
   return (
     <>
-    <Grid container sx={{ mb: 2, mt: 2 }}>
+    <Grid container sx={{ mb: 1, mt: 1 }}>
       <Grid item xs={12} sm={8} md={6}>
         <div className='pageTitle'>Danh sách người dùng</div>
       </Grid>

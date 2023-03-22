@@ -14,7 +14,6 @@ import { greenButtonTheme } from '../button-theme/ButtonTheme';
 import { ThemeProvider } from '@emotion/react';
 import { Button } from '@mui/material';
 import { getLocalCartContent } from './setCartLocal';
-import { formatPrice } from '../Utils';
 import { checkPhoneNumber } from '../FormUtil';
 
 export default function Payment () {
@@ -68,6 +67,11 @@ export default function Payment () {
     const subtotal = cartContent.reduce((acc, product) => acc + product.qty * product.price, 0)
     const deliveryCost = 15000
     const total = subtotal + deliveryCost    
+    const VNCurrencyFormatter = new Intl.NumberFormat('vi', {
+        style: "currency",
+        currency: "VND"
+    })
+
     return (
         <form onSubmit={handleSubmit}>
             <Stack spacing={2}>
@@ -162,9 +166,9 @@ export default function Payment () {
                         <Box sx={{ width: '100%' }}>
                         <Stack spacing={2}>
                             <div className='spaceBelow'>
-                                Thành tiền: {formatPrice(subtotal)} VNĐ<br/>
-                                Phí vận chuyển: {formatPrice(deliveryCost)} VNĐ<br/>
-                                <strong>Tổng tiền: {formatPrice(total)} VNĐ</strong>
+                                Thành tiền: {VNCurrencyFormatter.format(subtotal)}<br/>
+                                Phí vận chuyển: {VNCurrencyFormatter.format(deliveryCost)}<br/>
+                                <strong>Tổng tiền: {VNCurrencyFormatter.format(total)}</strong>
                             </div>
                             <div style={{margin:'auto'}}>
                             <ThemeProvider theme={greenButtonTheme}>
