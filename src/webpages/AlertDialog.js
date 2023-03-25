@@ -66,9 +66,7 @@ export default function AlertDialogSlide({children, title,viewUserPopup, setView
           {title}
         </BootstrapDialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-slide-description">
-            {children}
-          </DialogContentText>
+          {children}
         </DialogContent>
       </BootstrapDialog>
     </div>

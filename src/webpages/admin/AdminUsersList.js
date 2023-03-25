@@ -1,7 +1,8 @@
 import React, { useState } from 'react';
 import { Table, TableBody, TableCell, TableHead, TableRow, IconButton, Box, Tooltip, Grid, Pagination} from '@mui/material';
 import { Delete, Reviews } from '@mui/icons-material';
-import AlertDialogSlide from '../AlertDialogSlide';
+import AlertDialog from '../AlertDialog';
+import ConfirmDialog from '../ConfirmDialog';
 import NormalSearchBar from '../search-bar/NormalSearchBar';
 
 const UsersAdminPage = () => {
@@ -60,6 +61,7 @@ const UsersAdminPage = () => {
   const onViewDetail = (user) => {
     setView(user)
   }
+  const [confirmDel, setConfirmDel] = useState(false)
   const onDelete = (ID) => {
     setUsers(users.filter(user => user.id !== ID))
     // delete in server
@@ -76,7 +78,7 @@ const UsersAdminPage = () => {
     <>
     <Grid container sx={{ mb: 1, mt: 1 }}>
       <Grid item xs={12} sm={8} md={6}>
-        <div className='pageTitle'>Danh sách người dùng</div>
+        <div className='pageTitle'>Quản lý người dùng</div>
       </Grid>
       <Grid item xs={12} sm={4} md={6}>
         <NormalSearchBar 
@@ -112,7 +114,7 @@ const UsersAdminPage = () => {
                   </IconButton>
                 </Tooltip>
                 <Tooltip title="Xóa người dùng">
-                  <IconButton color="secondary" onClick={() => onDelete(user.id)}>
+                  <IconButton color="secondary" onClick={() => setConfirmDel(user.id)}>
                     <Delete />
                   </IconButton>
                 </Tooltip>
@@ -125,8 +127,10 @@ const UsersAdminPage = () => {
         <Pagination color="primary" count={pageCount} page={currentPage} onChange={handlePageChange} />
       </Box>
     </Box>
-    <AlertDialogSlide title="Thông tin người dùng" viewUserPopup={viewUserPopup} setView={setView}>
+    <AlertDialog title="Thông tin người dùng" viewUserPopup={!!viewUserPopup} setView={setView}>
+      <>
         <Table>
+            <TableBody>
             <TableRow>
                 <TableCell variant="head">ID</TableCell>
                 <TableCell>{viewUserPopup.id}</TableCell>
@@ -158,9 +162,17 @@ const UsersAdminPage = () => {
             <TableRow>
                 <TableCell variant="head">Địa chỉ</TableCell>
                 <TableCell>{viewUserPopup.address}</TableCell>
-            </TableRow>                                                                        
+            </TableRow>     
+            </TableBody>                                                                   
         </Table>     
-    </AlertDialogSlide>
+      </>
+    </AlertDialog>
+    <ConfirmDialog 
+    isOpen={!!confirmDel} 
+    setOpen={setConfirmDel} 
+    content={"Bạn có chắc chắn muốn xóa user có ID = " + confirmDel + " không?"}
+    confirm={() => onDelete(confirmDel)}
+    />
     </>
   );
 };
