@@ -1,12 +1,8 @@
 import React, { useState } from 'react';
-import { Table, TableBody, TableCell, TableHead, TableRow, IconButton, Box } from '@mui/material';
-import DeleteIcon from '@mui/icons-material/Delete';
-import ReviewsIcon from '@mui/icons-material/Reviews';
-import Tooltip from '@mui/material/Tooltip';
+import { Table, TableBody, TableCell, TableHead, TableRow, IconButton, Box, Tooltip, Grid, Pagination} from '@mui/material';
+import { Delete, Reviews } from '@mui/icons-material';
 import AlertDialogSlide from '../AlertDialogSlide';
 import NormalSearchBar from '../search-bar/NormalSearchBar';
-import Grid from '@mui/material/Grid';
-import Pagination from '@mui/material/Pagination';
 
 const UsersAdminPage = () => {
   // fecth from server 
@@ -112,12 +108,12 @@ const UsersAdminPage = () => {
               <TableCell>
                 <Tooltip title="Xem chi tiết">
                   <IconButton color="secondary" onClick={() => onViewDetail(user)}>
-                    <ReviewsIcon />
+                    <Reviews />
                   </IconButton>
                 </Tooltip>
                 <Tooltip title="Xóa người dùng">
                   <IconButton color="secondary" onClick={() => onDelete(user.id)}>
-                    <DeleteIcon />
+                    <Delete />
                   </IconButton>
                 </Tooltip>
               </TableCell>

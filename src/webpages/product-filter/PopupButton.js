@@ -1,27 +1,16 @@
 import { useState } from "react";
-import { Button, Popover } from "@mui/material";
+import { Popover } from "@mui/material";
 import { styled } from '@mui/material/styles';
+import { SndLayerButton } from "../button-theme/ButtonTheme";
 import ArrowDropDownIcon from "@mui/icons-material/ArrowDropDown";
 
 
 const CustomPopover = styled(Popover)({
     borderRadius: '15px',
-    // backgroundColor: '#f5f5f5',
     maxHeight: '300px',
 });
-const CustomButton = styled(Button)({
-    borderRadius: '15px',
-    boxShadow: "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px",
-    color: "#11224E",
-    backgroundColor: '#F2F4F4',
-    "&:hover": {
-        backgroundColor: "#F2F4F4",
-    },    
-    height: '35px',
-    textTransform: "none"
-});
 
-function PopupButton({ label, children }) {
+function PopupButton({ label, highlightcolor, children }) {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
@@ -35,9 +24,9 @@ function PopupButton({ label, children }) {
 
   return (
     <>
-      <CustomButton variant="contained" onClick={handleButtonClick} endIcon={<ArrowDropDownIcon />}>
+      <SndLayerButton highlightcolor={highlightcolor} variant="contained" onClick={handleButtonClick} endIcon={<ArrowDropDownIcon />}>
         {label}
-      </CustomButton>
+      </SndLayerButton>
       <CustomPopover
         open={open}
         anchorEl={anchorEl}

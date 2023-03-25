@@ -1,12 +1,12 @@
 import { useState, useEffect } from 'react';
-import { useLocation, useParams, useNavigate } from 'react-router-dom';
+import { useLocation, useNavigate } from 'react-router-dom';
 // import axios from 'axios';
-import { Button, Box, Grid, MenuItem, Select, Slider } from '@mui/material';
+import { Box, Grid, MenuItem, Select, Slider } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import PopupButton from './PopupButton';
+import { SndLayerButton } from '../button-theme/ButtonTheme';
 import FilteringQuitButton from './FilteringQuitButton';
-import ArrowUpwardIcon from '@mui/icons-material/ArrowUpward';
-import ArrowDownwardIcon from '@mui/icons-material/ArrowDownward';
+import { ArrowUpward, ArrowDownward } from '@mui/icons-material';
 
 const CustomSelect = styled(Select)({
     borderRadius: '15px',
@@ -26,27 +26,12 @@ const CustomSelect = styled(Select)({
         border: 0,
       },    
 });
-const PriceOrderButton = styled(Button) ({
-    borderRadius: '15px',
-    boxShadow: "rgba(50, 50, 93, 0.25) 0px 6px 12px -2px, rgba(0, 0, 0, 0.3) 0px 3px 7px -3px",
-    color: "#11224E",
-    backgroundColor: '#F2F4F4',
-    "&:hover": {
-        backgroundColor: "#F2F4F4",
-    },    
-    height: '35px',
-    textTransform: "none"    
-})
-const buttonBorder = ishighlighted => {
-  return {border: ishighlighted ? "1px solid red" : "none"}
-}
 const filterTypeLabel = {
     fontSize: 'small',
     fontWeight: 'bold',
     marginTop: '10px'
 }
 const StyledSlider = styled(Slider)({
-  // margin: '5px auto',
   color: "#3f51b5",
 });
 
@@ -95,19 +80,19 @@ function ProductFilterPage() {
     return priceRange[0] + '-' + priceRange[1]
   }
 
-
-//   const { filterParams } = useParams();
-
   // Parse the filter parameters from the URL query string
   const [filters, setFilters] = useState({})
-//   useEffect(() => {
-//     const queryParams = new URLSearchParams(location.search);
-//     const filterObj = {};
-//     for (let [key, value] of queryParams.entries()) {
-//       filterObj[key] = value;
-//     }
-//     setFilters(filterObj);
-//   }, [location.search]);
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    const filterObj = {};
+    for (let [key, value] of queryParams.entries()) {
+      if (key === 'authorID' || key === 'manufacturerID') {
+        value = parseInt(value)
+      }
+      filterObj[key] = value;
+    }
+    setFilters(filterObj);
+  }, []); // empty array means it just run on mount (on load)
 
   // Fetch the filtered product data from the server
   const [products, setProducts] = useState([])
@@ -133,17 +118,21 @@ function ProductFilterPage() {
     setFilters(newFilters)
     navigate(location.pathname + '?' + new URLSearchParams(newFilters).toString())
   };
-  const getLabelsForQuitButton = (filters) => {
+  const getLabelsCurrentFilter = () => {
     const res = []
     let hasSoldQuantity = false
     Object.entries(filters).forEach(([key, value]) => {
       if (key === 'authorID') {
         const authorEntry = authors.filter(author => author.id === value)[0]
-        res.push({key: key, label: "Tac gia: " + authorEntry.name})
+        if (authorEntry !== undefined) {
+          res.push({key: key, label: "Tac gia: " + authorEntry.name})
+        }
       } else if (key === 'manufacturerID') {
         const name = isBook(location.pathname) ? "Nha xuat ban" : "Nha san xuat"
         const manufacturerEntry = manufacturers.filter(man => man.id === value)[0]
-        res.push({key: key, label: name + ': ' + manufacturerEntry.name})
+        if (manufacturerEntry !== undefined) {
+          res.push({key: key, label: name + ': ' + manufacturerEntry.name})
+        }
       } else if (key === 'price') {
         res.push({key: key, label: "Gia: " + value})
       } else if (value === 'sold_quantity') {
@@ -154,7 +143,6 @@ function ProductFilterPage() {
           res.push({key: 'order', label: value === 'asc' ? 'Gia tang dan' : 'Gia giam dan'})
       }
     })
-    // console.log(res)
     return res
   }  
 
@@ -192,18 +180,21 @@ function ProductFilterPage() {
             <div style={filterTypeLabel}>Chon theo tieu chi</div>
             <Grid container spacing={4}>
             <Grid item>
-            <PopupButton label="Chon tac gia">
+            <PopupButton label="Chon tac gia" highlightcolor={filters["authorID"] ? "red" : undefined}>
             {authors.map((author, index) => (
                 <MenuItem 
                 key={index} 
                 onClick={() => handleFilterChange({target: {name: 'authorID', value: author.id}})}>
                     {author.name}                    
                 </MenuItem>
-            ))}   
+            ))}
             </PopupButton>
             </Grid>
             <Grid item>
-            <PopupButton label={isBook(location.pathname) ? "Chon nha xuat ban" : "Chon nha san xuat"}>
+            <PopupButton 
+            label={isBook(location.pathname) ? "Chon nha xuat ban" : "Chon nha san xuat"}
+            highlightcolor={filters["manufacturerID"] ? "red" : undefined}
+            >
             {manufacturers.map((manufacturer, index) => (
                 <MenuItem 
                 key={index} 
@@ -214,7 +205,7 @@ function ProductFilterPage() {
             </PopupButton>   
             </Grid> 
             <Grid item>
-            <PopupButton label="Gia">
+            <PopupButton label="Gia" highlightcolor={filters["price"] ? "red" : undefined}>
               <Grid container sx={{width: '300px'}} justifyContent="center">
               <Grid item xs={6}>
               <div style={{margin: '5px'}}>{currentPrice[0]}d</div>
@@ -234,12 +225,12 @@ function ProductFilterPage() {
               </Box>
               </Grid>
               <Grid item>
-              <PriceOrderButton 
+              <SndLayerButton 
               onClick={() => handleFilterChange({target: {name: 'price', value: priceToQueryValue(currentPrice)}})}
               sx={{margin: '5px'}} 
               >
                 Xem ket qua
-              </PriceOrderButton>
+              </SndLayerButton>
               </Grid>
               </Grid>
             </PopupButton>     
@@ -250,36 +241,39 @@ function ProductFilterPage() {
             <div style={filterTypeLabel}>Sap xep theo</div>
             <Grid container spacing={4}>
             <Grid item>
-                <PriceOrderButton 
-                endIcon={<ArrowUpwardIcon />}
+                <SndLayerButton 
+                variant="contained"
+                endIcon={<ArrowUpward />}
                 onClick={() => {
                   handleFilterChange({target: {name: 'filter_price', value: 'asc'}})
                 }}
-                sx={buttonBorder(filters.order === 'filter_price' && filters.dir === 'asc')}
+                highlightcolor={filters.order === 'filter_price' && filters.dir === 'asc' ? "red" : undefined}
                 > 
                     Gia tang dan
-                </PriceOrderButton>
+                </SndLayerButton>
             </Grid>
             <Grid item>
-                <PriceOrderButton 
-                endIcon={<ArrowDownwardIcon />}
+                <SndLayerButton 
+                variant="contained"
+                endIcon={<ArrowDownward />}
                 onClick={() => {
                   handleFilterChange({target: {name: 'filter_price', value: 'dsc'}})
                 }}
-                sx={buttonBorder(filters.order === 'filter_price' && filters.dir === 'dsc')}
+                highlightcolor={filters.order === 'filter_price' && filters.dir === 'dsc' ? "red" : undefined}
                 > 
                     Gia giam dan
-                </PriceOrderButton>
+                </SndLayerButton>
             </Grid> 
             <Grid item>
-                <PriceOrderButton 
+                <SndLayerButton 
+                variant="contained"
                 onClick={() => {
                   handleFilterChange({target: {name: 'sold_quantity', value: 'dsc'}})
                 }}
-                sx={buttonBorder(filters.order === 'sold_quantity' && filters.dir === 'dsc')}
+                highlightcolor={filters.order === 'sold_quantity' && filters.dir === 'dsc' ? "red" : undefined}
                 > 
                     Ban chay nhat
-                </PriceOrderButton>
+                </SndLayerButton>
             </Grid>             
             </Grid>                  
         </Grid>   
@@ -287,9 +281,10 @@ function ProductFilterPage() {
         <Grid item xs={12}>
             <div style={filterTypeLabel}>Dang loc theo</div>
             <Grid container spacing={4}>
-            {getLabelsForQuitButton(filters).map((item, index) => (
+            {getLabelsCurrentFilter().map((item, index) => (
               <Grid item key={index}>
               <FilteringQuitButton 
+              variant="contained"
               label={item.label} 
               onClick={() => {
                 if (item.key === 'order') {
@@ -314,7 +309,8 @@ function ProductFilterPage() {
             ))}  
 
               <Grid item>
-              <FilteringQuitButton 
+              <FilteringQuitButton
+              variant="contained"
               label="Xoa tat ca" 
               onClick={() => {
                 setFilters({})

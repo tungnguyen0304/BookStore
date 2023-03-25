@@ -10,9 +10,7 @@ import RadioGroup from '@mui/material/RadioGroup';
 import Grid from '@mui/material/Grid';
 import Stack from '@mui/material/Stack';
 import OrderItems from '../user-page/OrderItem';
-import { greenButtonTheme } from '../button-theme/ButtonTheme';
-import { ThemeProvider } from '@emotion/react';
-import { Button } from '@mui/material';
+import { GreenButton } from '../button-theme/ButtonTheme';
 import { getLocalCartContent } from './setCartLocal';
 import { checkPhoneNumber } from '../FormUtil';
 
@@ -171,11 +169,9 @@ export default function Payment () {
                                 <strong>Tổng tiền: {VNCurrencyFormatter.format(total)}</strong>
                             </div>
                             <div style={{margin:'auto'}}>
-                            <ThemeProvider theme={greenButtonTheme}>
-                            <Button type="submit" color="neutral" variant="contained">
+                            <GreenButton type="submit" variant="contained">
                                 Xác nhận thanh toán
-                            </Button>
-                            </ThemeProvider>
+                            </GreenButton>
                             </div>
                         </Stack>     
                         </Box>           

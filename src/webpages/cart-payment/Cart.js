@@ -2,9 +2,7 @@ import { React, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
-import { redButtonTheme } from '../button-theme/ButtonTheme';
-import { ThemeProvider } from '@emotion/react';
-import { Button } from '@mui/material';
+import { RedButton } from '../button-theme/ButtonTheme';
 import Stack from '@mui/material/Stack';
 import CartItem from './CartItem';
 import EmptyCart from './img/emptyCart.png'
@@ -91,11 +89,9 @@ export default function Cart () {
                     <strong>Tổng tiền: {VNCurrencyFormatter.format(total)}</strong>
                 </div>
                 <div style={{margin:'auto'}}>
-                <ThemeProvider theme={redButtonTheme}>
-                <Button color="neutral" variant="contained" onClick={goToPayment}> 
-                    Thanh toán
-                </Button>
-                </ThemeProvider>                  
+                  <RedButton variant="contained" onClick={goToPayment}> 
+                      Thanh toán
+                  </RedButton>
                 </div>
             </Stack>
           </Box>        
