@@ -1,12 +1,35 @@
-import React, { useState } from "react";
+import * as React from 'react';
 // import axios from "axios";
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import SuggestionSearchBar from "./search-bar/SuggestionSearchBar";
+import { Grid } from "@mui/material";
+import Box from '@mui/material/Box';
+import Avatar from '@mui/material/Avatar';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
+import ListItemIcon from '@mui/material/ListItemIcon';
+import Divider from '@mui/material/Divider';
+import IconButton from '@mui/material/IconButton';
+import Tooltip from '@mui/material/Tooltip';
+import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
+import Logout from '@mui/icons-material/Logout';
+import TipsAndUpdatesIcon from '@mui/icons-material/TipsAndUpdates';
+import styled from '@emotion/styled';
 
-const Header = ({ cartCount, handleLogout }) => {
-  const [searchTerm, setSearchTerm] = useState("");
+const MenuLink = styled.a`
+  text-decoration: none;
+  color: inherit;
+`;
 
-  const handleSearchTermChange = (event) => {
-    setSearchTerm(event.target.value);
+const Header = () => {
+  const [searchTerm, setSearchTerm] = React.useState("");
+  const [anchorEl, setAnchorEl] = React.useState(null);
+  const open = Boolean(anchorEl);
+  const handleClick = (event) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleClose = () => {
+    setAnchorEl(null);
   };
 
   const handleSearchSubmit = async (term) => {
@@ -18,35 +41,115 @@ const Header = ({ cartCount, handleLogout }) => {
     // }
   };
 
-  const handleCartClick = () => {
-    console.log("Load cart items");
-  };
-
   return (
-    <div className="header-container">
-      <a className="header-container-logo" href="/">
-        BookStore
-      </a>
-      <div className="header-form-icon"><form className="header-form" onSubmit={(event) => {
-        event.preventDefault(); 
-        handleSearchSubmit(searchTerm);
-      }}>
-        <input className="header-form-search" type="text" value={searchTerm} onChange={handleSearchTermChange} placeholder="Search for books" />
-        <button className="header-form-btn" type="submit">Search</button>
-      </form>
-      <a className="menu-link-icon icon-container" href="/" onClick={(e) => {e.preventDefault(); handleCartClick();}} >
-          <ShoppingCartIcon className="header-menu-icon"/>
-          {cartCount > 0 && <span className="cart-count">{cartCount}</span>}
-        </a></div>
-      <div className="menu">
-          <a href="/register" className="header-reg-link">
-            Register
-          </a>
-          <a href="/login" className="header-login-link">
-            Login
-          </a>
-      </div>
-    </div>
+    <>
+    <Grid container alignItems="center" className="header-container">
+      <Grid container item xs={3} md={3}>
+        <Grid item xs={12} md={3}>
+          <IconButton
+            href='/'
+            size="small"
+            sx={{ ml: 2 }}
+          >
+            <TipsAndUpdatesIcon/>
+          </IconButton>    
+        </Grid> 
+        <Grid item md={9} sx={{ display: { xs: 'none', md: 'block' } }}>
+          <div className='header-container-logo'>Bookstore</div>
+        </Grid>      
+      </Grid>
+      <Grid item xs={5} md={7}>
+        <SuggestionSearchBar 
+          label="Tìm kiếm..." 
+          searchText={searchTerm}
+          setSearchText={setSearchTerm}
+          handleSearch={handleSearchSubmit}
+        />        
+      </Grid>
+      <Grid item xs={2} md={1}>
+        <IconButton
+          href='cart'
+          size="small"
+          sx={{ ml: 2 }}
+        >
+          <ShoppingCartIcon/>
+        </IconButton>        
+      </Grid>
+      <Grid item xs={2} md={1}>
+        <React.Fragment>
+        <Box sx={{ display: 'flex', alignItems: 'center', textAlign: 'center' }}>
+          <Tooltip title="Ho so cua ban">
+            <IconButton
+              onClick={handleClick}
+              size="small"
+              sx={{ ml: 2 }}
+              aria-controls={open ? 'account-menu' : undefined}
+              aria-haspopup="true"
+              aria-expanded={open ? 'true' : undefined}
+            >
+              <Avatar sx={{ width: 32, height: 32 }}>M</Avatar>
+            </IconButton>
+          </Tooltip>
+        </Box>
+        <Menu
+          anchorEl={anchorEl}
+          id="account-menu"
+          open={open}
+          onClose={handleClose}
+          onClick={handleClose}
+          PaperProps={{
+            elevation: 0,
+            sx: {
+              overflow: 'visible',
+              filter: 'drop-shadow(0px 2px 8px rgba(0,0,0,0.32))',
+              mt: 1.5,
+              '& .MuiAvatar-root': {
+                width: 32,
+                height: 32,
+                ml: -0.5,
+                mr: 1,
+              },
+              '&:before': {
+                content: '""',
+                display: 'block',
+                position: 'absolute',
+                top: 0,
+                right: 14,
+                width: 10,
+                height: 10,
+                bgcolor: 'background.paper',
+                transform: 'translateY(-50%) rotate(45deg)',
+                zIndex: 0,
+              },
+            },
+          }}
+          transformOrigin={{ horizontal: 'right', vertical: 'top' }}
+          anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
+        >
+          <MenuItem>
+            <Avatar /> <MenuLink href='/view_profile'>Ho so cua ban</MenuLink>
+          </MenuItem>
+          <MenuItem onClick={handleClose}>
+            <Avatar /> <MenuLink href='/edit_profile'>Chinh sua ho so</MenuLink>
+          </MenuItem>          
+          <Divider />
+          <MenuItem onClick={handleClose}>
+            <ListItemIcon>
+              <ReceiptLongIcon fontSize="small" />
+            </ListItemIcon>
+            <MenuLink href='/orders'>Danh sach don hang</MenuLink>
+          </MenuItem>
+          <MenuItem onClick={handleClose}>
+            <ListItemIcon>
+              <Logout fontSize="small" />
+            </ListItemIcon>
+            <MenuLink href='#'>Dang xuat</MenuLink>
+          </MenuItem>
+        </Menu>
+        </React.Fragment>       
+      </Grid>            
+    </Grid>
+    </>
   );
 };
 

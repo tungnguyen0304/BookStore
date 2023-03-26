@@ -1,80 +1,73 @@
-import { Link } from 'react-router-dom';
-import React, { useState, useEffect } from 'react';
-import axios from 'axios';
-import {FaHeadphones, FaFacebook,FaTwitter,FaGoogle,FaYoutube} from "react-icons/fa"
+import React from 'react';
+import { Mail, Phone, Facebook, Twitter, Google, YouTube } from '@mui/icons-material';
+import { Box, Typography, Link, Stack, IconButton } from '@mui/material';
 
 
-
-const Footer = () => {
-  const [newsletterEmail, setNewsletterEmail] = useState('');
-  const [isSubscribed, setIsSubscribed] = useState(false);
-  const [error, setError] = useState(false);
-
-  const handleInputChange = (e) => {
-    setNewsletterEmail(e.target.value);
-  };
-
-  const handleFormSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      await axios.post('/api/newsletter/subscribe', { email: newsletterEmail });
-      setIsSubscribed(true);
-      setError(false);
-    } catch (error) {
-      console.log(error);
-      setIsSubscribed(false);
-      setError(true);
-    }
-  };
-
-  useEffect(() => {
-    // Get newsletter subscription status from server
-    // setIsSubscribed state accordingly
-  }, []);
+const j = () => {
 
   return (
-    <div>
+      <footer>
         <div className="footer-head">
-          <div className="footer-head-text-icon">
-            <h1>BookStore</h1>
-          </div>
           <div className="footer-head-text-icon ">
             <ul className='box-social'>
-            <li ><a ><span className='box-social-margin-right box-social-icon-link back-gr-fb-icon'><FaFacebook/></span></a></li>
-            <li ><a ><span className='box-social-margin-right box-social-icon-link back-gr-tw-icon'><FaTwitter/></span></a></li>
-            <li ><a ><span className='box-social-margin-right box-social-icon-link back-gr-gg-icon'><FaGoogle/></span></a></li>
-            <li ><a ><span className='box-social-margin-right box-social-icon-link back-gr-yt-icon'><FaYoutube/></span></a></li>
+            <li ><a ><span className='box-social-margin-right box-social-icon-link back-gr-fb-icon'><Facebook/></span></a></li>
+            <li ><a ><span className='box-social-margin-right box-social-icon-link back-gr-tw-icon'><Twitter/></span></a></li>
+            <li ><a ><span className='box-social-margin-right box-social-icon-link back-gr-gg-icon'><Google/></span></a></li>
+            <li ><a ><span className='box-social-margin-right box-social-icon-link back-gr-yt-icon'><YouTube/></span></a></li>
             </ul>
           </div>
-        </div>
-      <footer>
-        <div>
-        
-          <h3>Subscribe to our newsletter</h3>
-          {isSubscribed ? (
-            <p>Thank you for subscribing!</p>
-          ) : (
-            <form onSubmit={handleFormSubmit}>
-              <input
-                type="email"
-                placeholder="Enter your email"
-                value={newsletterEmail}
-                onChange={handleInputChange}
-              />
-              <button className='footer-btn' type="submit">Subscribe</button>
-              {error && <p>An error occurred. Please try again later.</p>}
-            </form>
-          )}
-        </div>
+        </div>        
         <div>
           <h3>Contact us</h3>
-          <p>Email: info@bookstore.com</p>
-          <span style={{display:'flex'}}><FaHeadphones className='footer-contact-icon'/><p>Phone: +1 (123) 456-7890</p></span>
+          <span style={{display:'flex'}}><Mail className='footer-contact-icon'/>Email: info@bookstore.com</span>
+          <span style={{display:'flex'}}><Phone className='footer-contact-icon'/>Phone: +1 (123) 456-7890</span>
           
         </div>
       </footer>
-    </div>
   );
 };
+
+function Footer() {
+  return (
+    <Box
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        backgroundColor: '#302C2C',
+        color: "#C9C4C4",
+        padding: '1rem',
+        width: '100%',
+      }}
+    >
+      <Stack direction="row" spacing={2} alignItems="center">
+        <IconButton href="https://www.youtube.com">
+          <YouTube />
+        </IconButton>
+        <IconButton href="https://www.facebook.com">
+          <Facebook />
+        </IconButton>
+        <IconButton href="https://www.twitter.com">
+          <Twitter />
+        </IconButton>
+      </Stack>
+      <Typography variant="body2" sx={{ marginTop: '1rem' }}>
+        Contact us:
+      </Typography>
+      <Stack direction="row" spacing={2} alignItems="center" sx={{ marginTop: '0.5rem' }}>
+        <Phone />
+        <Link href="tel:+1234567890" color="inherit">
+          <Typography variant="body2">(123) 456-7890</Typography>
+        </Link>
+      </Stack>
+      <Stack direction="row" spacing={2} alignItems="center">
+        <Mail />
+        <Link href="mailto:example@example.com" color="inherit">
+          <Typography variant="body2">example@example.com</Typography>
+        </Link>
+      </Stack>
+    </Box>
+  );
+}
 
 export default Footer;
