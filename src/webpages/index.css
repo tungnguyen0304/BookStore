@@ -47,3 +47,370 @@ body {
 .admin-table tr:hover {
     background-color: #ddd
 }
+
+
+}
+.secondLayerBox {
+    background-color: #F2F4F4;
+    color: #11224E;
+}
+.secondLayerBox > * {
+    background-color: inherit;
+    color: inherit;
+}
+.spaceBelow {
+    margin-bottom: 10px;
+}
+.pageTitle {
+    font-weight: bolder;
+    font-size: 30px;
+    margin-top: 10px;
+}
+
+
+/* */
+ .header-container {
+     display: flex; 
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px;
+    background-color: #ccc;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  }
+  
+  .header-container-logo {
+    font-size: 24px;
+    font-weight: bold;
+    color: #333;
+    text-decoration: none;
+  }
+  
+  .header-form {
+    display: flex;
+    align-items: center;
+  }
+  
+  .header-form-search {
+    border: none;
+    padding: 6px 10px;
+    border-radius: 5px;
+    font-size: 16px;
+    margin-right: 10px;
+  }
+  
+  .header-form-btn {
+    border: none;
+    padding: 6px 16px;
+    border-radius: 5px;
+    background-color: #333;
+    color: #fff;
+    font-size: 16px;
+    cursor: pointer;
+  }
+  
+  .menu {
+    display: flex;
+    align-items: center;
+  }
+  
+  .menu-link-icon {
+    margin-left: 20px;
+    font-size: 16px;
+    color: #333;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.2s ease;
+  }
+  
+  .menu-link-icon:hover {
+    color: #f00;
+  }
+  
+  .icon-container {
+    position: relative;
+    margin-left: 20px;
+  }
+  
+  .icon-container:hover .cart-count {
+    display: block;
+  }
+  
+  .cart-count {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    min-width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background-color: #f00;
+    color: #fff;
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  } 
+  .header-form-icon{
+    display: flex;
+  }
+  .header-login-link{
+    text-decoration: none;
+  }
+  .header-menu-icon{
+    width: 25px;
+    height: 25px;
+    margin-top: 10px;
+  }
+  .header-reg-link {
+    margin-right: 15px;
+    text-decoration: none;
+  }
+   .header-login-link:hover {
+    opacity: .5;
+    
+  }
+  .header-reg-link:hover {
+  opacity: .5;
+  }
+  
+  footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #f3f3f3;
+    padding: 2rem;
+    border-top: 1px solid #ccc;
+  }
+  
+  footer h3 {
+    margin-bottom: 1rem;
+    font-size: 1.5rem;
+  }
+  
+  footer p {
+    margin-bottom: 0.5rem;
+  }
+  
+  footer input[type="email"] {
+    width: 100%;
+    padding: 0.5rem;
+    margin-right: 1rem;
+    border-radius: 0.25rem;
+    border: 1px solid #ccc;
+  }
+  
+  footer button[type="submit"] {
+    padding: 0.5rem;
+    border: none;
+    border-radius: 0.25rem;
+    background-color: #0077be;
+    color: #fff;
+    cursor: pointer;
+  }
+  
+  footer button[type="submit"]:hover {
+    background-color: #005ea2;
+  }
+  
+  footer p.error {
+    color: red;
+  }
+  .box-social{
+    display: flex;
+    list-style: none;
+  }
+  .box-social-margin-right{
+    margin-right: 15px;
+    border-radius: 50%;
+    height: 30px;
+    width: 30px;
+    display: flex;
+    justify-content: center; /* căn giữa theo chiều ngang */
+    align-items: center;
+    color: #fff;
+    right: 0;
+  }
+  .back-gr-gg-icon {
+    background-color: #c32a22;
+  }
+  .back-gr-fb-icon {
+    background-color:#233a66 ;
+  }
+  .back-gr-tw-icon {
+    background-color: #0a96cb;
+  }
+  .back-gr-yt-icon {
+background-color: #ff0000;
+  }
+  .footer-head{
+    display: flex;
+    border-bottom: 1px solid #000;
+    width: 100%;
+  }
+  .footer-head-text-icon{
+    width: 50%;
+    display: flex;
+    justify-content: center;
+  }
+  .footer-btn{
+    margin-top: 15px;
+  }
+  .footer-contact-icon{
+    margin-top: 20px;
+    margin-right: 5px;
+    color: red;
+  }
+  .box-social-icon-link:hover{
+    opacity: .7;
+    cursor: pointer;
+  }
+
+  .container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 2rem;
+  }
+  
+  .profile-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  h2 {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+  }
+  
+  .profile-info {
+    background-color: #f3f3f3;
+    padding: 2rem;
+    border-radius: 0.5rem;
+    box-shadow: 0 5px 10px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  .profile-info p {
+    font-size: 1.2rem;
+    margin-bottom: 1rem;
+  }
+  
+  .profile-info strong {
+    font-weight: bold;
+  }
+  
+  .loading {
+    font-size: 2rem;
+    text-align: center;
+  }
+  
+  .error {
+    font-size: 2rem;
+    text-align: center;
+    color: red;
+  }
+  .view-profile-text{
+   
+    width: 350px ;
+  }
+  .view-profile-sex{
+    margin-top: 12px;
+    width: 60px;
+    height: 32px;
+    
+  }
+  .view-profile-link-change{
+    background-color: #3b6727;
+    color: white;
+    border-radius: 4px;
+    height: 40px;
+    width: 100px;
+    margin-top: 20px;
+    border: none;
+  }
+  .view-profile-link-change:hover{
+    opacity: .7;
+    cursor: pointer;
+  }
+  .view-profile-link-cancel{
+    
+    background-color: #dc7684;
+    color: white;
+    border-radius: 4px;
+    height: 40px;
+    width: 100px;
+    margin-top: 20px;
+    border: none;
+    margin-left: 15px;
+  }
+  .view-profile-link-cancel:hover{
+    opacity: .7;
+    cursor: pointer;
+  }
+.form-group{
+    display: flex;
+    align-items: center;
+    margin-right: 30px;
+}
+.form-control{
+    
+    border-radius: 5px;
+    height: 32px;
+    width: 90px;
+}
+.col-form-label{
+    margin-right: 10px;
+}
+.Admin-Add_Edit-Product-btn{
+    background-color: #3b6727;
+    color: white;
+    border-radius: 4px;
+    height: 40px;
+    width: 100px;
+    margin-top: 20px;
+    border: none;
+  }
+  .Admin-Add_Edit-Product-btn:hover{
+    opacity: .7;
+    cursor: pointer;
+  }
+
+
+  .AdminContacts-text {
+    font-family: Arial, Helvetica, sans-serif;
+    border-collapse: collapse;
+    width: 100%;
+    margin-top: 20px;
+  }
+  
+  .AdminContacts-info {
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  .AdminContacts-table {
+    padding-top: 12px;
+    padding-bottom: 12px;
+    text-align: left;
+    background-color: #007bff;
+    color: #fff;
+    border: 1px solid #ddd;
+    padding: 8px;
+  }
+  
+  tr:nth-child(even) {
+    background-color: #f2f2f2;
+  }
+  
+  .AdminContacts-btn {
+    padding: 10px;
+    font-size: 1.2rem;
+    background-color: #dc3545;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  
+  .AdminContacts-btn:hover {
+    background-color: #c82333;
+  }
