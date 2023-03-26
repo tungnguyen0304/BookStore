@@ -11,7 +11,8 @@ import ViewPost from './post/ViewPost';
 import ProductOrCategoryNavigator from './ProductOrCategoryNavigator';
 import Cart from './cart-payment/Cart';
 import Payment from './cart-payment/Payment';
-import Login from './authentication/Login';
+// import Login from './authentication/Login';
+import ModalLogin from './authentication/ModalLogin';
 import Register from './authentication/Register';
 import ViewProfile from './user-page/ViewProfile';
 import EditProfile from './user-page/EditProfile';
@@ -40,7 +41,7 @@ export default function Webpages () {
             <Route path="/post" element={<ViewPost/>} />
             <Route path="/cart" element={<Cart/>} />
             <Route path="/cart/payment" element={<Payment/>} />
-            <Route path="/login" element={<Login/>} />
+            <Route path="/login" element={<ModalLogin/>} />
             <Route path="/register" element={<Register/>} />
             <Route path="/view_profile" element={<ViewProfile/>} />
             <Route path="/edit_profile" element={<EditProfile/>} />

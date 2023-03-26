@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import './ModalLogin.css';
-import {FaFacebook,FaTwitter,FaGoogle} from "react-icons/fa"
+// import {FaFacebook,FaTwitter,FaGoogle} from "react-icons/fa"
 import { width } from '@mui/system';
 
 function ModalLogin(props) {
@@ -31,18 +31,18 @@ function ModalLogin(props) {
         <h2>Đăng nhập</h2>
         <form onSubmit={handleSubmit}>
           <div className="form-group">
-            <label style={{width:"101px"}} htmlFor="username">Tên đăng nhập:</label>
-            <input style={{margin:"0 0 0 6px"}} type="text" name="username" placeholder='Username or email' value={username} onChange={handleChange} />
+            <label htmlFor="username">Tên đăng nhập:</label>
+            <input style={{margin:"0 0 0 6px"}} type="text" name="username" placeholder='Username' value={username} onChange={handleChange} />
           </div>
           <div className="form-group">
-            <label style={{width:"101px"}} htmlFor="password">Mật khẩu:</label>
-            <input type="password" name="password" placeholder='Password' value={password} onChange={handleChange} />
+            <label htmlFor="password">Mật khẩu:</label>
+            <input type="password" name="password" placeholder='Mật khẩu' value={password} onChange={handleChange} />
           </div>
           <div className="form-actions">
             <button type="submit" className="btn btn-primary">Đăng nhập</button>
             
           </div>
-          <div className="border-solid"><span className="border-solid-text">hoặc đăng nhập bằng</span></div>
+          {/* <div className="border-solid"><span className="border-solid-text">hoặc đăng nhập bằng</span></div>
           <div className="form-login-fb-tw-gg">
               <div>
               <button className="login-fb-tw-gg back-gr-fb">
@@ -62,7 +62,7 @@ function ModalLogin(props) {
               <div className="login-text">LOGIN WITH GOOGLE</div>
               </button>
               </div>
-          </div>
+          </div> */}
         </form>
       </div>
     </div>
