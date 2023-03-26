@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import axios from 'axios';
+// import axios from 'axios';
 
 const SexList = [{
       id: 1,
@@ -42,13 +42,13 @@ const EditProfile = () => {
   };
   useEffect(() => {
     const fetchUser = async () => {
-      try {
-        const response = await axios.get(`/api/users/${id}`); //Lấy thông tin người dùng qua API
-        setUser(response.data);
-        setLoading(false);
-      } catch (error) {
-        console.log(error);
-      }
+      // try {
+      //   const response = await axios.get(`/api/users/${id}`); //Lấy thông tin người dùng qua API
+      //   setUser(response.data);
+      //   setLoading(false);
+      // } catch (error) {
+      //   console.log(error);
+      // }
     };
     fetchUser();
   }, [id]);

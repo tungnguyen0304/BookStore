@@ -1,7 +1,7 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import axios from "axios";
-import {FaShoppingCart} from "react-icons/fa"
+// import axios from "axios";
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+
 const Header = ({ cartCount, handleLogout }) => {
   const [searchTerm, setSearchTerm] = useState("");
 
@@ -10,12 +10,12 @@ const Header = ({ cartCount, handleLogout }) => {
   };
 
   const handleSearchSubmit = async (term) => {
-    try {
-      const response = await axios.get(`/api/books/search/${term}`);
-      console.log(response.data);
-    } catch (error) {
-      console.log(error);
-    }
+    // try {
+    //   const response = await axios.get(`/api/books/search/${term}`);
+    //   console.log(response.data);
+    // } catch (error) {
+    //   console.log(error);
+    // }
   };
 
   const handleCartClick = () => {
@@ -24,9 +24,9 @@ const Header = ({ cartCount, handleLogout }) => {
 
   return (
     <div className="header-container">
-      <Link to="/" className="header-container-logo">
+      <a className="header-container-logo" href="/">
         BookStore
-      </Link>
+      </a>
       <div className="header-form-icon"><form className="header-form" onSubmit={(event) => {
         event.preventDefault(); 
         handleSearchSubmit(searchTerm);
@@ -35,20 +35,16 @@ const Header = ({ cartCount, handleLogout }) => {
         <button className="header-form-btn" type="submit">Search</button>
       </form>
       <a className="menu-link-icon icon-container" href="/" onClick={(e) => {e.preventDefault(); handleCartClick();}} >
-          <FaShoppingCart className="header-menu-icon"/>
+          <ShoppingCartIcon className="header-menu-icon"/>
           {cartCount > 0 && <span className="cart-count">{cartCount}</span>}
         </a></div>
       <div className="menu">
-        
-      <Link to="/register" className="header-reg-link">
-                register
-          </Link>
-           
-          <Link to="/login" className="header-login-link">
+          <a href="/register" className="header-reg-link">
+            Register
+          </a>
+          <a href="/login" className="header-login-link">
             Login
-          </Link>
-          
-       
+          </a>
       </div>
     </div>
   );

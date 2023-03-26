@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import axios from 'axios';
+// import axios from 'axios';
 
 const AdminEditProduct = ({ match }) => {
   const [product, setProduct] = useState({});
@@ -47,7 +47,7 @@ const AdminEditProduct = ({ match }) => {
       price: price,
     };
 
-    await axios.patch(`/api/products/${match.params.id}`, updatedProduct);
+    // await axios.patch(`/api/products/${match.params.id}`, updatedProduct);
   };
 
   return (
