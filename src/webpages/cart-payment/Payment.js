@@ -55,11 +55,11 @@ export default function Payment () {
         // Set errors if any, else submit form
         if (Object.keys(errors).length > 0) {
             setErrors(errors);
+            window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
         } else {
             // submit to server
             alert(values.name + " " + values.phone + " " + values.address + " " + values.method)
         }      
-        window.scrollTo({top: 0, left: 0, behavior: 'smooth'});
     };    
     const cartContent = getLocalCartContent()
     const subtotal = cartContent.reduce((acc, product) => acc + product.qty * product.price, 0)

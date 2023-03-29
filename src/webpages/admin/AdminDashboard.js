@@ -61,7 +61,7 @@ function AdminDashboard() {
           </Typography>
         </DashboardBox>
       </Link> 
-      <Link href="admin/contacts" underline="none">
+      {/* <Link href="admin/contacts" underline="none">
         <DashboardBox className='secondLayerBox shadowedBox'>
           <Icon>
             <ContactPhoneIcon />
@@ -70,7 +70,7 @@ function AdminDashboard() {
           Quản lý thông tin liên hệ
           </Typography>
         </DashboardBox>
-      </Link>            
+      </Link>             */}
     </Stack>
     </>
   );

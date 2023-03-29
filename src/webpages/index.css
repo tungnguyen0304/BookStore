@@ -80,6 +80,7 @@ body {
   }
   
   .header-container-logo {
+    color: inherit;
     font-size: large;
     font-weight: bold;
     text-decoration: none;

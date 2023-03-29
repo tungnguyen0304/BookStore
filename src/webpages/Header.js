@@ -55,7 +55,7 @@ const Header = () => {
           </IconButton>    
         </Grid> 
         <Grid item md={9} sx={{ display: { xs: 'none', md: 'block' } }}>
-          <div className='header-container-logo'>Bookstore</div>
+          <a className='header-container-logo' href='/'>Bookstore</a>
         </Grid>      
       </Grid>
       <Grid item xs={5} md={7}>

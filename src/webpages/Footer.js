@@ -1,5 +1,5 @@
 import React from 'react';
-import { Mail, Phone, Facebook, Twitter, Google, YouTube } from '@mui/icons-material';
+import { Home, Mail, Phone, Facebook, Twitter, Google, YouTube } from '@mui/icons-material';
 import { Box, Typography, Link, Stack, IconButton } from '@mui/material';
 
 
@@ -66,6 +66,10 @@ function Footer() {
           <Typography variant="body2">example@example.com</Typography>
         </Link>
       </Stack>
+      <Stack direction="row" spacing={2} alignItems="center">
+        <Home />
+        <Typography variant="body2">1, Le Duan, Q1, TP.HCM</Typography>
+      </Stack>      
     </Box>
   );
 }
