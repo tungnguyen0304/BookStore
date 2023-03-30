@@ -129,9 +129,12 @@ const AdminAddProduct = () => {
                 <Autocomplete
                   options={categoryList}
                   getOptionLabel={(option) => option.name}
-                  value={product.category ? categoryList.find((item) => item.id === product.category) : null}
-                  onChange={(event, newValue) => {
+                  value={product.category ? categoryList.find(item => item.id === product.category) : null}
+                  onChange={(e, newValue) => {
                     setProduct({...product, category: newValue ? newValue.id : ''});
+                    if (errors.category) { // hide error if there is any
+                      errors.category = ''
+                    }
                   }}
                   renderInput={(params) => 
                   <TextField {...params} 

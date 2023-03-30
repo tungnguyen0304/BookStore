@@ -59,7 +59,7 @@ const EditProfile = () => {
 
   return (
     <div>
-      <h2>Edit Profile</h2>
+      <div className='pageTitle'>Chỉnh sửa hồ sơ</div>
      <div style={{boxShadow:"5px 5px 10px grey",padding:"10px 0 10px 25px"}}> 
      <p style={{display: "flex"}}>
         <strong style={{display:"flex",alignItems:"center",width:"90px"}}>Tên:</strong>

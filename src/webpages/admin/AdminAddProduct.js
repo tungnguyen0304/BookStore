@@ -4,6 +4,7 @@ import axios from 'axios';
 import { GreenButton, RedButton } from '../button-theme/ButtonTheme';
 import ConfirmDialog from '../ConfirmDialog';
 import { useNavigate } from 'react-router-dom';
+const PATH = 'http://localhost/api/index.php';
 
 const AdminAddProduct = () => {
   const [product, setProduct] = useState({
@@ -93,12 +94,22 @@ const AdminAddProduct = () => {
         setErrors(errors);
         window.scrollTo({top: 0, left: 0, behavior: 'smooth'});   
     } else {
-    // try {
-    //   await axios.post('/api/products', newProduct); // Gửi thông tin sản phẩm mới lên server
-    //   console.log('New product added successfully!');
-    // } catch (error) {
-    //   console.log(error);
-    // }
+        // try {
+        //   const response = await axios.post('api/test.php', product)
+        //   console.log(response);
+        // } catch (error) {
+        //   console.log(error);
+        // }
+        axios({
+          method: 'post',
+          url: `http://www.btl-web.com/api/test.php`,
+          // headers: { 'content-type': 'application/json' },
+          // data: this.state
+        })
+          .then(result => {
+            console.log(result);
+          })
+          .catch(error => {console.log(error)});        
         console.log(product)
     }      
   };
@@ -118,7 +129,7 @@ const AdminAddProduct = () => {
                   name="name"
                   value={product.name}
                   onChange={handleChange}
-                  error={errors.name ? true : false}
+                  error={!!errors.name}
                   helperText={errors.name}
               />
               </FormControl>
@@ -128,14 +139,17 @@ const AdminAddProduct = () => {
                 <Autocomplete
                   options={categoryList}
                   getOptionLabel={(option) => option.name}
-                  value={product.category ? categoryList.find((item) => item.id === product.category) : null}
-                  onChange={(event, newValue) => {
+                  value={product.category ? categoryList.find(item => item.id === product.category) : null}
+                  onChange={(e, newValue) => {
                     setProduct({...product, category: newValue ? newValue.id : ''});
+                    if (errors.category) { // hide error if there is any
+                      errors.category = ''
+                    }
                   }}
                   renderInput={(params) => 
                   <TextField {...params} 
                     label="Thể loại" 
-                    error={errors.category ? true : false}
+                    error={!!errors.category}
                     helperText={errors.category}                   
                   />}                 
                 />
@@ -148,7 +162,7 @@ const AdminAddProduct = () => {
                   name="image"
                   value={product.image}
                   onChange={handleChange}
-                  error={errors.image ? true : false}
+                  error={!!errors.image}
                   helperText={errors.image}
               />
               </FormControl>
@@ -161,7 +175,7 @@ const AdminAddProduct = () => {
                   type="number"
                   value={product.price}
                   onChange={handleChange}
-                  error={errors.price ? true : false}
+                  error={!!errors.price}
                   helperText={errors.price}
               />
               </FormControl>
@@ -174,7 +188,7 @@ const AdminAddProduct = () => {
                   type="number"
                   value={product.current_qty}
                   onChange={handleChange}
-                  error={errors.current_qty ? true : false}
+                  error={!!errors.current_qty}
                   helperText={errors.current_qty}
               />
               </FormControl>
@@ -187,7 +201,7 @@ const AdminAddProduct = () => {
                   type="number"
                   value={product.sold_qty}
                   onChange={handleChange}
-                  error={errors.sold_qty ? true : false}
+                  error={!!errors.sold_qty}
                   helperText={errors.sold_qty}
               />
               </FormControl>
@@ -204,7 +218,7 @@ const AdminAddProduct = () => {
                   renderInput={(params) => 
                   <TextField {...params} 
                     label="Tác giả" 
-                    error={errors.author ? true : false}
+                    error={!!errors.author}
                     helperText={errors.author}                   
                   />}                 
                 />                
@@ -222,7 +236,7 @@ const AdminAddProduct = () => {
                   renderInput={(params) => 
                   <TextField {...params} 
                     label="NXB/NSX" 
-                    error={errors.manufacturer ? true : false}
+                    error={!!errors.manufacturer}
                     helperText={errors.manufacturer}                   
                   />}                 
                 />  
@@ -238,7 +252,7 @@ const AdminAddProduct = () => {
                   name="description"
                   value={product.description}
                   onChange={handleChange}
-                  error={errors.description ? true : false}
+                  error={!!errors.description}
                   helperText={errors.description}
               />
               </FormControl>
