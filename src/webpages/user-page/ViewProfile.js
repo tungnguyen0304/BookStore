@@ -1,97 +1,63 @@
-import React, { useState, useEffect } from 'react';
-import { Link, useParams } from 'react-router-dom';
-// import axios from 'axios';
-const SexList = [{
-      id: 1,
-      name : 'Nam'
-     },{
-      id: 2,
-      name : 'Nữ'
-     }
-    ]
-const ViewProfile = () => {
-    const name = "abcd"
-  const { id } = useParams(); // Lấy id trên URL
-  const [user, setUser] = useState({}); // Lưu thông tin người dùng
-  const [loading, setLoading] = useState(true); // Trạng thái khi đang load thông tin
-  const [check,setcheck] = useState() 
-  useEffect(() => {
-    const fetchUser = async () => {
-      // try {
-      //   const response = await axios.get(`/api/users/${id}`); //Lấy thông tin người dùng qua API
-      //   setUser(response.data);
-      //   setLoading(false);
-      // } catch (error) {
-      //   console.log(error);
-      // }
-    };
-    fetchUser();
-  }, [id]);
+import { Grid, FormControl, TextField, Autocomplete } from '@mui/material';
+import React, { useState } from 'react';
+import axios from 'axios';
+import { GreenButton, RedButton } from '../button-theme/ButtonTheme';
+import ConfirmDialog from '../ConfirmDialog';
+import { useNavigate } from 'react-router-dom';
+import DatePicker from "react-datepicker";
+import "react-datepicker/dist/react-datepicker.css";
 
-  if (!loading) {
-    return <h2>Loading User...</h2>;
-  }
+
+const ViewProfile = () => {
+  const [Profile, setProfile] = useState({
+    name: 'John Doe',
+    Address: 'abcxxxxxxx',
+    birthDate: '12/03/2021',
+    email: 'john.doe@example.com',
+    numberphone: '123-456-7890'
+    
+  });
+  // function handleDateSelect(date) {
+  //   console.log(date);
+  //   return date;
+  // } 
+    
+
+     
+
+
+ 
+  
 
   return (
     <div>
-      <h2>User Profile</h2>
-     <div style={{boxShadow:"5px 5px 10px grey",padding:"10px 0 10px 25px"}}> 
-     <p style={{display: "flex"}}>
-        <strong style={{display:"flex",alignItems:"center",width:"90px"}}>Tên:</strong><input className="view-profile-text" type="text" value={name}></input>
+      <div className='pageTitle'><h2>ViewProfile </h2></div>
+      <table style={{width:"100%",margin:"20px 0"}}>
+      <tbody>
+        <tr  >
+          <td style={{border:"1px solid #000"}}>Name:</td>
+          <td style={{border:"1px solid #000"}}>{Profile.name}</td>
+        </tr>
+        <tr style={{}}>
+          <td style={{border:"1px solid #000"}}>Email:</td>
+          <td style={{border:"1px solid #000"}}>{Profile.email}</td>
+        </tr>
+        <tr style={{}}>
+          <td style={{border:"1px solid #000"}}>Address:</td>
+          <td style={{border:"1px solid #000"}}>{Profile.Address}</td>
+        </tr>
+        <tr style={{}}>
+          <td style={{border:"1px solid #000"}}>Phone:</td>
+          <td style={{border:"1px solid #000"}}>{Profile.numberphone}</td>
+        </tr>
+        <tr style={{}}>
+          <td style={{border:"1px solid #000"}}>Date:</td>
+          <td style={{border:"1px solid #000"}}>{Profile.birthDate}</td>
+        </tr>
         
-      </p>
-      {/* <p style={{display: "flex"}}>
-      <strong style={{display:"flex",alignItems:"center",justifyContent:"center",width:"90px"}}>Giới tính:</strong>
-        <input className='view-profile-sex' type="radio" ></input><p>Nam</p>
-        <input className='view-profile-sex' type="radio" ></input><p>Nữ</p> */}
-
-        
-
-        <p style={{display: "flex"}} >
-        <strong style={{display:"flex",alignItems:"center",width:"90px"}}>Giới tính:</strong>  
-       {SexList.map(function(abc)
-      {
-        return (
-        
-        <div style={{display: "flex"}} key={abc.id}>
-          <input className='view-profile-sex' checked={check === abc.id}
-          onClick = {function(){setcheck(abc.id)
-                        console.log(abc.name)
-        }} 
-          type="radio"></input>
-          <p>{abc.name}</p>
-          </div>
-          
-          )
-      }
-      )}
-      </p>
-     
-    
-  
-
-        
-
-
-      {/* </p> */}
-      <p style={{display: "flex"}}>
-        <strong style={{display:"flex",alignItems:"center",width:"90px"}}>Địa chỉ:</strong><input className="view-profile-text" type="text" value={name}></input>
-        
-      </p>
-      <p style={{display: "flex"}}>
-        <strong style={{display:"flex",alignItems:"center",width:"90px"}}>SĐT:</strong><input className="view-profile-text" type="tel" value={name}></input>
-        
-      </p>
-      <p style={{display: "flex"}}>
-        <strong style={{display:"flex",alignItems:"center",width:"90px"}}>Email:</strong><input className="view-profile-text" type="email" value={name}></input>
-        
-      </p>
-     </div>
-     
-        <Link to="/edit_profile" >
-        <button className='view-profile-link-change'>Cập nhật</button>
-  </Link>
-     
+      </tbody>
+    </table>
+      
     </div>
   );
 };
