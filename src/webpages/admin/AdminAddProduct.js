@@ -1,60 +1,59 @@
 import { Grid, FormControl, TextField, Autocomplete } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { GreenButton, RedButton } from '../button-theme/ButtonTheme';
 import ConfirmDialog from '../ConfirmDialog';
 import { useNavigate } from 'react-router-dom';
-const PATH = 'http://localhost/api/index.php';
 
 const AdminAddProduct = () => {
   const [product, setProduct] = useState({
     name: '',
-    category: '',
+    categoryID: '',
     image: '',
     price: '',
     current_qty: '',
     sold_qty: '',
-    author: '',
-    manufacturer: '',
+    authorID: '',
+    manufacturerID: '',
     description: ''
   });
   const [errors, setErrors] = useState({
     name: '',
-    category: '',
+    categoryID: '',
     image: '',
     price: '',
     current_qty: '',
     sold_qty: '',
-    author: '',
-    manufacturer: '',
+    authorID: '',
+    manufacturerID: '',
     description: ''    
   });    
-  const authorsList = [
-    {id: 1, name: 'Nguyen Nhat Anh'},
-    {id: 2, name: 'Nguyen Anh Nhat'}, 
-    {id: 3, name: 'Jimmy Carter'}, 
-    {id: 4, name: 'Nguyen Van Nguyen Van'}
-  ]
-  const manufacturersList = [
-    {id: 1, name: 'NXB Giao duc', country: 'Vietnam'},
-    {id: 2, name: 'NXB Dan tri', country: 'Vietnam'}, 
-    {id: 3, name: 'NXB ABC', country: 'Trung Quoc'}, 
-    {id: 4, name: 'NXB XYZ', country: 'Hoa Ky'}
-  ]
-  const categoryList = [
-    {id: 1, name: 'Sach trong nuoc'},
-    {id: 2, name: 'Sach ngoai quoc'}, 
-    {id: 3, name: 'Van phong pham'}, 
-    {id: 4, name: 'Do choi'},
-    {id: 5, name: 'Hang luu niem'},
-  ]  
+  const [authorsList, setAuthorsList] = useState([])
+  const [manufacturersList, setManufacturersList] = useState([])
+  const [categoriesList, setCategoriesList] = useState([])
 
-  const checkIDinList = (id, list) => {
-    if (!id)
+  // get list of categories, authors, manufacturers
+  useEffect(() => {
+    axios.get('http://www.btl-web.com/api/product-info-option.php')
+    .then(response => {
+      return response.data
+    })
+    .then(response => {
+      setAuthorsList(JSON.parse(response.authorsList))
+      setManufacturersList(JSON.parse(response.manufacturersList))
+      setCategoriesList(JSON.parse(response.categoriesList))
+    }) 
+    .catch(error => {
+      console.log(error);
+    });
+  }, [])
+
+  const checkIDinList = (ID, list) => {
+    if (!ID)
       return false 
 
     for (const item in list) {
-      if (item.id === id) {
+      if (item.ID === ID) {
         return true
       }
     }
@@ -73,20 +72,21 @@ const AdminAddProduct = () => {
 
 
   const handleSubmit = async (e) => {
-    // check thong tin truoc khi submit
     const errors = {};
-    if (!product.name) errors.name = "Vui lòng điền tên người nhận";
-    if (!product.category) errors.category = "Vui lòng chọn thể loại sản phẩm"
-    else if (checkIDinList(product.category, categoryList)) errors.category = "Thể loại sản phẩm không hợp lệ"
-    if (product.image > 255) errors.image = "Link hình ảnh phải ít hơn 255 ký tự";
-    if (!product.price) errors.price = "Vui lòng điền giá sản phẩm";
-    else if (product.current_qty < 0) errors.current_qty = "Giá sản phẩm phải lớn hơn 0";
-    if (!product.current_qty) errors.current_qty = "Vui lòng điền số lượng hiện tại của sản phẩm";
+    if (!product.name) errors.name = "Vui lòng điền tên sản phẩm";
+    if (Number.isInteger(product.categoryID)) errors.categoryID = "Vui lòng chọn thể loại sản phẩm"
+    else if (checkIDinList(product.categoryID, categoriesList)) errors.categoryID = "Thể loại sản phẩm không hợp lệ"
+    if (product.image.length > 255) errors.image = "Link hình ảnh phải ít hơn 255 ký tự";
+    if (Number.isInteger(product.price)) errors.price = "Vui lòng điền giá sản phẩm";
+    else if (product.price < 0) errors.price = "Giá sản phẩm phải lớn hơn 0";
+    if (Number.isInteger(product.current_qty)) errors.current_qty = "Vui lòng điền số lượng hiện tại của sản phẩm";
     else if (product.current_qty < 0) errors.current_qty = "Số lượng hiện tại của sản phẩm phải lớn hơn 0";
-    if (!product.sold_qty) errors.sold_qty = "Vui lòng điền số lượng đã bán của sản phẩm";
+    if (Number.isInteger(product.sold_qty)) errors.sold_qty = "Vui lòng điền số lượng đã bán của sản phẩm";
     else if (product.sold_qty < 0) errors.sold_qty = "Số lượng đã bán của sản phẩm phải lớn hơn 0";
-    if (checkIDinList(product.author, authorsList)) errors.author = "Tác giả không hợp lệ"
-    if (checkIDinList(product.manufacturer, manufacturersList)) errors.manufacturer = "NXB/NSX không hợp lệ"
+    if (Number.isInteger(product.authorID)) errors.authorID = "Tác giả không hợp lệ"
+    else if (checkIDinList(product.authorID, authorsList)) errors.authorID = "Tác giả không hợp lệ"
+    if (Number.isInteger(product.manufacturerID)) errors.manufacturerID = "NXB/NSX không hợp lệ"
+    else if (checkIDinList(product.manufacturerID, manufacturersList)) errors.manufacturerID = "NXB/NSX không hợp lệ"
     if (product.description.length > 5000) errors.description = "Mô tả sản phẩm phải ít hơn 5000 ký tự";
 
     // Set errors if any, else submit form
@@ -94,23 +94,13 @@ const AdminAddProduct = () => {
         setErrors(errors);
         window.scrollTo({top: 0, left: 0, behavior: 'smooth'});   
     } else {
-        // try {
-        //   const response = await axios.post('api/test.php', product)
-        //   console.log(response);
-        // } catch (error) {
-        //   console.log(error);
-        // }
-        axios({
-          method: 'post',
-          url: `http://www.btl-web.com/api/test.php`,
-          // headers: { 'content-type': 'application/json' },
-          // data: this.state
-        })
-          .then(result => {
-            console.log(result);
-          })
-          .catch(error => {console.log(error)});        
-        console.log(product)
+        try {
+          const response = await axios.post('http://www.btl-web.com/api/product-add.php', product)
+          console.log(response);
+        } catch (error) {
+          console.log(error);
+        }
+        // console.log(product)
     }      
   };
   const [confirmSaving, setConfirmSaving] = useState(false)
@@ -137,20 +127,20 @@ const AdminAddProduct = () => {
           <Grid item xs={12} sm={6}>
               <FormControl fullWidth >
                 <Autocomplete
-                  options={categoryList}
+                  options={categoriesList}
                   getOptionLabel={(option) => option.name}
-                  value={product.category ? categoryList.find(item => item.id === product.category) : null}
+                  value={product.categoryID ? categoriesList.find(item => item.ID === product.categoryID) : null}
                   onChange={(e, newValue) => {
-                    setProduct({...product, category: newValue ? newValue.id : ''});
-                    if (errors.category) { // hide error if there is any
-                      errors.category = ''
+                    setProduct({...product, categoryID: newValue ? newValue.ID : ''});
+                    if (errors.categoryID) { // hide error if there is any
+                      errors.categoryID = ''
                     }
                   }}
                   renderInput={(params) => 
                   <TextField {...params} 
                     label="Thể loại" 
-                    error={!!errors.category}
-                    helperText={errors.category}                   
+                    error={!!errors.categoryID}
+                    helperText={errors.categoryID}                   
                   />}                 
                 />
               </FormControl>
@@ -211,15 +201,15 @@ const AdminAddProduct = () => {
                 <Autocomplete
                   options={authorsList}
                   getOptionLabel={(option) => option.name}
-                  value={product.author ? authorsList.find((item) => item.id === product.author) : null}
+                  value={product.authorID ? authorsList.find((item) => item.ID === product.authorID) : null}
                   onChange={(e, newValue) => {
-                    setProduct({...product, author: newValue ? newValue.id : ''});
+                    setProduct({...product, authorID: newValue ? newValue.ID : ''});
                   }}
                   renderInput={(params) => 
                   <TextField {...params} 
                     label="Tác giả" 
-                    error={!!errors.author}
-                    helperText={errors.author}                   
+                    error={!!errors.authorID}
+                    helperText={errors.authorID}                   
                   />}                 
                 />                
               </FormControl>
@@ -229,15 +219,15 @@ const AdminAddProduct = () => {
               <Autocomplete
                   options={manufacturersList}
                   getOptionLabel={(option) => option.name}
-                  value={product.manufacturer ? manufacturersList.find((item) => item.id === product.manufacturer) : null}
+                  value={product.manufacturerID ? manufacturersList.find((item) => item.ID === product.manufacturerID) : null}
                   onChange={(e, newValue) => {
-                    setProduct({...product, manufacturer: newValue ? newValue.id : ''});
+                    setProduct({...product, manufacturerID: newValue ? newValue.ID : ''});
                   }}
                   renderInput={(params) => 
                   <TextField {...params} 
                     label="NXB/NSX" 
-                    error={!!errors.manufacturer}
-                    helperText={errors.manufacturer}                   
+                    error={!!errors.manufacturerID}
+                    helperText={errors.manufacturerID}                   
                   />}                 
                 />  
               </FormControl>

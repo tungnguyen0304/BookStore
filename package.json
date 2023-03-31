@@ -1,6 +1,7 @@
 {
   "name": "btl-web",
   "version": "0.1.0",
+  "homepage": "http://www.btl-web.com",
   "private": true,
   "dependencies": {
     "@date-io/date-fns": "^1.3.13",
