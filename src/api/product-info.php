@@ -23,11 +23,16 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
     if ($success) {
         $result = mysqli_stmt_get_result($stmt);
         $data = mysqli_fetch_assoc($result);    
-        header('Content-Type: application/json');
-        echo json_encode(array("success" => true, "data" => json_encode($data)));
+        if ($data) {
+            header('Content-Type: application/json');
+            echo json_encode(array("success" => true, "data" => json_encode($data)));
+        } else {
+            header('Content-Type: application/json');
+            echo json_encode(array("success" => false, "error" => "Product not exist"));
+        }
     } else {
         header('Content-Type: application/json');
-        echo json_encode(array("success" => false, "error" => "Product not exist"));
+        echo json_encode(array("success" => false, "error" => "Read Database failed"));
     }     
     // close DB Connection
     mysqli_close($conn);    

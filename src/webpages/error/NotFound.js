@@ -11,11 +11,14 @@ const NotFound = () => {
 
   return (
   <div>
-    <img
-      src={NotFoundImg}
-      width="100%"
-      alt="not found"
-    />
+    <div style={{ display: 'flex', justifyContent: 'center' }}>
+      <img
+        src={NotFoundImg}
+        width="100%"
+        style={{ maxWidth: '800px' }}
+        alt="not found"
+      />
+    </div>    
     <div style={{display: 'flex', justifyContent: 'center'}}>
       <RedButton variant='contained' onClick={goHome}>
         Go Back to Homepage

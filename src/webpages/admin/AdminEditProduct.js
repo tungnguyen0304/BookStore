@@ -71,8 +71,10 @@ const AdminEditProduct = () => {
       if (response.success) {
         setProduct(JSON.parse(response.data))
       }
-      else
+      else {
+        navigate('/error/404');
         console.log(response.error)
+      }
     }) 
     .catch(error => {
       console.log(error);
