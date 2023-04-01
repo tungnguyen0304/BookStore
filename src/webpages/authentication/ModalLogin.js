@@ -1,75 +1,91 @@
 import React, { useState } from 'react';
-import './ModalLogin.css';
-// import {FaFacebook,FaTwitter,FaGoogle} from "react-icons/fa"
-import { width } from '@mui/system';
+import { Grid, FormControl, TextField } from '@mui/material';
+import { GreenButton } from '../button-theme/ButtonTheme';
 
-function ModalLogin(props) {
-  // Khai báo state cho tên đăng nhập và mật khẩu
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+function Login() {
+  const [loginCredential, setLoginCredential] = useState({
+    username: '',
+    password: ''
+  });
+  const [errors, setErrors] = useState({
+    username: '',
+    password: ''
+  });
 
   // Hàm xử lý khi người dùng nhấn nút đăng nhập
   const handleSubmit = (event) => {
     event.preventDefault();
-    console.log('Username: ' + username);
-    console.log('Password: ' + password);
+    const trimmedLoginCre = ({
+      username: loginCredential.username.trim(), 
+      password: loginCredential.password.trim()
+    })
+
+    const errors = {}
+    if (trimmedLoginCre.username.length === 0) {
+      errors.username = "Vui lòng điền username"
+    }
+    if (trimmedLoginCre.password.length === 0) {
+      errors.password = "Vui lòng điền mật khẩu"
+    }
+    setErrors(errors)
+
+    console.log('Username: ' + trimmedLoginCre.username.length);
+    console.log('Password: ' + trimmedLoginCre.password.length);
     // Thực hiện xử lý đăng nhập ở đây
   };
 
   // Hàm xử lý khi người dùng thay đổi tên đăng nhập hoặc mật khẩu
-  const handleChange = (event) => {
-    if (event.target.name === 'username') {
-      setUsername(event.target.value);
-    } else if (event.target.name === 'password') {
-      setPassword(event.target.value);
+  const handleChange = (e) => {
+    const { name, value } = e.target;
+    setLoginCredential((prevState) => ({ ...prevState, [name]: value }));
+    // if there is any warning, turn it off
+    if (errors[name]) {
+      errors[name] = ''
     }
   };
 
   return (
-    <div className="modal">
-      <div className="modal-content">
-        <h2>Đăng nhập</h2>
-        <form onSubmit={handleSubmit}>
-          <div className="form-group">
-            <label htmlFor="username">Tên đăng nhập:</label>
-            <input style={{margin:"0 0 0 6px"}} type="text" name="username" placeholder='Username' value={username} onChange={handleChange} />
-          </div>
-          <div className="form-group">
-            <label htmlFor="password">Mật khẩu:</label>
-            <input type="password" name="password" placeholder='Mật khẩu' value={password} onChange={handleChange} />
-          </div>
-          <div className="form-actions">
-            <button type="submit" className="btn btn-primary">Đăng nhập</button>
-            
-          </div>
-          {/* <div className="border-solid"><span className="border-solid-text">hoặc đăng nhập bằng</span></div>
-          <div className="form-login-fb-tw-gg">
-              <div>
-              <button className="login-fb-tw-gg back-gr-fb">
-              <span className="x32-32 back-gr-fb-icon"><FaFacebook className="color-icon"></FaFacebook></span>
-              <div className="login-text">LOGIN WITH FACEBOOK</div>
-              </button>
-              </div>
-              <div>
-              <button className="login-fb-tw-gg back-gr-tw">
-              <span className="x32-32 back-gr-tw-icon"><FaTwitter className="color-icon"></FaTwitter></span>
-              <div className="login-text">LOGIN WITH TWITTER</div>
-              </button>
-              </div>
-              <div>
-              <button className="login-fb-tw-gg back-gr-gg">
-              <span className="x32-32 back-gr-gg-icon"><FaGoogle className="color-icon"></FaGoogle></span>
-              <div className="login-text">LOGIN WITH GOOGLE</div>
-              </button>
-              </div>
-          </div> */}
-        </form>
-      </div>
+    <div>
+      <div className='pageTitle'>Đăng nhập</div>
+      <form onSubmit={handleSubmit}>
+        <Grid container spacing={2} className='secondLayerBox shadowedBox' justifyContent="center" alignItems="center">
+          <Grid item xs={7}>
+            <FormControl fullWidth >
+            <TextField
+                label="Username"
+                name="username"
+                value={loginCredential.username}
+                onChange={handleChange}
+                error={!!errors.username}
+                helperText={errors.username}
+            />
+            </FormControl>
+          </Grid>
+          <Grid item xs={7}>
+            <FormControl fullWidth >
+            <TextField
+                label="Mật khẩu"
+                type='password'
+                name="password"
+                value={loginCredential.password}
+                onChange={handleChange}
+                error={!!errors.password}
+                helperText={errors.password}
+            />
+            </FormControl>
+          </Grid>   
+          <Grid item container justifyContent="center">
+            <GreenButton type="submit" variant="contained">
+                Đăng nhập
+            </GreenButton>
+          </Grid>                  
+        </Grid>
+      </form>
     </div>
-  );
+  )
 }
 
-export default ModalLogin;
+export default Login;
 
 
 

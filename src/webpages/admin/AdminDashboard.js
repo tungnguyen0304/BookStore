@@ -5,7 +5,6 @@ import MenuBookIcon from '@mui/icons-material/MenuBook';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import CommentIcon from '@mui/icons-material/Comment';
-import ContactPhoneIcon from '@mui/icons-material/ContactPhone';
 
 const DashboardBox = styled(Box)({
     display: 'flex',
@@ -61,16 +60,6 @@ function AdminDashboard() {
           </Typography>
         </DashboardBox>
       </Link> 
-      {/* <Link href="admin/contacts" underline="none">
-        <DashboardBox className='secondLayerBox shadowedBox'>
-          <Icon>
-            <ContactPhoneIcon />
-          </Icon>
-          <Typography variant="subtitle1" sx={{ marginLeft: '10px' }}>
-          Quản lý thông tin liên hệ
-          </Typography>
-        </DashboardBox>
-      </Link>             */}
     </Stack>
     </>
   );

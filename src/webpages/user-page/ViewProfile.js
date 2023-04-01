@@ -4,59 +4,49 @@ import axios from 'axios';
 import { GreenButton, RedButton } from '../button-theme/ButtonTheme';
 import ConfirmDialog from '../ConfirmDialog';
 import { useNavigate } from 'react-router-dom';
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+// import DatePicker from "react-datepicker";
+// import "react-datepicker/dist/react-datepicker.css";
+import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material';
 
 
 const ViewProfile = () => {
-  const [Profile, setProfile] = useState({
+  const [Profile] = useState({
     name: 'John Doe',
-    Address: 'abcxxxxxxx',
-    birthDate: '12/03/2021',
+    username: 'JohnDude',
+    address: 'abcxxxxxxx',
     email: 'john.doe@example.com',
-    numberphone: '123-456-7890'
-    
+    phone: '123-456-7890'
   });
-  // function handleDateSelect(date) {
-  //   console.log(date);
-  //   return date;
-  // } 
-    
-
-     
-
-
- 
-  
 
   return (
     <div>
-      <div className='pageTitle'><h2>ViewProfile </h2></div>
-      <table style={{width:"100%",margin:"20px 0"}}>
-      <tbody>
-        <tr  >
-          <td style={{border:"1px solid #000"}}>Name:</td>
-          <td style={{border:"1px solid #000"}}>{Profile.name}</td>
-        </tr>
-        <tr style={{}}>
-          <td style={{border:"1px solid #000"}}>Email:</td>
-          <td style={{border:"1px solid #000"}}>{Profile.email}</td>
-        </tr>
-        <tr style={{}}>
-          <td style={{border:"1px solid #000"}}>Address:</td>
-          <td style={{border:"1px solid #000"}}>{Profile.Address}</td>
-        </tr>
-        <tr style={{}}>
-          <td style={{border:"1px solid #000"}}>Phone:</td>
-          <td style={{border:"1px solid #000"}}>{Profile.numberphone}</td>
-        </tr>
-        <tr style={{}}>
-          <td style={{border:"1px solid #000"}}>Date:</td>
-          <td style={{border:"1px solid #000"}}>{Profile.birthDate}</td>
-        </tr>
-        
-      </tbody>
-    </table>
+      <div className='pageTitle'>Hồ sơ của bạn</div>
+      <TableContainer component={Paper}>
+      <Table>
+        <TableBody>
+          <TableRow>
+            <TableCell>Username</TableCell>
+            <TableCell>{Profile.username}</TableCell>
+          </TableRow>          
+          <TableRow>
+            <TableCell>Tên</TableCell>
+            <TableCell>{Profile.name}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>Email</TableCell>
+            <TableCell>{Profile.email}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>SĐT</TableCell>
+            <TableCell>{Profile.phone}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>Địa chỉ</TableCell>
+            <TableCell>{Profile.address}</TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+    </TableContainer>
       
     </div>
   );

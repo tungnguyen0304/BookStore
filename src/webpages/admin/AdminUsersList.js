@@ -90,7 +90,7 @@ const UsersAdminPage = () => {
       </Grid>      
     </Grid>    
     <Box>
-      <Table stickyHeader aria-label="users table" sx={{ maxHeight: 440 }} className='admin-table'>
+      <Table aria-label="users table" sx={{ maxHeight: 440 }} className='admin-table'>
         <TableHead>
           <TableRow key="header-row">
             <TableCell>ID</TableCell>

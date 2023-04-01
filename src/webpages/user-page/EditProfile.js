@@ -5,8 +5,8 @@ import { GreenButton, RedButton } from '../button-theme/ButtonTheme';
 import ConfirmDialog from '../ConfirmDialog';
 import { useNavigate, Link } from 'react-router-dom';
 
-import DatePicker from "react-datepicker";
-import "react-datepicker/dist/react-datepicker.css";
+// import DatePicker from "react-datepicker";
+// import "react-datepicker/dist/react-datepicker.css";
 import ViewProfile from './ViewProfile';
 const EditProfile = () => {
   const [selectedDate, setSelectedDate] = useState(null);
@@ -120,7 +120,7 @@ const EditProfile = () => {
               />
               </FormControl>
           </Grid>
-          <Grid item xs={12} sm={6}>
+          {/* <Grid item xs={12} sm={6}>
             
             <label htmlFor="dob">Ngày sinh:</label>
       <DatePicker
@@ -133,7 +133,7 @@ const EditProfile = () => {
         scrollableYearDropdown
         yearDropdownItemNumber={100}
         placeholderText="DD/MM/YYYY"
-      /></Grid>
+      /></Grid> */}
 
           <Grid item xs={12} sm={6}>
               <FormControl fullWidth >
