@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import axios from 'axios';
 import { Grid, FormControl, TextField } from '@mui/material';
 import { GreenButton } from '../button-theme/ButtonTheme';
+import Cookies from 'js-cookie'
 
 function Login() {
   const [loginCredential, setLoginCredential] = useState({
@@ -13,7 +15,7 @@ function Login() {
   });
 
   // Hàm xử lý khi người dùng nhấn nút đăng nhập
-  const handleSubmit = (event) => {
+  const handleSubmit = async (event) => {
     event.preventDefault();
     const trimmedLoginCre = ({
       username: loginCredential.username.trim(), 
@@ -27,11 +29,26 @@ function Login() {
     if (trimmedLoginCre.password.length === 0) {
       errors.password = "Vui lòng điền mật khẩu"
     }
-    setErrors(errors)
 
-    console.log('Username: ' + trimmedLoginCre.username.length);
-    console.log('Password: ' + trimmedLoginCre.password.length);
-    // Thực hiện xử lý đăng nhập ở đây
+    // Set errors if any, else submit form
+    if (Object.keys(errors).length > 0) {
+      setErrors(errors);
+      window.scrollTo({top: 0, left: 0, behavior: 'smooth'});   
+    } else {
+        try {
+          const response = await axios.post('http://www.btl-web.com/api/verify-login.php', trimmedLoginCre)
+          Cookies.set('session_id', response.data.session_id, { expires: 1/24 })
+          Cookies.set('role', response.data.role, { expires: 1/24 })
+          console.log(response)
+          window.location.href = '/'
+        } catch (error) {
+          if (error.response.status == 401) {
+            setErrors({...errors, password: "Không đúng mật khẩu"})
+          } else {
+            console.log(error)
+          }
+        };
+    } 
   };
 
   // Hàm xử lý khi người dùng thay đổi tên đăng nhập hoặc mật khẩu

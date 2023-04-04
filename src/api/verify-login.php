@@ -13,7 +13,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $password = test_input($post_data['password']);
     
     # check login credential in DB
-    $qry = "SELECT * FROM users WHERE username = ?";
+    $qry = "SELECT * FROM user WHERE username = ?";
     $stmt = mysqli_prepare($conn, $qry);
     mysqli_stmt_bind_param($stmt, 's', $username);            
     $success = mysqli_stmt_execute($stmt);         
@@ -29,16 +29,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             // Generate a new session ID
             $session_id = bin2hex(random_bytes(32));
 
-            // Set a cookie that expires in a year
-            setcookie('session_id', $session_id, time() + 31536000, '/');
-
             // Store the session ID, user ID, role in the session variables
             $_SESSION['session_id'] = $session_id;
             $_SESSION['user_id'] = $row['ID'];            
             $_SESSION['role'] = $row['role'];  
+            // data to return back
+            $res = array(
+                'session_id' => $session_id,
+                'role' => $row['role']
+            );
 
             header('Content-Type: application/json');
-            echo "Login successfully";
+            echo json_encode($res);
         } else {
             http_response_code(401);
             echo "Wrong Login Credentials";

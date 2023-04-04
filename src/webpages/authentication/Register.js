@@ -5,66 +5,41 @@ import { GreenButton, RedButton } from '../button-theme/ButtonTheme';
 import ConfirmDialog from '../ConfirmDialog';
 import { useNavigate, Link } from 'react-router-dom';
 
+// tài khoản mẫu:
+// user: user Bkhoa123@
+// admin: admin Bkhoa456@
 
 const Register = () => {
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [Profile, setProfile] = useState({
+  const [profile, setProfile] = useState({
     name: '',
     username: '',
     password: '',
     phone:'',
     email: '',
-    Address:''
-    
-    
+    address:''
   });
-  const [errors, setErrors] = useState({
-     name: '',
-    username: '',
-    password: '',
-    phone:'',
-    email: '',
-    Address:''
-        
-  });    
+  const [errors, setErrors] = useState(profile);    
   
-
-   
-
-  const checkIDinList = (id, list) => {
-    if (!id)
-      return false 
-
-    for (const item in list) {
-      if (item.id === id) {
-        return true
-      }
-    }
-
-    return false
+  function checkValidName(name) {
+    const validNameRegex = /^[\p{L}\s']{1,50}$/u
+    return validNameRegex.test(name)
   }
   function checkValidEmail(email) {
-    // Regular Expression kiểm tra tính hợp lệ của địa chỉ email
     const validEmailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{,50}$/;
-  
-    // Kiểm tra địa chỉ email có đúng định dạng không
-    if (validEmailRegex.test(email)) {
-      return true; // Địa chỉ email hợp lệ
-    } else {
-      return false; // Địa chỉ email không hợp lệ
-    }
+    return validEmailRegex.test(email)
   }
+  function checkValidUsername(Username) {
+    const validUsernameRegex = /^[a-zA-Z0-9_-]{3,20}$/
+    return validUsernameRegex.test(Username)
+  }  
   function checkValidPass(Pass) {
-    
     const validPassRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$/;
-  
-    
-    if (validPassRegex.test(Pass)) {
-      return true; 
-    } else {
-      return false; 
-    }
+    return validPassRegex.test(Pass)
   }
+  function checkValidPhoneNumber(input) {
+    var pattern = /(84|0[3|5|7|8|9])+([0-9]{8})\b/g
+    return pattern.test(input)
+  }    
   
   const handleChange = (e) => {
       const { name, value } = e.target;
@@ -74,64 +49,54 @@ const Register = () => {
           errors[name] = ''
       }
   };   
-  function isValidInput(input) {
-    var pattern = /^[^\d\W_]+$/g; 
-    if (pattern.test(input)) {
-        return true; // Đúng định dạng
-    } else {
-        return false; // Sai định dạng
-    }
-}
 
 
   const handleSubmit = async (e) => {
     // check thong tin truoc khi submit
+    const trimmedInfo = Object.fromEntries(Object.entries(profile).map(([key, value]) => [key, value.trim()]))
     const errors = {};
-    if (!Profile.name) errors.name = "Tên không được để trống";
-    else if (Profile.name.length >50 ) errors.name = "Tên yêu cầu nhỏ hơn 50 ký tự";
-     else if(!isValidInput(Profile.name)) errors.name = "Tên chỉ bao gồm các ký tự Việt Nam";
-    if (!Profile.username) errors.username = "Tài khoản không được để trống";
-    else if ((Profile.username.length < 3) || (Profile.username.length > 20))  errors.username = "username phải từ 3 kí tự đến 20 kí tự";
-    if (!checkValidEmail(Profile.email)) {
-      errors.email = "Địa chỉ email không hợp lệ";
-    } 
+    if (!checkValidName(trimmedInfo.name))
+      errors.name = "Tên không được trống và ít hơn 50 ký tự bao gồm các ký tự Việt Nam và khoảng trắng"
+
+    if (!checkValidUsername(trimmedInfo.username)) 
+      errors.username = "Username gồm 3 đến 20 ký tự chữ thường, chữ hoa, số, dấu gạch chân và dấu gạch nối";
     
-    if (!checkValidPass(Profile.password)) {
-      errors.password = " Password từ 8 ký tự, ít nhất 1 chữ hoa, 1 thường, 1 số, 1 ký tự đặc biệt";
-    } 
+    if (trimmedInfo.email.length !== 0) {
+      if (!checkValidEmail(trimmedInfo.email)) {
+        errors.email = "Email không hợp lệ";
+      } 
+    }
     
-    if((Profile.phone.length != 10)&&(Profile.phone.length != 11)) errors.phone = "Phone từ  10-11 ký tự số";
-    if(Profile.Address.length > 255) errors.Address = "Địa chỉ tối đa 255 ký tự"
+    if (!checkValidPass(trimmedInfo.password))
+      errors.password = "Mật khẩu phải nhiều hơn 8 ký tự, ít nhất 1 chữ hoa, 1 thường, 1 số, 1 ký tự đặc biệt"
     
-   
+    if (trimmedInfo.phone.length !== 0)
+      if (!checkValidPhoneNumber(trimmedInfo.phone)) 
+        errors.phone = "Phone không hợp lệ"
+
+    if (trimmedInfo.address.length > 255) 
+      errors.address = "Địa chỉ tối đa 255 ký tự"
 
     // Set errors if any, else submit form
     if (Object.keys(errors).length > 0) {
         setErrors(errors);
         window.scrollTo({top: 0, left: 0, behavior: 'smooth'});   
     } else {
-    // try {
-    //   await axios.post('/api/Profiles', newProfile); // Gửi thông tin sản phẩm mới lên server
-    //   console.log('New Profile added successfully!');
-    // } catch (error) {
-    //   console.log(error);
-    // }
-    
-    console.log(Profile.name.trim())
-    console.log(Profile.username.trim())
-    console.log(Profile.password.trim())
-    console.log(Profile.phone.trim())
-    console.log(Profile.email.trim())
-    console.log(Profile.Address.trim())
-}      
-  };
+        try {
+          const response = await axios.post('http://www.btl-web.com/api/register.php', trimmedInfo)
+          console.log(response)
+        } catch (error) {
+          console.log(error);
+        };
+    } 
+  }      
   const [confirmSaving, setConfirmSaving] = useState(false)
   const [confirmGoingBack, setConfirmGoingBack] = useState(false)
   const navigate = useNavigate()
 
   return (
     <div>
-      <div className='pageTitle'><h2>Register</h2></div>
+      <div className='pageTitle spaceBelow'>Đăng ký tài khoản</div>
       <form onSubmit={handleSubmit}>
         <Grid container spacing={2} className='secondLayerBox shadowedBox' style={{overflow:'hidden'}}>
           <Grid item xs={12} sm={6}>
@@ -140,7 +105,7 @@ const Register = () => {
               <TextField
                   
                   name="name"
-                  value={Profile.name}
+                  value={profile.name}
                   onChange={handleChange}
                   error={errors.name ? true : false}
                   helperText={errors.name}
@@ -156,7 +121,7 @@ const Register = () => {
            
           type="email" name="email" 
            
-          value={Profile.email} onChange={handleChange}
+          value={profile.email} onChange={handleChange}
           error={errors.email ? true : false}
                   helperText={errors.email} />
           </FormControl>
@@ -166,11 +131,11 @@ const Register = () => {
 
           <Grid item xs={12} sm={6}>
               <FormControl fullWidth >
-              <label htmlFor="dob">Tài khoản:</label>
+              <label htmlFor="dob">Username:</label>
               <TextField
                   
                   name="username"
-                  value={Profile.username}
+                  value={profile.username}
                   onChange={handleChange}
                   error={errors.username ? true : false}
                   helperText={errors.username}
@@ -187,7 +152,7 @@ const Register = () => {
                   type="password"
                   name="password"
                   
-                  value={Profile.password}
+                  value={profile.password}
                   onChange={handleChange}
                   error={errors.password ? true : false}
                   helperText={errors.password}
@@ -196,26 +161,26 @@ const Register = () => {
           </Grid>
           <Grid item xs={12} sm={6}>
               <FormControl fullWidth >
-              <label htmlFor="dob">Address:</label>
+              <label htmlFor="dob">Địa chỉ:</label>
               <TextField
                   type="text"
-                  name="Address"
+                  name="address"
                   
-                  value={Profile.Address}
+                  value={profile.address}
                   onChange={handleChange}
-                  error={errors.Address ? true : false}
-                  helperText={errors.Address}
+                  error={errors.address ? true : false}
+                  helperText={errors.address}
               />
               </FormControl>
           </Grid>
           <Grid item xs={12} sm={6}>
               <FormControl fullWidth >
-              <label htmlFor="dob">Phone:</label>
+              <label htmlFor="dob">Số điện thoại:</label>
               <TextField
                   type="tel"
                   name="phone"
                   
-                  value={Profile.phone}
+                  value={profile.phone}
                   onChange={handleChange}
                   error={errors.phone ? true : false}
                   helperText={errors.phone}
@@ -223,13 +188,9 @@ const Register = () => {
               </FormControl>
           </Grid>
           
-
-          
-              
-             
           <Grid item container justifyContent="center">
             <GreenButton variant="contained" onClick={() => setConfirmSaving(!confirmSaving)}>
-                Lưu
+                Đăng ký
             </GreenButton>
             <RedButton variant="contained" onClick={() => setConfirmGoingBack(!confirmGoingBack)}>
                 Thoát
@@ -240,7 +201,7 @@ const Register = () => {
       <ConfirmDialog 
         isOpen={confirmSaving} 
         setOpen={setConfirmSaving} 
-        content="Bạn chắc chắn muốn lưu?"
+        content="Bạn chắc chắn muốn đăng ký?"
         confirm={handleSubmit}
       /> 
       <ConfirmDialog 

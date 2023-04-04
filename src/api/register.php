@@ -2,7 +2,6 @@
 require_once('cors.php');
 // Start the session
 session_start();
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     require_once('DBConnect.php');
     require_once('utils/test_input.php');   
@@ -14,11 +13,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $phone = test_input($post_data['phone']);
     $email = test_input($post_data['email']);
     $address = test_input($post_data['address']);
-
+    
     $errors = array();
     // check validity
-    if (empty($name) or strlen($name) > 50) {
-        $errors['name'] = "Tên không được trống và ít hơn 50 ký tự";
+    $nameRegex = '/^[\p{L}\s\']{1,50}$/u';
+    if (!preg_match($nameRegex, $name)) {
+        $errors['name'] = "Tên không được trống và ít hơn 50 ký tự bao gồm các ký tự Việt Nam và khoảng trắng";
     } 
 
     $usernameRegex = '/^[a-zA-Z0-9_-]{3,20}$/';
@@ -31,25 +31,23 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         $errors['password'] = "Mật khẩu phải nhiều hơn 8 ký tự, ít nhất 1 chữ hoa, 1 thường, 1 số, 1 ký tự đặc biệt";
     }
 
-    $phoneRegex = '/^\d{10,11}$/';
+    $phoneRegex = '/(84|0[3|5|7|8|9])+([0-9]{8})\b/';
     if (!empty($phone)) {
         if (!preg_match($phoneRegex, $phone)) {
-            $errors['phone'] = "SĐT gồm 10 tới 11 ký tự số";
+            $errors['phone'] = "SĐT không hợp lệ";
         }
     }
 
-    $emailRegex = '/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/';
+    $emailRegex = '/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{,50}$/';
     if (!empty($email)) {
-        if (strlen($email) > 50 or !preg_match($emailRegex, $email)) {
+        if (!preg_match($emailRegex, $email)) {
             $errors['email'] = "Email không hợp lệ";
         }    
     }   
 
-    if (!empty($address)) {
-        if (strlen($address) > 255) {
-            $errors['address'] = "Địa chỉ phải ít hơn 255 ký tự";
-        }    
-    }  
+    if (strlen($address) > 255) {
+        $errors['address'] = "Địa chỉ phải ít hơn 255 ký tự";
+    }    
 
     if (!empty($errors)) {
         http_response_code(400); // invalid user input
@@ -62,12 +60,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     # check login credential in DB
     $password_hash = password_hash($password, PASSWORD_DEFAULT);
     $qry = "INSERT INTO user
-    (username, password_hash, name, role, phone, email, address) 
-    VALUES (?, ?, ?, ?, ?, ?, ?)";
+    (username, password_hash, name, phone, email, address) 
+    VALUES (?, ?, ?, ?, ?, ?)";
+    echo "P1";
     $stmt = mysqli_prepare($conn, $qry);
-    mysqli_stmt_bind_param($stmt, 'sssssss', $username);            
+    echo "P2";
+    mysqli_stmt_bind_param($stmt, 'ssssss', $username, $password_hash, $name, $phone, $email, $address);            
+    echo "P3";
     $success = mysqli_stmt_execute($stmt);         
-
     // If the insert was successful, login that user as well
     if ($success) {
         // Generate a new session ID

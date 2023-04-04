@@ -11,5 +11,5 @@ session_unset();
 session_destroy();
 
 // Delete the session ID cookie
-setcookie('session_id', '', time() - 31536000, '/');
+// setcookie('session_id', '', time() - 31536000, '/');
 ?>

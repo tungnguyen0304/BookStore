@@ -1,5 +1,5 @@
 import * as React from 'react';
-// import axios from "axios";
+import axios from "axios";
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import SuggestionSearchBar from "./search-bar/SuggestionSearchBar";
 import { Grid, useMediaQuery } from "@mui/material";
@@ -17,6 +17,7 @@ import styled from '@emotion/styled';
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import LoginIcon from '@mui/icons-material/Login';
 import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
+import Cookies from 'js-cookie'
 
 
 const MenuLink = styled.a`
@@ -63,7 +64,7 @@ const GuestHeader = () => {
       </Grid>
       <Grid item xs={5} md={2} justify="flex-end" align="right">
         <IconButton
-          href='cart'
+          href='/cart'
           size="small"
           sx={{ ml: 1 }}
         >
@@ -71,7 +72,7 @@ const GuestHeader = () => {
         </IconButton> 
         <Tooltip title="Đăng ký">
         <IconButton
-          href='register'
+          href='/register'
           size="small"
           sx={{ ml: 1 }}
         >
@@ -80,7 +81,7 @@ const GuestHeader = () => {
         </Tooltip>        
         <Tooltip title="Đăng nhập">
         <IconButton
-          href='login'
+          href='/login'
           size="small"
           sx={{ ml: 1 }}
         >
@@ -92,6 +93,18 @@ const GuestHeader = () => {
     </>
   );
 };
+
+const handleLogOut = async () => {
+  try {
+    const response = await axios.post('http://www.btl-web.com/api/logout.php')
+    Cookies.remove('session_id')
+    Cookies.remove('role')
+    console.log(response)
+    window.location.href = '/'
+  } catch (error) {
+      console.log(error)
+  };  
+}
 
 const UserHeader = () => {
   const [searchTerm, setSearchTerm] = React.useState("");
@@ -206,7 +219,10 @@ const UserHeader = () => {
             </ListItemIcon>
             <MenuLink href='/orders'>Danh sach don hang</MenuLink>
           </MenuItem>
-          <MenuItem onClick={handleClose}>
+          <MenuItem onClick={() => {
+            handleLogOut()
+            handleClose()
+          }}>
             <ListItemIcon>
               <Logout fontSize="small" />
             </ListItemIcon>
@@ -330,7 +346,10 @@ const AdminHeader = ({showSideBar, setShowSideBar}) => {
             <Avatar /> <MenuLink href='/edit_profile'>Chỉnh sửa hồ sơ</MenuLink>
           </MenuItem>          
           <Divider />
-          <MenuItem onClick={handleClose}>
+          <MenuItem onClick={() => {
+            handleLogOut()
+            handleClose()
+          }}>           
             <ListItemIcon>
               <Logout fontSize="small" />
             </ListItemIcon>
