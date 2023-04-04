@@ -104,7 +104,7 @@ const EditProfile = () => {
 
   return (
     <div>
-      <div className='pageTitle'><h2>Edit Profile</h2></div>
+      <div className='pageTitle'>Chỉnh sửa hồ sơ</div>
       <form onSubmit={handleSubmit}>
         <Grid container spacing={2} className='secondLayerBox shadowedBox' style={{overflow:'hidden'}}>
           <Grid item xs={12} sm={6}>

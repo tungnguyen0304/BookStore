@@ -25,11 +25,11 @@ export default function App() {
 
     return (
         <div style={{display: 'flex', flexDirection: 'column', minHeight: '100vh'}}>
-            {/* <AdminHeader showSideBar={showSideBar} setShowSideBar={setShowSideBar}/> */}
-            <GuestHeader/>
+            <AdminHeader showSideBar={showSideBar} setShowSideBar={setShowSideBar}/>
+            {/* <GuestHeader/> */}
             <div style={container}>
                 <div style={sticky}>
-                    {/* <Sidebar showSideBar={showSideBar} setShowSideBar={setShowSideBar}/> */}
+                    <Sidebar showSideBar={showSideBar} setShowSideBar={setShowSideBar}/>
                 </div>
                 <div style={content}>
                     <Webpages />

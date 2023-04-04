@@ -1,5 +1,6 @@
 import DashboardIcon from "@mui/icons-material/Dashboard";
 import MenuBookIcon from '@mui/icons-material/MenuBook';
+import FactoryIcon from '@mui/icons-material/Factory';
 import PeopleAltIcon from '@mui/icons-material/PeopleAlt';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import CommentIcon from '@mui/icons-material/Comment';
@@ -65,6 +66,16 @@ const SidebarContent = () => {
           </Typography>
         </DashboardBox>
       </Link>
+      <Link href="/admin/product-info" underline="none">
+      <DashboardBox className='secondLayerBox shadowedBox'>
+          <Icon>
+            <FactoryIcon />
+          </Icon>
+          <Typography variant="subtitle1" sx={{ marginLeft: '10px' }}>
+          Quản lý thông tin sản phẩm
+          </Typography>
+        </DashboardBox>
+      </Link>      
       <Link href="/admin/orders" underline="none">
         <DashboardBox className='secondLayerBox shadowedBox'>
           <Icon>
