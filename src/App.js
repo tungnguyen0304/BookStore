@@ -2,8 +2,10 @@ import Webpages from './webpages';
 import ScrollTopButton from './webpages/ScrollTopButton';
 import { GuestHeader, UserHeader, AdminHeader } from './webpages/Header';
 import Footer from './webpages/Footer';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Sidebar from './webpages/Sidebar';
+import Cookies from 'js-cookie';
+
 
 const container = {
     display: "flex",
@@ -22,15 +24,30 @@ const content = {
 
 export default function App() {
     const [showSideBar, setShowSideBar] = useState()
+    const [role, setUserType] = useState(Cookies.get('role') || '');
+    // Cookies.set('role', '')
+
+    useEffect(() => {
+      const userTypeFromCookie = Cookies.get('role');
+      setUserType(userTypeFromCookie || '');
+    }, []);
+
+    const headers = {
+        '0': <UserHeader />,
+        '1': <AdminHeader showSideBar={showSideBar} setShowSideBar={setShowSideBar}/>
+    };    
+  
+    const Header = headers[role] || <GuestHeader />;
 
     return (
         <div style={{display: 'flex', flexDirection: 'column', minHeight: '100vh'}}>
-            <AdminHeader showSideBar={showSideBar} setShowSideBar={setShowSideBar}/>
-            {/* <GuestHeader/> */}
+            {Header}
             <div style={container}>
-                <div style={sticky}>
-                    <Sidebar showSideBar={showSideBar} setShowSideBar={setShowSideBar}/>
-                </div>
+                {role === '1' && (
+                    <div style={sticky}>
+                        <Sidebar showSideBar={showSideBar} setShowSideBar={setShowSideBar}/>
+                    </div>
+                )}
                 <div style={content}>
                     <Webpages />
                     <ScrollTopButton />
