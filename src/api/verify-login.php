@@ -38,14 +38,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             $_SESSION['role'] = $row['role'];  
 
             header('Content-Type: application/json');
-            echo json_encode(array("success" => true, "message" => "Login successfully"));
+            echo "Login successfully";
         } else {
-            header('Content-Type: application/json');
-            echo json_encode(array("success" => false, "message" => "Login failed"));
+            http_response_code(401);
+            echo "Wrong Login Credentials";
         }
     } else {
-        header('Content-Type: application/json');
-        echo json_encode(array("success" => false, "message" => "Access database failed"));
+        http_response_code(500);
+        echo "Access database failed";
     }    
     
     // close DB Connection

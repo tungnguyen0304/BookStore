@@ -15,12 +15,83 @@ import Logout from '@mui/icons-material/Logout';
 import TipsAndUpdatesIcon from '@mui/icons-material/TipsAndUpdates';
 import styled from '@emotion/styled';
 import DashboardIcon from "@mui/icons-material/Dashboard";
+import LoginIcon from '@mui/icons-material/Login';
+import PersonAddAlt1Icon from '@mui/icons-material/PersonAddAlt1';
 
 
 const MenuLink = styled.a`
   text-decoration: none;
   color: inherit;
 `;
+
+const GuestHeader = () => {
+  const [searchTerm, setSearchTerm] = React.useState("");
+
+  const handleSearchSubmit = async (term) => {
+    // try {
+    //   const response = await axios.get(`/api/books/search/${term}`);
+    //   console.log(response.data);
+    // } catch (error) {
+    //   console.log(error);
+    // }
+  };
+
+  return (
+    <>
+    <Grid container alignItems="center" className="header-container">
+      <Grid container item xs={2} md={3}>
+        <Grid item xs={12} md={3}>
+          <IconButton
+            href='/'
+            size="small"
+            sx={{ ml: 2 }}
+          >
+            <TipsAndUpdatesIcon/>
+          </IconButton>    
+        </Grid> 
+        <Grid item md={9} sx={{ display: { xs: 'none', md: 'block' } }}>
+          <a className='header-container-logo' href='/'>Bookstore</a>
+        </Grid>      
+      </Grid>
+      <Grid item xs={5} md={7}>
+        <SuggestionSearchBar 
+          label="Tìm kiếm..." 
+          searchText={searchTerm}
+          setSearchText={setSearchTerm}
+          handleSearch={handleSearchSubmit}
+        />        
+      </Grid>
+      <Grid item xs={5} md={2} justify="flex-end" align="right">
+        <IconButton
+          href='cart'
+          size="small"
+          sx={{ ml: 1 }}
+        >
+          <ShoppingCartIcon/>
+        </IconButton> 
+        <Tooltip title="Đăng ký">
+        <IconButton
+          href='register'
+          size="small"
+          sx={{ ml: 1 }}
+        >
+          <PersonAddAlt1Icon/>
+        </IconButton> 
+        </Tooltip>        
+        <Tooltip title="Đăng nhập">
+        <IconButton
+          href='login'
+          size="small"
+          sx={{ ml: 1 }}
+        >
+          <LoginIcon/>
+        </IconButton> 
+        </Tooltip>
+      </Grid>            
+    </Grid>
+    </>
+  );
+};
 
 const UserHeader = () => {
   const [searchTerm, setSearchTerm] = React.useState("");
@@ -205,7 +276,7 @@ const AdminHeader = ({showSideBar, setShowSideBar}) => {
         />        
       </Grid>
       <Grid item xs={4} md={2} justify="flex-end" align="right">
-          <Tooltip title="Ho so cua ban">
+          <Tooltip title="Hồ sơ của bạn">
             <IconButton
               onClick={handleClick}
               size="small"
@@ -253,17 +324,17 @@ const AdminHeader = ({showSideBar, setShowSideBar}) => {
           anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
         >
           <MenuItem>
-            <Avatar /> <MenuLink href='/view_profile'>Ho so cua ban</MenuLink>
+            <Avatar /> <MenuLink href='/view_profile'>Hồ sơ của bạn</MenuLink>
           </MenuItem>
           <MenuItem onClick={handleClose}>
-            <Avatar /> <MenuLink href='/edit_profile'>Chinh sua ho so</MenuLink>
+            <Avatar /> <MenuLink href='/edit_profile'>Chỉnh sửa hồ sơ</MenuLink>
           </MenuItem>          
           <Divider />
           <MenuItem onClick={handleClose}>
             <ListItemIcon>
               <Logout fontSize="small" />
             </ListItemIcon>
-            <MenuLink href='#'>Dang xuat</MenuLink>
+            <MenuLink href='#'>Đăng xuất</MenuLink>
           </MenuItem>
         </Menu>
       </Grid>            
@@ -272,4 +343,4 @@ const AdminHeader = ({showSideBar, setShowSideBar}) => {
   );
 };
 
-export {UserHeader, AdminHeader};
+export {GuestHeader, UserHeader, AdminHeader};

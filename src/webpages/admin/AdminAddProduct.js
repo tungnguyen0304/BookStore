@@ -74,19 +74,27 @@ const AdminAddProduct = () => {
   const handleSubmit = async (e) => {
     const errors = {};
     if (!product.name) errors.name = "Vui lòng điền tên sản phẩm";
-    if (Number.isInteger(product.categoryID)) errors.categoryID = "Vui lòng chọn thể loại sản phẩm"
+
+    if (product.categoryID === '') errors.categoryID = "Vui lòng chọn thể loại sản phẩm"
     else if (checkIDinList(product.categoryID, categoriesList)) errors.categoryID = "Thể loại sản phẩm không hợp lệ"
+
     if (product.image.length > 255) errors.image = "Link hình ảnh phải ít hơn 255 ký tự";
-    if (Number.isInteger(product.price)) errors.price = "Vui lòng điền giá sản phẩm";
+
+    if (product.price === '') errors.price = "Vui lòng điền giá sản phẩm";
     else if (product.price < 0) errors.price = "Giá sản phẩm phải lớn hơn 0";
-    if (Number.isInteger(product.current_qty)) errors.current_qty = "Vui lòng điền số lượng hiện tại của sản phẩm";
+
+    if (product.current_qty === '') errors.current_qty = "Vui lòng điền số lượng hiện tại của sản phẩm";
     else if (product.current_qty < 0) errors.current_qty = "Số lượng hiện tại của sản phẩm phải lớn hơn 0";
-    if (Number.isInteger(product.sold_qty)) errors.sold_qty = "Vui lòng điền số lượng đã bán của sản phẩm";
+
+    if (product.sold_qty === '') errors.sold_qty = "Vui lòng điền số lượng đã bán của sản phẩm";
     else if (product.sold_qty < 0) errors.sold_qty = "Số lượng đã bán của sản phẩm phải lớn hơn 0";
-    if (Number.isInteger(product.authorID)) errors.authorID = "Tác giả không hợp lệ"
+
+    if (product.authorID === '') errors.authorID = "Tác giả không hợp lệ"
     else if (checkIDinList(product.authorID, authorsList)) errors.authorID = "Tác giả không hợp lệ"
-    if (Number.isInteger(product.manufacturerID)) errors.manufacturerID = "NXB/NSX không hợp lệ"
+
+    if (product.manufacturerID === '') errors.manufacturerID = "NXB/NSX không hợp lệ"
     else if (checkIDinList(product.manufacturerID, manufacturersList)) errors.manufacturerID = "NXB/NSX không hợp lệ"
+
     if (product.description.length > 5000) errors.description = "Mô tả sản phẩm phải ít hơn 5000 ký tự";
 
     // Set errors if any, else submit form
@@ -96,7 +104,7 @@ const AdminAddProduct = () => {
     } else {
         try {
           const response = await axios.post('http://www.btl-web.com/api/product-add.php', product)
-          console.log(response);
+          console.log(response)
         } catch (error) {
           console.log(error);
         }
@@ -203,7 +211,10 @@ const AdminAddProduct = () => {
                   getOptionLabel={(option) => option.name}
                   value={product.authorID ? authorsList.find((item) => item.ID === product.authorID) : null}
                   onChange={(e, newValue) => {
-                    setProduct({...product, authorID: newValue ? newValue.ID : ''});
+                    setProduct({...product, authorID: newValue ? newValue.ID : ''})
+                    if (errors.authorID) { // hide error if there is any
+                      errors.authorID = ''
+                    }                    
                   }}
                   renderInput={(params) => 
                   <TextField {...params} 
@@ -221,7 +232,10 @@ const AdminAddProduct = () => {
                   getOptionLabel={(option) => option.name}
                   value={product.manufacturerID ? manufacturersList.find((item) => item.ID === product.manufacturerID) : null}
                   onChange={(e, newValue) => {
-                    setProduct({...product, manufacturerID: newValue ? newValue.ID : ''});
+                    setProduct({...product, manufacturerID: newValue ? newValue.ID : ''})
+                    if (errors.manufacturerID) { // hide error if there is any
+                      errors.manufacturerID = ''
+                    }                        
                   }}
                   renderInput={(params) => 
                   <TextField {...params} 

@@ -8,13 +8,13 @@ function check_product_ID($conn, $ID) {
     if ($success) {
         mysqli_stmt_store_result($stmt);  // store result for use with mysqli_stmt_num_rows
         if (mysqli_stmt_num_rows($stmt) != 1) {
-            return "Product ID: " . $ID . " not exist";
+            return 1;
         } else {
-            return "";
+            return 0;
         }
     }
 
-    return "Edit product in database failed";
+    return 2;
 }
 function name_is_changed($conn, $ID, $name) {
     $qry = "SELECT name FROM product WHERE ID = ?";

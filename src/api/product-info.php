@@ -25,14 +25,14 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $data = mysqli_fetch_assoc($result);    
         if ($data) {
             header('Content-Type: application/json');
-            echo json_encode(array("success" => true, "data" => json_encode($data)));
+            echo json_encode($data);
         } else {
-            header('Content-Type: application/json');
-            echo json_encode(array("success" => false, "error" => "Product not exist"));
+            http_response_code(404);
+            echo "Product not found";
         }
     } else {
-        header('Content-Type: application/json');
-        echo json_encode(array("success" => false, "error" => "Read Database failed"));
+        http_response_code(500);
+        echo "Access database failed";
     }     
     // close DB Connection
     mysqli_close($conn);    

@@ -65,19 +65,16 @@ const AdminEditProduct = () => {
       params: params
     })
     .then(response => {
+      console.log(response)
       return response.data
     })
     .then(response => {
-      if (response.success) {
-        setProduct(JSON.parse(response.data))
-      }
-      else {
-        navigate('/error/404');
-        console.log(response.error)
-      }
+        setProduct(response)
     }) 
     .catch(error => {
-      console.log(error);
+      if (error.response.status === 404) {
+        navigate('/error/404');
+      }
     });    
   }, [])
 
@@ -243,7 +240,10 @@ const AdminEditProduct = () => {
                   getOptionLabel={(option) => option.name}
                   value={product.authorID ? authorsList.find((item) => item.ID === product.authorID) : null}
                   onChange={(e, newValue) => {
-                    setProduct({...product, authorID: newValue ? newValue.ID : ''});
+                    setProduct({...product, authorID: newValue ? newValue.ID : ''})
+                    if (errors.authorID) { // hide error if there is any
+                      errors.authorID = ''
+                    }     
                   }}
                   renderInput={(params) => 
                   <TextField {...params} 
@@ -261,7 +261,10 @@ const AdminEditProduct = () => {
                   getOptionLabel={(option) => option.name}
                   value={product.manufacturerID ? manufacturersList.find((item) => item.ID === product.manufacturerID) : null}
                   onChange={(e, newValue) => {
-                    setProduct({...product, manufacturerID: newValue ? newValue.ID : ''});
+                    setProduct({...product, manufacturerID: newValue ? newValue.ID : ''})
+                    if (errors.manufacturerID) { // hide error if there is any
+                      errors.manufacturerID = ''
+                    }                      
                   }}
                   renderInput={(params) => 
                   <TextField {...params} 

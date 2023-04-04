@@ -6,8 +6,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     require_once('utils/get_and_check_product_input.php');
     
     if (!empty($errors)) {
+        http_response_code(400); // invalid user input
         header('Content-Type: application/json');
-        echo json_encode(array('success' => false, 'errors' => $errors));
+        echo json_encode($errors);
     } else {
         $unique_name = get_unique_name($conn, $name);
         // Insert data into the database
@@ -22,11 +23,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // If the insert was successful, return a success message
         if ($success) {
             header('Content-Type: application/json');
-            echo json_encode(array("success" => true, "message" => "Product added successfully"));
+            echo "Product edited successfully";
         } else {
-            header('Content-Type: application/json');
-            echo json_encode(array("success" => false, "message" => "Add product to database failed"));
-        }
+            http_response_code(500);
+            echo "Access database failed";
+        }    
     }      
     
     // close DB Connection

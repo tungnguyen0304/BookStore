@@ -42,26 +42,24 @@ export default function CartItem (props) {
             <Grid item>
                 <img src={props.obj.img} style={imgStyle} alt="product" />
             </Grid>
-            <Grid container item xs>
+            <Grid container item xs alignItems="center">
                 <Grid container item xs={11}>
                     <Grid item xs={12} sm={5}>
-                        <div>
-                            <div style={bookTitleStyle}>
-                                {props.obj.title}
-                            </div>
-                            <div>Giá: {VNCurrencyFormatter.format(props.obj.price)}</div>
+                        <div style={bookTitleStyle}>
+                            {props.obj.title}
                         </div>
+                        <div>Giá: {VNCurrencyFormatter.format(props.obj.price)}</div>
                     </Grid>
-                    <Grid item xs={12} sm={4}>
-                        <IconButton aria-label="Remove button" onClick={() => onDecrease(props.obj)}>
+                    <Grid item xs={12} sm={3} sx={{ display: 'flex', alignItems: 'center' }}>
+                        <IconButton aria-label="Remove button" size="small" onClick={() => onDecrease(props.obj)}>
                             <RemoveCircleOutlineIcon />
                         </IconButton>
                         <span>{props.obj.qty}</span>
-                        <IconButton aria-label="Add button" onClick={() => onIncrease(props.obj)}>
+                        <IconButton aria-label="Add button" size="small" onClick={() => onIncrease(props.obj)}>
                             <AddCircleOutlineIcon />
                         </IconButton>          
                     </Grid>
-                    <Grid item xs={12} sm={3} display={{ xs: "none", sm: "block" }}>
+                    <Grid item xs={12} sm={4} display={{ xs: "none", sm: "block" }} sx={{ display: 'flex', alignItems: 'center' }}>
                         <div style={subtotalStyle}>{VNCurrencyFormatter.format(calSubtotal(props.obj))}</div>
                     </Grid>
                 </Grid>

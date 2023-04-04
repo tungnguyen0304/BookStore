@@ -7,14 +7,17 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     require_once('utils/get_and_check_product_input.php');
     # get ID of product
     $ID = test_input($post_data['ID']);
-    $ID_error_mess = check_product_ID($conn, $ID);
-    
-    if ($ID_error_mess) { # invalid ID
-        header('Content-Type: application/json');
-        echo json_encode(array('success' => false, 'message' => $ID_error_mess));
+    $ID_error = check_product_ID($conn, $ID);
+    if ($ID_error_mess == 1) {
+        http_response_code(404);
+        echo "Product not found";        
+    } else if ($ID_error_mess == 2) {
+        http_response_code(500);
+        echo "Access database failed";    
     } else if (!empty($errors)) { # input erros
+        http_response_code(400); // invalid user input
         header('Content-Type: application/json');
-        echo json_encode(array('success' => false, 'errors' => $errors));
+        echo json_encode($errors);
     } else { # ok
         // check if name is edited, if so then we have to generate a new unique name
         $changed = name_is_changed($conn, $ID, $name);
@@ -43,10 +46,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         // If the insert was successful, return a success message
         if ($success) {
             header('Content-Type: application/json');
-            echo json_encode(array("success" => true, "message" => "Product edited successfully"));
+            echo "Product edited successfully";
         } else {
-            header('Content-Type: application/json');
-            echo json_encode(array("success" => false, "message" => "Edit product in database failed"));
+            http_response_code(500);
+            echo "Access database failed";
         }    
     }      
     
