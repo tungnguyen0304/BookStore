@@ -159,7 +159,7 @@ const UserHeader = () => {
           >
             <ShoppingCartIcon/>
           </IconButton> 
-          <Tooltip title="Ho so cua ban">
+          <Tooltip title="Hồ sơ của bạn">
             <IconButton
               onClick={handleClick}
               size="small"
@@ -207,17 +207,17 @@ const UserHeader = () => {
           anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
         >
           <MenuItem>
-            <Avatar /> <MenuLink href='/view_profile'>Ho so cua ban</MenuLink>
+            <Avatar /> <MenuLink href='/view-profile'>Hồ sơ của bạn</MenuLink>
           </MenuItem>
           <MenuItem onClick={handleClose}>
-            <Avatar /> <MenuLink href='/edit_profile'>Chinh sua ho so</MenuLink>
+            <Avatar /> <MenuLink href='/edit-profile'>Chỉnh sửa hồ sơ</MenuLink>
           </MenuItem>          
           <Divider />
           <MenuItem onClick={handleClose}>
             <ListItemIcon>
               <ReceiptLongIcon fontSize="small" />
             </ListItemIcon>
-            <MenuLink href='/orders'>Danh sach don hang</MenuLink>
+            <MenuLink href='/orders'>Danh sách đơn hàng</MenuLink>
           </MenuItem>
           <MenuItem onClick={() => {
             handleLogOut()
@@ -226,7 +226,7 @@ const UserHeader = () => {
             <ListItemIcon>
               <Logout fontSize="small" />
             </ListItemIcon>
-            <MenuLink href='#'>Dang xuat</MenuLink>
+            <MenuLink href='#'>Đăng xuất</MenuLink>
           </MenuItem>
         </Menu>
       </Grid>            
@@ -340,10 +340,10 @@ const AdminHeader = ({showSideBar, setShowSideBar}) => {
           anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
         >
           <MenuItem>
-            <Avatar /> <MenuLink href='/view_profile'>Hồ sơ của bạn</MenuLink>
+            <Avatar /> <MenuLink href='/view-profile'>Hồ sơ của bạn</MenuLink>
           </MenuItem>
           <MenuItem onClick={handleClose}>
-            <Avatar /> <MenuLink href='/edit_profile'>Chỉnh sửa hồ sơ</MenuLink>
+            <Avatar /> <MenuLink href='/edit-profile'>Chỉnh sửa hồ sơ</MenuLink>
           </MenuItem>          
           <Divider />
           <MenuItem onClick={() => {

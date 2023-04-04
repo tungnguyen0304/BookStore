@@ -1,5 +1,5 @@
 import { Grid, FormControl, TextField, Autocomplete } from '@mui/material';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { GreenButton, RedButton } from '../button-theme/ButtonTheme';
 import ConfirmDialog from '../ConfirmDialog';
@@ -8,13 +8,27 @@ import { Table, TableBody, TableCell, TableContainer, TableRow, Paper } from '@m
 
 
 const ViewProfile = () => {
-  const [Profile] = useState({
-    name: 'John Doe',
-    username: 'JohnDude',
-    address: 'abcxxxxxxx',
-    email: 'john.doe@example.com',
-    phone: '123-456-7890'
+  const [Profile, setProfile] = useState({
+    name: '',
+    username: '',
+    address: '',
+    email: '',
+    phone: ''
   });
+
+  // fecth user info
+  useEffect(() => {
+    axios.get('http://localhost/api/user-info.php')
+    .then(response => {
+      return response.data
+    })
+    .then(response => {
+        setProfile(response)
+    }) 
+    .catch(error => {
+      console.log(error);
+    });    
+  }, [])  
 
   return (
     <div>

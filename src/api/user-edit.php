@@ -1,37 +1,41 @@
 <?php 
 session_start();
-setcookie('session_id', session_id(), time() + 3600, '/');
 require_once('cors.php');
-// Start the session
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     require_once('DBConnect.php');
+    require_once('utils/check_access.php');
     require_once('utils/test_input.php');   
     require_once('utils/user_info_utils.php');
+    require_once('utils/get_user_info.php');
     // get post data from client
     $post_data = json_decode(file_get_contents('php://input'), true);    
     $name = test_input($post_data['name']);
-    $username = test_input($post_data['username']);
-    $password = test_input($post_data['password']);
     $phone = test_input($post_data['phone']);
     $email = test_input($post_data['email']);
     $address = test_input($post_data['address']);
 
+    # get ID of user
+    $ID = $_SESSION['ID'];
+    if (check_user_access() == 1) {
+        http_response_code(408); // Request Timeout
+        echo "Your session has timeout, login again";
+        mysqli_close($conn);
+        exit();        
+    }
+    else if (check_user_access() == 2) {
+        http_response_code(401); // Unauthorized
+        echo "You are not authorized to access this resource";
+        mysqli_close($conn);
+        exit();        
+    }    
+
+    // check validity
     $errors = array();
     // check validity
     $nameRegex = '/^[\p{L}\s\']{1,50}$/u';
     if (!preg_match($nameRegex, $name)) {
         $errors['name'] = "Tên không được trống và ít hơn 50 ký tự bao gồm các ký tự Việt Nam và khoảng trắng";
     } 
-
-    $usernameRegex = '/^[a-zA-Z0-9_-]{3,20}$/';
-    if (!preg_match($usernameRegex, $username)) {
-        $errors['username'] = "Username gồm 3 đến 20 ký tự chữ thường, chữ hoa, số, dấu gạch chân và dấu gạch nối";
-    }
-
-    $passwordRegex = "/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$/";
-    if (!preg_match($passwordRegex, $password)) {
-        $errors['password'] = "Mật khẩu phải nhiều hơn 8 ký tự, ít nhất 1 chữ hoa, 1 thường, 1 số, 1 ký tự đặc biệt";
-    }
 
     $phoneRegex = '/(84|0[3|5|7|8|9])+([0-9]{8})\b/';
     if (!empty($phone)) {
@@ -58,15 +62,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         mysqli_close($conn);
         exit();
     }
-
-    # check if username, phone, email is conflict
-    if (checkUsernameExist($conn, $username)) {
-        $errors['username'] = "Username đã được sử dụng, vui lòng chọn username khác";
+    $userData = getUserInfoByID($conn, $ID);
+    if (!$userData) {
+        http_response_code(500);
+        echo "Access database failed";        
+        mysqli_close($conn);
+        exit();
     }
-    if (!empty($phone) && checkPhoneExist($conn, $phone)) {
+    $prevPhone = $userData['phone'];
+    $prevEmail = $userData['email'];
+    # check if phone, email is conflict
+    if (!empty($phone) && $prevPhone != $phone && checkPhoneExist($conn, $phone)) {
         $errors['phone'] = "Số điện thoại đã được sử dụng, vui lòng sử dụng số điện thoại khác";
     }
-    if (!empty($email) && checkEmailExist($conn, $email)) {
+    if (!empty($email) && $prevPhone != $email && checkEmailExist($conn, $email)) {
         $errors['email'] = "Email đã được sử dụng, vui lòng sử dụng email khác";
     }    
     
@@ -76,36 +85,19 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         echo json_encode($errors);
         mysqli_close($conn);
         exit();
-    }
-    require_once('utils/get_user_info.php');
-    # check login credential in DB
-    $password_hash = password_hash($password, PASSWORD_DEFAULT);
-    $qry = "INSERT INTO user
-    (username, password_hash, name, phone, email, address) 
-    VALUES (?, ?, ?, ?, ?, ?)";
+    }    
+
+    $qry = "UPDATE user
+    SET name = ?, phone = ?, email = ?, address = ?
+    WHERE ID = ?";
     $stmt = mysqli_prepare($conn, $qry);
-    mysqli_stmt_bind_param($stmt, 'ssssss', $username, $password_hash, $name, $phone, $email, $address);  
-    $success = mysqli_stmt_execute($stmt);     
-    // If the insert was successful, login that user as well
+    mysqli_stmt_bind_param($stmt, 'sssss', $name, $phone, $email, $address, $ID);
+    // Update data in the database
+    $success = mysqli_stmt_execute($stmt);         
+
+    // If the insert was successful, return a success message
     if ($success) {
-        // get user info
-        $user = getUserInfoByUsername($conn, $username);
-        // Generate a new session ID
-        $session_id = bin2hex(random_bytes(32));
-
-        // Store the session ID, user ID, role in the session variables
-        $_SESSION['session_id'] = $session_id;
-        $_SESSION['ID'] = $user['ID'];            
-        $_SESSION['role'] = $user['role'];  
-
-        // data to return back
-        $res = array(
-            'session_id' => $session_id,
-            'role' => $user['role']
-        );
-
-        header('Content-Type: application/json');
-        echo json_encode($res);
+        echo "User edited successfully";
     } else {
         http_response_code(500);
         echo "Access database failed";

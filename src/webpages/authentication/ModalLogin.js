@@ -36,10 +36,9 @@ function Login() {
       window.scrollTo({top: 0, left: 0, behavior: 'smooth'});   
     } else {
         try {
-          const response = await axios.post('http://www.btl-web.com/api/verify-login.php', trimmedLoginCre)
-          Cookies.set('session_id', response.data.session_id, { expires: 1/24 })
+          const response = await axios.post('http://localhost/api/verify-login.php', trimmedLoginCre)
           Cookies.set('role', response.data.role, { expires: 1/24 })
-          console.log(response)
+          // console.log(response)
           window.location.href = '/'
         } catch (error) {
           if (error.response.status == 401) {

@@ -4,6 +4,7 @@ import axios from 'axios';
 import { GreenButton, RedButton } from '../button-theme/ButtonTheme';
 import ConfirmDialog from '../ConfirmDialog';
 import { useNavigate, Link } from 'react-router-dom';
+import Cookies from 'js-cookie'
 
 // tài khoản mẫu:
 // user: user Bkhoa123@
@@ -84,9 +85,17 @@ const Register = () => {
     } else {
         try {
           const response = await axios.post('http://www.btl-web.com/api/register.php', trimmedInfo)
-          console.log(response)
+          Cookies.set('role', response.data.role, { expires: 1/24 })
+          window.location.href = '/'          
         } catch (error) {
-          console.log(error);
+          if (error.response.status == 400) { // invalid
+            console.log(error.response.data)
+            setErrors(error.response.data)
+          } else if (error.response.status == 409) { // conflict
+            console.log(error.response.data)
+            setErrors(error.response.data)
+          }
+          console.log(error)
         };
     } 
   }      

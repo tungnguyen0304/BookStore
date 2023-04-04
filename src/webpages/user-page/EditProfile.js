@@ -1,103 +1,95 @@
-import { Grid, FormControl, TextField, Autocomplete } from '@mui/material';
-import React, { useState } from 'react';
+import { Grid, FormControl, TextField } from '@mui/material';
+import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { GreenButton, RedButton } from '../button-theme/ButtonTheme';
 import ConfirmDialog from '../ConfirmDialog';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 
-// import DatePicker from "react-datepicker";
-// import "react-datepicker/dist/react-datepicker.css";
-import ViewProfile from './ViewProfile';
 const EditProfile = () => {
-  const [selectedDate, setSelectedDate] = useState(null);
-  const [Profile, setProfile] = useState({
+  const [profile, setProfile] = useState({
     name: '',
-    Address: '',
-    
+    address: '',
     email: '',
-    numberphone: ''
-    
+    phone: ''
   });
-  const [errors, setErrors] = useState({
-    name: '',
-    Address: '',
-    
-    email: '',
-    numberphone: ''
-        
-  });    
-  const handleDateChange = (date) => {
-    setSelectedDate(date);
-  };
+  const [errors, setErrors] = useState(profile);    
 
-   
-
-  const checkIDinList = (id, list) => {
-    if (!id)
-      return false 
-
-    for (const item in list) {
-      if (item.id === id) {
-        return true
-      }
-    }
-
-    return false
+  function checkValidName(name) {
+    const validNameRegex = /^[\p{L}\s']{1,50}$/u
+    return validNameRegex.test(name)
   }
   function checkValidEmail(email) {
-    // Regular Expression kiểm tra tính hợp lệ của địa chỉ email
-    const validEmailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,}$/;
-  
-    // Kiểm tra địa chỉ email có đúng định dạng không
-    if (validEmailRegex.test(email)) {
-      return true; // Địa chỉ email hợp lệ
-    } else {
-      return false; // Địa chỉ email không hợp lệ
-    }
+    const validEmailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{,50}$/;
+    return validEmailRegex.test(email)
   }
+  function checkValidPhoneNumber(input) {
+    var pattern = /(84|0[3|5|7|8|9])+([0-9]{8})\b/g
+    return pattern.test(input)
+  }   
+  // fecth user info
+  useEffect(() => {
+    axios.get('http://localhost/api/user-info.php')
+    .then(response => {
+      return response.data
+    })
+    .then(response => {
+        const {name, phone, email, address} = response
+        setProfile({...profile, name: name, phone: phone, email: email, address: address})
+    }) 
+    .catch(error => {
+      console.log(error);
+    });    
+  }, [])   
   
   const handleChange = (e) => {
-      const { name, value } = e.target;
-      setProfile((prevState) => ({ ...prevState, [name]: value }));
-      // if there is any warning, turn it off
-      if (errors[name]) {
-          errors[name] = ''
-      }
-  };   
-  // function handleDateSelect(date) {
-  //   console.log(date);
-  //   return date;
-  // }
+    const { name, value } = e.target;
+    setProfile((prevState) => ({ ...prevState, [name]: value }));
+    // if there is any warning, turn it off
+    if (errors[name]) {
+        errors[name] = ''
+    }
+  };  
 
   const handleSubmit = async (e) => {
     // check thong tin truoc khi submit
+    const trimmedInfo = Object.fromEntries(Object.entries(profile).map(([key, value]) => [key, value.trim()]))
     const errors = {};
-    if (!Profile.name) errors.name = "Tên không được để trống";
-    if (!Profile.Address) errors.Address = "Địa chỉ không được để trống";
+    if (!checkValidName(trimmedInfo.name))
+      errors.name = "Tên không được trống và ít hơn 50 ký tự bao gồm các ký tự Việt Nam và khoảng trắng"
     
-    if (!checkValidEmail(Profile.email)) {
-      errors.email = "Địa chỉ email không hợp lệ";
-    } 
-    if (!Profile.numberphone) errors.numberphone = "Vui lòng điền số điện thoại";
-    else if (Profile.numberphone.length != 10) errors.numberphone = "Số diện thoại không hợp lệ";
+    if (trimmedInfo.email.length !== 0) {
+      if (!checkValidEmail(trimmedInfo.email)) {
+        errors.email = "Email không hợp lệ";
+      } 
+    }
     
-   
+    if (trimmedInfo.phone.length !== 0)
+      if (!checkValidPhoneNumber(trimmedInfo.phone)) 
+        errors.phone = "Phone không hợp lệ"
+
+    if (trimmedInfo.address.length > 255) 
+      errors.address = "Địa chỉ tối đa 255 ký tự"
 
     // Set errors if any, else submit form
     if (Object.keys(errors).length > 0) {
         setErrors(errors);
         window.scrollTo({top: 0, left: 0, behavior: 'smooth'});   
     } else {
-    // try {
-    //   await axios.post('/api/Profiles', newProfile); // Gửi thông tin sản phẩm mới lên server
-    //   console.log('New Profile added successfully!');
-    // } catch (error) {
-    //   console.log(error);
-    // }
-        console.log(123)
-        
-    }      
-  };
+        try {
+          const response = await axios.post('http://localhost/api/user-edit.php', trimmedInfo)
+          console.log(response)
+        } catch (error) {
+          if (error.response.status == 400) { // invalid
+            console.log(error.response.data)
+            setErrors(error.response.data)
+          } else if (error.response.status == 409) { // conflict
+            console.log(error.response.data)
+            setErrors(error.response.data)
+          }
+          console.log(error)
+        };
+    } 
+  }    
   const [confirmSaving, setConfirmSaving] = useState(false)
   const [confirmGoingBack, setConfirmGoingBack] = useState(false)
   const navigate = useNavigate()
@@ -113,38 +105,24 @@ const EditProfile = () => {
               <TextField
                   
                   name="name"
-                  value={Profile.name}
+                  value={profile.name}
                   onChange={handleChange}
                   error={errors.name ? true : false}
                   helperText={errors.name}
               />
               </FormControl>
           </Grid>
-          {/* <Grid item xs={12} sm={6}>
-            
-            <label htmlFor="dob">Ngày sinh:</label>
-      <DatePicker
-        
-        id="dob" 
-        selected={selectedDate}
-        onChange={handleDateChange}
-        dateFormat="dd/MM/yyyy"
-        showYearDropdown
-        scrollableYearDropdown
-        yearDropdownItemNumber={100}
-        placeholderText="DD/MM/YYYY"
-      /></Grid> */}
 
           <Grid item xs={12} sm={6}>
               <FormControl fullWidth >
               <label htmlFor="dob">Địa chỉ:</label>
               <TextField
                   
-                  name="Address"
-                  value={Profile.Address}
+                  name="address"
+                  value={profile.address}
                   onChange={handleChange}
-                  error={errors.Address ? true : false}
-                  helperText={errors.Address}
+                  error={errors.address ? true : false}
+                  helperText={errors.address}
               />
               </FormControl>
           </Grid>
@@ -156,12 +134,12 @@ const EditProfile = () => {
               <label htmlFor="dob">SĐT:</label>
               <TextField
                   
-                  name="numberphone"
+                  name="phone"
                   type="tel"
-                  value={Profile.numberphone}
+                  value={profile.phone}
                   onChange={handleChange}
-                  error={errors.numberphone ? true : false}
-                  helperText={errors.numberphone}
+                  error={errors.phone ? true : false}
+                  helperText={errors.phone}
               />
               </FormControl>
           </Grid>
@@ -174,16 +152,12 @@ const EditProfile = () => {
            
           type="email" name="email" 
            
-          value={Profile.email} onChange={handleChange}
+          value={profile.email} onChange={handleChange}
           error={errors.email ? true : false}
                   helperText={errors.email} />
           </FormControl>
-
           </Grid>
 
-          
-              
-             
           <Grid item container justifyContent="center">
             <GreenButton variant="contained" onClick={() => setConfirmSaving(!confirmSaving)}>
                 Lưu

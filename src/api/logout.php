@@ -4,7 +4,7 @@ require_once('cors.php');
 session_start();
 
 // Invalidate the session ID
-$_SESSION['session_id'] = null;
+// $_SESSION['session_id'] = null;
 
 // Remove the session data
 session_unset();

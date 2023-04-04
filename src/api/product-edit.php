@@ -45,7 +45,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
         // If the insert was successful, return a success message
         if ($success) {
-            header('Content-Type: application/json');
             echo "Product edited successfully";
         } else {
             http_response_code(500);

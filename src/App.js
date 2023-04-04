@@ -5,7 +5,9 @@ import Footer from './webpages/Footer';
 import { useState, useEffect } from 'react';
 import Sidebar from './webpages/Sidebar';
 import Cookies from 'js-cookie';
+import axios from 'axios';
 
+axios.defaults.withCredentials = true;
 
 const container = {
     display: "flex",
@@ -25,7 +27,6 @@ const content = {
 export default function App() {
     const [showSideBar, setShowSideBar] = useState()
     const [role, setUserType] = useState(Cookies.get('role') || '');
-    // Cookies.set('role', '')
 
     useEffect(() => {
       const userTypeFromCookie = Cookies.get('role');
