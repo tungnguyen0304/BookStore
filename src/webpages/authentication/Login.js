@@ -41,7 +41,7 @@ function Login() {
           // console.log(response)
           window.location.href = '/'
         } catch (error) {
-          if (error.response.status == 401) {
+          if (error.response.status === 401) {
             setErrors({...errors, password: "Không đúng mật khẩu"})
           } else {
             console.log(error)

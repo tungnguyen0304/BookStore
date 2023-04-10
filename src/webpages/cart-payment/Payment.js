@@ -12,7 +12,7 @@ import Stack from '@mui/material/Stack';
 import OrderItems from '../user-page/OrderItem';
 import { GreenButton } from '../button-theme/ButtonTheme';
 import { getLocalCartContent } from './setCartLocal';
-import { checkPhoneNumber } from '../FormUtil';
+import { checkValidPhoneNumber } from '../FormUtil';
 
 export default function Payment () {
     // user info fetched from server
@@ -43,7 +43,7 @@ export default function Payment () {
 
         const errors = {};
         if (!values.name) errors.name = "Vui lòng điền tên người nhận";
-        const phoneError = checkPhoneNumber(values.phone)
+        const phoneError = checkValidPhoneNumber(values.phone)
         if (phoneError === 1) {
             errors.phone = "Vui lòng điền SĐT người nhận"
         } else if (phoneError === 2) {

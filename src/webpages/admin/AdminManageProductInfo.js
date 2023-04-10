@@ -40,7 +40,7 @@ const AdminManageProductInfo = () => {
         window.scrollTo({top: 0, left: 0, behavior: 'smooth'});   
     } else {
         try {
-          const response = await axios.post('http://www.btl-web.com/api/author-add.php', {
+          const response = await axios.post('http://localhost/api/author-add.php', {
             name: trimmedAuthorName
           })
           console.log(response)
@@ -72,7 +72,7 @@ const AdminManageProductInfo = () => {
         window.scrollTo({top: 0, left: 0, behavior: 'smooth'});   
     } else {
         try {
-          const response = await axios.post('http://www.btl-web.com/api/manufacturer-add.php', {
+          const response = await axios.post('http://localhost/api/manufacturer-add.php', {
             name: trimmedManuName,
             country: trimmedCountryName
           })

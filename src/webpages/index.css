@@ -37,6 +37,9 @@ body {
     margin-top: 10px;
 }
 
+.admin-table {
+  overflow: scroll;
+}
 .admin-table th {
     background-color: rgb(177, 232, 232);
 }

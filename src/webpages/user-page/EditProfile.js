@@ -34,7 +34,7 @@ const EditProfile = () => {
     })
     .then(response => {
         const {name, phone, email, address} = response
-        setProfile({...profile, name: name, phone: phone, email: email, address: address})
+        setProfile(prev => ({...prev, name: name, phone: phone, email: email, address: address}))
     }) 
     .catch(error => {
       console.log(error);
@@ -79,10 +79,10 @@ const EditProfile = () => {
           const response = await axios.post('http://localhost/api/user-edit.php', trimmedInfo)
           console.log(response)
         } catch (error) {
-          if (error.response.status == 400) { // invalid
+          if (error.response.status === 400) { // invalid
             console.log(error.response.data)
             setErrors(error.response.data)
-          } else if (error.response.status == 409) { // conflict
+          } else if (error.response.status === 409) { // conflict
             console.log(error.response.data)
             setErrors(error.response.data)
           }
@@ -96,7 +96,7 @@ const EditProfile = () => {
 
   return (
     <div>
-      <div className='pageTitle'>Chỉnh sửa hồ sơ</div>
+      <div className='pageTitle spaceBelow'>Chỉnh sửa hồ sơ</div>
       <form onSubmit={handleSubmit}>
         <Grid container spacing={2} className='secondLayerBox shadowedBox' style={{overflow:'hidden'}}>
           <Grid item xs={12} sm={6}>

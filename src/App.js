@@ -39,8 +39,6 @@ export default function App() {
     };    
   
     const Header = headers[role] || <GuestHeader />;
-    console.log(Cookies.get('session_id'))
-    console.log(role)
 
     return (
         <div style={{display: 'flex', flexDirection: 'column', minHeight: '100vh'}}>

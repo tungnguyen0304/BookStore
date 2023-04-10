@@ -9,7 +9,7 @@ import NotFound from './error/NotFound';
 import ProductOrCategoryNavigator from './ProductOrCategoryNavigator';
 import Cart from './cart-payment/Cart';
 import Payment from './cart-payment/Payment';
-import ModalLogin from './authentication/ModalLogin';
+import Login from './authentication/Login';
 import Register from './authentication/Register';
 import ViewProfile from './user-page/ViewProfile';
 import EditProfile from './user-page/EditProfile';
@@ -43,7 +43,7 @@ export default function Webpages () {
             <Route path="/" element={<Home/>} />
             <Route path="/cart" element={<Cart/>} />
             <Route path="/cart/payment" element={<Payment/>} />
-            <Route path="/login" element={<ModalLogin/>} />
+            <Route path="/login" element={<Login/>} />
             <Route path="/register" element={<Register/>} />
             <Route path="/view-profile" element={<ViewProfile/>} />
             <Route path="/edit-profile" element={<EditProfile/>} />

@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
 import { Table, TableBody, TableCell, TableHead, TableRow, IconButton, Box, Tooltip, Grid, Pagination} from '@mui/material';
 import { Delete, Reviews } from '@mui/icons-material';
 import AlertDialog from '../AlertDialog';
@@ -9,42 +10,24 @@ const UsersAdminPage = () => {
   // fecth from server 
   const [currentPage, setCurrentPage] = useState(1);
   const rowsPerPage = 5;
-  const [users, setUsers] = useState([
-    {id: 1, name: 'Nguyen Van A', phone: '0939393939'},
-    {id: 2, name: 'Nguyen Van B', phone: '0494848484'},
-    {id: 3, name: 'Nguyen Van A', phone: '0939393939'},
-    {id: 4, name: 'Nguyen Van B', phone: '0494848484'},    
-    {id: 5, name: 'Nguyen Van A', phone: '0939393939'},
-    {id: 6, name: 'Nguyen Van B', phone: '0494848484'},
-    {id: 7, name: 'Nguyen Van A', phone: '0939393939'},
-    {id: 8, name: 'Nguyen Van B', phone: '0494848484'},    
-    {id: 9, name: 'Nguyen Van A', phone: '0939393939'},
-    {id: 10, name: 'Nguyen Van B', phone: '0494848484'},
-    {id: 11, name: 'Nguyen Van A', phone: '0939393939'},
-    {id: 12, name: 'Nguyen Van B', phone: '0494848484'},    
-    {id: 13, name: 'Nguyen Van A', phone: '0939393939'},
-    {id: 14, name: 'Nguyen Van B', phone: '0494848484'},
-    {id: 15, name: 'Nguyen Van A', phone: '0939393939'},
-    {id: 16, name: 'Nguyen Van B', phone: '0494848484'},  
-    {id: 17, name: 'Nguyen Van A', phone: '0939393939'},
-    {id: 18, name: 'Nguyen Van B', phone: '0494848484'},
-    {id: 19, name: 'Nguyen Van A', phone: '0939393939'},
-    {id: 20, name: 'Nguyen Van B', phone: '0494848484'},    
-    {id: 21, name: 'Nguyen Van A', phone: '0939393939'},
-    {id: 22, name: 'Nguyen Van B', phone: '0494848484'},
-    {id: 23, name: 'Nguyen Van A', phone: '0939393939'},
-    {id: 24, name: 'Nguyen Van B', phone: '0494848484'},  
-    {id: 25, name: 'Nguyen Van B', phone: '0494848484'},    
-    {id: 26, name: 'Nguyen Van A', phone: '0939393939'},
-    {id: 27, name: 'Nguyen Van B', phone: '0494848484'},
-    {id: 28, name: 'Nguyen Van A', phone: '0939393939'},
-    {id: 29, name: 'Nguyen Van B', phone: '0494848484'},  
-    {id: 30, name: 'Nguyen Van B', phone: '0494848484'},    
-    {id: 31, name: 'Nguyen Van A', phone: '0939393939'},
-    {id: 32, name: 'Nguyen Van B', phone: '0494848484'},
-    {id: 33, name: 'Nguyen Van A', phone: '0939393939'},
-    {id: 34, name: 'Nguyen Van B', phone: '0494848484'},                             
-  ])  
+  const [users, setUsers] = useState([])  
+    // search bar
+  const [searchText, setSearchText] = useState('')
+  useEffect(() => {
+    axios.get('http://localhost/api/users-list.php')
+    .then(response => {
+      console.log(response)
+      return response.data
+    })
+    .then(response => {
+      setUsers(response)
+    }) 
+    .catch(error => {
+      // if (error.response.status === 404) {
+      //   navigate('/error/404');
+      // }
+    });    
+  }, [])
   // get from servers, not by users array
   const pageCount = Math.ceil(users.length / rowsPerPage);  
   const handlePageChange = (event, value) => {
@@ -63,15 +46,28 @@ const UsersAdminPage = () => {
   }
   const [confirmDel, setConfirmDel] = useState(false)
   const onDelete = (ID) => {
-    setUsers(users.filter(user => user.id !== ID))
+    setUsers(users.filter(user => user.ID !== ID))
     // delete in server
   }    
-
-  // search bar
-  const [searchText, setSearchText] = useState('')
   
   const handleSearch = () => {
-    alert("You search " + searchText)
+    axios.get('http://localhost/api/users-list.php', {
+      params: {
+        q: searchText.trim()
+      }
+    })
+    .then(response => {
+      console.log(response)
+      return response.data
+    })
+    .then(response => {
+        setUsers(response)
+    }) 
+    .catch(error => {
+      // if (error.response.status === 404) {
+      //   navigate('/error/404');
+      // }
+    });    
   }  
 
   return (
@@ -90,23 +86,29 @@ const UsersAdminPage = () => {
       </Grid>      
     </Grid>    
     <Box>
-      <Table aria-label="users table" sx={{ maxHeight: 440 }} className='admin-table'>
+      <Table aria-label="users table" className='admin-table'>
         <TableHead>
           <TableRow key="header-row">
             <TableCell>ID</TableCell>
+            <TableCell>Username</TableCell>
             <TableCell>Tên</TableCell>
+            <TableCell>Email</TableCell>
             <TableCell>SĐT</TableCell>
-            <TableCell>Thao tác</TableCell>
+            <TableCell>Địa chỉ</TableCell>
+            <TableCell width="150px">Thao tác</TableCell>
           </TableRow>
         </TableHead>
         <TableBody>
          {currentUsers.map((user) => (
-            <TableRow key={user.id}>
+            <TableRow key={user.ID}>
               <TableCell scope="row">
-                {user.id}
+                {user.ID}
               </TableCell>
+              <TableCell>{user.username}</TableCell>
               <TableCell>{user.name}</TableCell>
+              <TableCell>{user.email}</TableCell>
               <TableCell>{user.phone}</TableCell>
+              <TableCell>{user.address}</TableCell>
               <TableCell>
                 <Tooltip title="Xem chi tiết">
                   <IconButton color="secondary" onClick={() => onViewDetail(user)}>
@@ -114,7 +116,7 @@ const UsersAdminPage = () => {
                   </IconButton>
                 </Tooltip>
                 <Tooltip title="Xóa người dùng">
-                  <IconButton color="secondary" onClick={() => setConfirmDel(user.id)}>
+                  <IconButton color="secondary" onClick={() => setConfirmDel(user.ID)}>
                     <Delete />
                   </IconButton>
                 </Tooltip>
@@ -144,12 +146,8 @@ const UsersAdminPage = () => {
                 <TableCell>{viewUserPopup.username}</TableCell>
             </TableRow>
             <TableRow>
-                <TableCell variant="head">Vai trò</TableCell>
-                <TableCell>{viewUserPopup.role}</TableCell>
-            </TableRow>    
-            <TableRow>
-                <TableCell variant="head">Ngày sinh</TableCell>
-                <TableCell>{viewUserPopup.birthday}</TableCell>
+                <TableCell variant="head">Quyền</TableCell>
+                <TableCell>{viewUserPopup.role == 0 ? "User" : "Admin"}</TableCell>
             </TableRow>    
             <TableRow>
                 <TableCell variant="head">SĐT</TableCell>

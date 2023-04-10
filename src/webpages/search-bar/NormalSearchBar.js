@@ -16,14 +16,13 @@ const SearchWrapper = styled('div')({
 
 export default function NormalSearchBar ({label, searchText, setSearchText, handleSearch}) {
   const handleInputChange = (event) => {
-    if (event.key === 'Enter') {
-        // Perform search or submit action here
-        handleSearch()
-        console.log('Enter key pressed');
-      } else {
-        setSearchText(event.target.value);
-      }
+    setSearchText(event.target.value);
   };
+  const handleKeyDown = (event) => {
+    if (event.key === 'Enter') {
+      handleSearch();
+    }
+  };  
 
   return (
     <SearchWrapper>
@@ -34,6 +33,7 @@ export default function NormalSearchBar ({label, searchText, setSearchText, hand
         size='small'
         value={searchText}
         onChange={handleInputChange}
+        onKeyDown={handleKeyDown}
         InputProps={{
           endAdornment: (
             <InputAdornment position="end">

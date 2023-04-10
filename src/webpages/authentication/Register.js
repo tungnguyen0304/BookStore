@@ -1,14 +1,19 @@
-import { Grid, FormControl, TextField, Autocomplete } from '@mui/material';
+import { Grid, FormControl, TextField } from '@mui/material';
 import React, { useState } from 'react';
 import axios from 'axios';
 import { GreenButton, RedButton } from '../button-theme/ButtonTheme';
 import ConfirmDialog from '../ConfirmDialog';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import Cookies from 'js-cookie'
+import {checkValidName, checkValidUsername, checkValidPass, checkValidEmail, checkValidPhoneNumber} from '../FormUtil'
 
 // tài khoản mẫu:
 // user: user Bkhoa123@
+// user: user1 Bkhoa456@
 // admin: admin Bkhoa456@
+// user: user123 Bkhoa456@
+// user: bachkhoa Bkhoa456@
+// user: khmt Bkhoa456@
 
 const Register = () => {
   const [profile, setProfile] = useState({
@@ -20,27 +25,6 @@ const Register = () => {
     address:''
   });
   const [errors, setErrors] = useState(profile);    
-  
-  function checkValidName(name) {
-    const validNameRegex = /^[\p{L}\s']{1,50}$/u
-    return validNameRegex.test(name)
-  }
-  function checkValidEmail(email) {
-    const validEmailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{,50}$/;
-    return validEmailRegex.test(email)
-  }
-  function checkValidUsername(Username) {
-    const validUsernameRegex = /^[a-zA-Z0-9_-]{3,20}$/
-    return validUsernameRegex.test(Username)
-  }  
-  function checkValidPass(Pass) {
-    const validPassRegex = /^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$/;
-    return validPassRegex.test(Pass)
-  }
-  function checkValidPhoneNumber(input) {
-    var pattern = /(84|0[3|5|7|8|9])+([0-9]{8})\b/g
-    return pattern.test(input)
-  }    
   
   const handleChange = (e) => {
       const { name, value } = e.target;
@@ -84,14 +68,14 @@ const Register = () => {
         window.scrollTo({top: 0, left: 0, behavior: 'smooth'});   
     } else {
         try {
-          const response = await axios.post('http://www.btl-web.com/api/register.php', trimmedInfo)
+          const response = await axios.post('http://localhost/api/register.php', trimmedInfo)
           Cookies.set('role', response.data.role, { expires: 1/24 })
           window.location.href = '/'          
         } catch (error) {
-          if (error.response.status == 400) { // invalid
+          if (error.response.status === 400) { // invalid
             console.log(error.response.data)
             setErrors(error.response.data)
-          } else if (error.response.status == 409) { // conflict
+          } else if (error.response.status === 409) { // conflict
             console.log(error.response.data)
             setErrors(error.response.data)
           }

@@ -40,7 +40,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         }
     }
 
-    $emailRegex = '/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{,50}$/';
+    $emailRegex = '/^[A-Za-z0-9._%+-]{1,30}@[A-Za-z0-9.-]{1,20}\.[A-Za-z]{2,6}$/';
     if (!empty($email)) {
         if (!preg_match($emailRegex, $email)) {
             $errors['email'] = "Email không hợp lệ";

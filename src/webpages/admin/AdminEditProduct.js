@@ -48,7 +48,7 @@ const AdminEditProduct = () => {
 
   // get list of categories, authors, manufacturers, product info
   useEffect(() => {
-    axios.get('http://www.btl-web.com/api/product-info-option.php')
+    axios.get('http://localhost/api/product-info-option.php')
     .then(response => {
       return response.data
     })
@@ -61,7 +61,7 @@ const AdminEditProduct = () => {
       console.log(error);
     });
 
-    axios.get('http://www.btl-web.com/api/product-info.php', {
+    axios.get('http://localhost/api/product-info.php', {
       params: params
     })
     .then(response => {
@@ -133,7 +133,7 @@ const AdminEditProduct = () => {
         window.scrollTo({top: 0, left: 0, behavior: 'smooth'});   
     } else {
         try {
-          const response = await axios.post('http://www.btl-web.com/api/product-edit.php', product)
+          const response = await axios.post('http://localhost/api/product-edit.php', product)
           console.log(response);
         } catch (error) {
           console.log(error);
