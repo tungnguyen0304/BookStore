@@ -53,7 +53,7 @@ const AdminAddProduct = () => {
       return false 
 
     for (const item in list) {
-      if (item.ID === ID) {
+      if (item.ID == ID) {
         return true
       }
     }
@@ -72,30 +72,31 @@ const AdminAddProduct = () => {
 
 
   const handleSubmit = async (e) => {
+    const trimmedProduct = Object.fromEntries(Object.entries(product).map(([key, value]) => [key, value.trim()]))
     const errors = {};
-    if (!product.name) errors.name = "Vui lòng điền tên sản phẩm";
+    if (!trimmedProduct.name) errors.name = "Vui lòng điền tên sản phẩm";
 
-    if (product.categoryID === '') errors.categoryID = "Vui lòng chọn thể loại sản phẩm"
-    else if (checkIDinList(product.categoryID, categoriesList)) errors.categoryID = "Thể loại sản phẩm không hợp lệ"
+    if (trimmedProduct.categoryID === '') errors.categoryID = "Vui lòng chọn thể loại sản phẩm"
+    else if (checkIDinList(trimmedProduct.categoryID, categoriesList)) errors.categoryID = "Thể loại sản phẩm không hợp lệ"
 
-    if (product.image.length > 255) errors.image = "Link hình ảnh phải ít hơn 255 ký tự";
+    if (trimmedProduct.image.length > 255) errors.image = "Link hình ảnh phải ít hơn 255 ký tự";
 
-    if (product.price === '') errors.price = "Vui lòng điền giá sản phẩm";
-    else if (product.price < 0) errors.price = "Giá sản phẩm phải lớn hơn 0";
+    if (trimmedProduct.price === '') errors.price = "Vui lòng điền giá sản phẩm";
+    else if (trimmedProduct.price < 0) errors.price = "Giá sản phẩm phải lớn hơn 0";
 
-    if (product.current_qty === '') errors.current_qty = "Vui lòng điền số lượng hiện tại của sản phẩm";
-    else if (product.current_qty < 0) errors.current_qty = "Số lượng hiện tại của sản phẩm phải lớn hơn 0";
+    if (trimmedProduct.current_qty === '') errors.current_qty = "Vui lòng điền số lượng hiện tại của sản phẩm";
+    else if (trimmedProduct.current_qty < 0) errors.current_qty = "Số lượng hiện tại của sản phẩm phải lớn hơn 0";
 
-    if (product.sold_qty === '') errors.sold_qty = "Vui lòng điền số lượng đã bán của sản phẩm";
-    else if (product.sold_qty < 0) errors.sold_qty = "Số lượng đã bán của sản phẩm phải lớn hơn 0";
+    if (trimmedProduct.sold_qty === '') errors.sold_qty = "Vui lòng điền số lượng đã bán của sản phẩm";
+    else if (trimmedProduct.sold_qty < 0) errors.sold_qty = "Số lượng đã bán của sản phẩm phải lớn hơn 0";
 
-    if (product.authorID === '') errors.authorID = "Tác giả không hợp lệ"
-    else if (checkIDinList(product.authorID, authorsList)) errors.authorID = "Tác giả không hợp lệ"
+    if (trimmedProduct.authorID === '') errors.authorID = "Tác giả không hợp lệ"
+    else if (checkIDinList(trimmedProduct.authorID, authorsList)) errors.authorID = "Tác giả không hợp lệ"
 
-    if (product.manufacturerID === '') errors.manufacturerID = "NXB/NSX không hợp lệ"
-    else if (checkIDinList(product.manufacturerID, manufacturersList)) errors.manufacturerID = "NXB/NSX không hợp lệ"
+    if (trimmedProduct.manufacturerID === '') errors.manufacturerID = "NXB/NSX không hợp lệ"
+    else if (checkIDinList(trimmedProduct.manufacturerID, manufacturersList)) errors.manufacturerID = "NXB/NSX không hợp lệ"
 
-    if (product.description.length > 5000) errors.description = "Mô tả sản phẩm phải ít hơn 5000 ký tự";
+    if (trimmedProduct.description.length > 5000) errors.description = "Mô tả sản phẩm phải ít hơn 5000 ký tự";
 
     // Set errors if any, else submit form
     if (Object.keys(errors).length > 0) {
@@ -103,7 +104,7 @@ const AdminAddProduct = () => {
         window.scrollTo({top: 0, left: 0, behavior: 'smooth'});   
     } else {
         try {
-          const response = await axios.post('http://localhost/api/product-add.php', product)
+          const response = await axios.post('http://localhost/api/product-add.php', trimmedProduct)
           console.log(response)
         } catch (error) {
           console.log(error);

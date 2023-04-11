@@ -24,7 +24,8 @@ const Register = () => {
     email: '',
     address:''
   });
-  const [errors, setErrors] = useState(profile);    
+  const [errors, setErrors] = useState(profile)
+  const navigate = useNavigate()  
   
   const handleChange = (e) => {
       const { name, value } = e.target;
@@ -57,7 +58,7 @@ const Register = () => {
     
     if (trimmedInfo.phone.length !== 0)
       if (!checkValidPhoneNumber(trimmedInfo.phone)) 
-        errors.phone = "Phone không hợp lệ"
+        errors.phone = "SĐT không hợp lệ"
 
     if (trimmedInfo.address.length > 255) 
       errors.address = "Địa chỉ tối đa 255 ký tự"
@@ -70,7 +71,7 @@ const Register = () => {
         try {
           const response = await axios.post('http://localhost/api/register.php', trimmedInfo)
           Cookies.set('role', response.data.role, { expires: 1/24 })
-          window.location.href = '/'          
+          navigate(-1)
         } catch (error) {
           if (error.response.status === 400) { // invalid
             console.log(error.response.data)
@@ -85,7 +86,6 @@ const Register = () => {
   }      
   const [confirmSaving, setConfirmSaving] = useState(false)
   const [confirmGoingBack, setConfirmGoingBack] = useState(false)
-  const navigate = useNavigate()
 
   return (
     <div>

@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 import { Grid, FormControl, TextField } from '@mui/material';
 import { GreenButton } from '../button-theme/ButtonTheme';
 import Cookies from 'js-cookie'
@@ -9,10 +10,8 @@ function Login() {
     username: '',
     password: ''
   });
-  const [errors, setErrors] = useState({
-    username: '',
-    password: ''
-  });
+  const [errors, setErrors] = useState(loginCredential);
+  const navigate = useNavigate()
 
   // Hàm xử lý khi người dùng nhấn nút đăng nhập
   const handleSubmit = async (event) => {
@@ -38,8 +37,7 @@ function Login() {
         try {
           const response = await axios.post('http://localhost/api/verify-login.php', trimmedLoginCre)
           Cookies.set('role', response.data.role, { expires: 1/24 })
-          // console.log(response)
-          window.location.href = '/'
+          navigate(-1)
         } catch (error) {
           if (error.response.status === 401) {
             setErrors({...errors, password: "Không đúng mật khẩu"})

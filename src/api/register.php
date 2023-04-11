@@ -18,31 +18,26 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     $errors = array();
     // check validity
-    $nameRegex = '/^[\p{L}\s\']{1,50}$/u';
-    if (!preg_match($nameRegex, $name)) {
+    if (!checkName($name)) {
         $errors['name'] = "Tên không được trống và ít hơn 50 ký tự bao gồm các ký tự Việt Nam và khoảng trắng";
     } 
 
-    $usernameRegex = '/^[a-zA-Z0-9_-]{3,20}$/';
-    if (!preg_match($usernameRegex, $username)) {
+    if (!checkUsername($username)) {
         $errors['username'] = "Username gồm 3 đến 20 ký tự chữ thường, chữ hoa, số, dấu gạch chân và dấu gạch nối";
     }
 
-    $passwordRegex = "/^(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?=.*[!@#$%^&*]).{8,}$/";
-    if (!preg_match($passwordRegex, $password)) {
+    if (!checkPassword($password)) {
         $errors['password'] = "Mật khẩu phải nhiều hơn 8 ký tự, ít nhất 1 chữ hoa, 1 thường, 1 số, 1 ký tự đặc biệt";
     }
 
-    $phoneRegex = '/(84|0[3|5|7|8|9])+([0-9]{8})\b/';
     if (!empty($phone)) {
-        if (!preg_match($phoneRegex, $phone)) {
+        if (!checkPhone($phone)) {
             $errors['phone'] = "SĐT không hợp lệ";
         }
     }
 
-    $emailRegex = '/^[A-Za-z0-9._%+-]{1,30}@[A-Za-z0-9.-]{1,20}\.[A-Za-z]{2,6}$/';
     if (!empty($email)) {
-        if (!preg_match($emailRegex, $email)) {
+        if (!checkEmail($email)) {
             $errors['email'] = "Email không hợp lệ";
         }    
     }   

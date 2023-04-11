@@ -10,10 +10,10 @@ import {getLocalCartContent, decreaseInLocalCart, increaseInLocalCart, removeFro
 
 // just for test, in reality, cart is set when user click 'add to cart' button
 localStorage.setItem("cart", JSON.stringify([
-  {id: 1, qty: 1, title: "Bộ sách giáo khoa tiếng Việt", price: 1240000, img: "https://metaisach.com/wp-content/uploads/2019/01/sach-giao-khoa-tieng-viet-lop-1.jpg"}, 
-  {id: 2, qty: 2, title: "Giáo trình hóa đại cương", price: 123000, img: "https://salt.tikicdn.com/ts/product/3a/72/6c/2e7381dc117829350956af598b77523d.jpg"},
-  {id: 3, qty: 1, title: "Bộ sách giáo khoa tiếng Việt", price: 1240000, img: "https://metaisach.com/wp-content/uploads/2019/01/sach-giao-khoa-tieng-viet-lop-1.jpg"}, 
-  {id: 4, qty: 2, title: "Giáo trình hóa đại cương", price: 123000, img: "https://salt.tikicdn.com/ts/product/3a/72/6c/2e7381dc117829350956af598b77523d.jpg"}  
+  {ID: 16, qty: 1, title: "Bộ sách giáo khoa tiếng Việt", price: 1240000, img: "https://metaisach.com/wp-content/uploads/2019/01/sach-giao-khoa-tieng-viet-lop-1.jpg"}, 
+  {ID: 17, qty: 2, title: "Giáo trình hóa đại cương", price: 123000, img: "https://salt.tikicdn.com/ts/product/3a/72/6c/2e7381dc117829350956af598b77523d.jpg"},
+  {ID: 18, qty: 1, title: "Bộ sách giáo khoa tiếng Việt", price: 1240000, img: "https://metaisach.com/wp-content/uploads/2019/01/sach-giao-khoa-tieng-viet-lop-1.jpg"}, 
+  {ID: 19, qty: 2, title: "Giáo trình hóa đại cương", price: 123000, img: "https://salt.tikicdn.com/ts/product/3a/72/6c/2e7381dc117829350956af598b77523d.jpg"}  
 ]))
 
 
