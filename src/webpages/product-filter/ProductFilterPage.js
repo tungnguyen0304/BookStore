@@ -48,7 +48,7 @@ function ProductFilterPage() {
   const [manufacturersList, setManufacturersList] = useState([])
   const [categoriesList, setCategoriesList] = useState([])
   const location = useLocation();
-  const [page, setPage] = useState(0)
+  const [page, setPage] = useState(1)
   const [categoryObj, setCategoryObj] = useState({
     ID: '',
     name: '',
@@ -84,7 +84,7 @@ function ProductFilterPage() {
       setCategoryObj(category);
     }
   }, [categoriesList, location.pathname]);  
-  const priceRange = [0, 10000000]
+  const priceRange = [0, 1000000]
   const [currentPrice, setCurrentPrice] = useState(priceRange)
   const priceToQueryValue = priceRange => {
     return priceRange[0] + '-' + priceRange[1]
@@ -111,7 +111,7 @@ function ProductFilterPage() {
     console.log(params);
     axios.get('http://localhost/api/products.php', {params: params})
       .then(response => {
-        // setProducts(response.data);
+        setProducts(response.data);
         console.log(response);
       })
       .catch(error => {
@@ -181,7 +181,8 @@ function ProductFilterPage() {
                     value={'/' + category.unique_name} 
                     onClick={() => {
                       navigate('/' + category.unique_name)
-                      setFilters({categoryID: category.ID})
+                      setFilters({})
+                      setCategoryObj(category)
                     }}
                     >
                         {category.name}                    
