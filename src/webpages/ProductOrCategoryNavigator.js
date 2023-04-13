@@ -1,5 +1,5 @@
 import React from 'react';
-import ShowAllByCategory from './product-filter/ShowAllByCategory';
+import ShowAllByCategory from './product-filter/ProductFilterPage';
 import Product from './product/Product';
 
 export default function ProductOrCategoryNavigator () {

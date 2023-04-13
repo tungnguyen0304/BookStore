@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
-// import axios from 'axios';
+import axios from 'axios';
 import { Box, Grid, MenuItem, Select, Slider } from '@mui/material';
 import { styled } from '@mui/material/styles';
 import PopupButton from './PopupButton';
@@ -35,22 +35,6 @@ const StyledSlider = styled(Slider)({
   color: "#3f51b5",
 });
 
-const categoriesList = [
-    {unique_name: "sach-trong-nuoc", title: "Sách trong nước"},
-    {unique_name: "sach-ngoai-quoc", title: "Sách ngoại quốc"},
-    {unique_name: "van-phong-pham", title: "Văn phòng phẩm"},
-    {unique_name: "do-choi", title: "Đồ chơi"},
-    {unique_name: "hang-luu-niem", title: "Hàng lưu niệm"}
-]
-const getTitle = pathname => {
-    const slashIndex = pathname.indexOf('/');
-    const unique_name = pathname.substr(slashIndex + 1)
-    for (const category of categoriesList) {
-        if (category.unique_name === unique_name) {
-            return category.title
-        }
-    }
-}
 const isBook = pathname => {
   const bookCategories = ["sach-trong-nuoc", "sach-ngoai-quoc"]
   const slashIndex = pathname.indexOf('/');
@@ -60,20 +44,46 @@ const isBook = pathname => {
 
 function ProductFilterPage() {
   const navigate = useNavigate();
+  const [authorsList, setAuthorsList] = useState([])
+  const [manufacturersList, setManufacturersList] = useState([])
+  const [categoriesList, setCategoriesList] = useState([])
   const location = useLocation();
-  const title = getTitle(location.pathname)
-  const authors = [
-    {id: 1, name: 'Nguyen Nhat Anh'},
-    {id: 2, name: 'Nguyen Anh Nhat'}, 
-    {id: 3, name: 'Jimmy Carter'}, 
-    {id: 4, name: 'Nguyen Van Nguyen Van'}
-  ]
-  const manufacturers = [
-    {id: 1, name: 'NXB Giao duc', country: 'Vietnam'},
-    {id: 2, name: 'NXB Dan tri', country: 'Vietnam'}, 
-    {id: 3, name: 'NXB ABC', country: 'Trung Quoc'}, 
-    {id: 4, name: 'NXB XYZ', country: 'Hoa Ky'}
-  ]
+  const [page, setPage] = useState(0)
+  const [categoryObj, setCategoryObj] = useState({
+    ID: '',
+    name: '',
+    unique_name: ''
+  });
+  
+  useEffect(() => {
+    axios.get('http://localhost/api/product-info-option.php')
+      .then(response => {
+        return response.data;
+      })
+      .then(response => {
+        setAuthorsList(JSON.parse(response.authorsList));
+        setManufacturersList(JSON.parse(response.manufacturersList));
+        setCategoriesList(JSON.parse(response.categoriesList));
+      }) 
+      .catch(error => {
+        console.log(error);
+      });
+  }, []);
+  const getCategoryObj = pathname => {
+    const slashIndex = pathname.indexOf('/');
+    const unique_name = pathname.substr(slashIndex + 1)
+    for (const category of categoriesList) {
+        if (category.unique_name === unique_name) {
+            return category
+        }
+    }
+  }  
+  useEffect(() => {
+    if (categoriesList.length > 0) {
+      const category = getCategoryObj(location.pathname);
+      setCategoryObj(category);
+    }
+  }, [categoriesList, location.pathname]);  
   const priceRange = [0, 10000000]
   const [currentPrice, setCurrentPrice] = useState(priceRange)
   const priceToQueryValue = priceRange => {
@@ -83,8 +93,8 @@ function ProductFilterPage() {
   // Parse the filter parameters from the URL query string
   const [filters, setFilters] = useState({})
   useEffect(() => {
-    const queryParams = new URLSearchParams(location.search);
-    const filterObj = {};
+    const queryParams = new URLSearchParams(location.search)
+    const filterObj = {}
     for (let [key, value] of queryParams.entries()) {
       if (key === 'authorID' || key === 'manufacturerID') {
         value = parseInt(value)
@@ -96,15 +106,18 @@ function ProductFilterPage() {
 
   // Fetch the filtered product data from the server
   const [products, setProducts] = useState([])
-//   useEffect(() => {
-//     axios.get('/api/products', { params: filters })
-//       .then(response => {
-//         setProducts(response.data);
-//       })
-//       .catch(error => {
-//         console.error(error);
-//       });
-//   }, [filters]);
+  useEffect(() => {
+    const params = {...filters, page: page, categoryID: categoryObj.ID};
+    console.log(params);
+    axios.get('http://localhost/api/products.php', {params: params})
+      .then(response => {
+        // setProducts(response.data);
+        console.log(response);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+  }, [filters]);
 
   const sortingAttributes = ['filter_price', 'sold_quantity']
   // Handle changes to the filter parameters
@@ -123,24 +136,24 @@ function ProductFilterPage() {
     let hasSoldQuantity = false
     Object.entries(filters).forEach(([key, value]) => {
       if (key === 'authorID') {
-        const authorEntry = authors.filter(author => author.id === value)[0]
+        const authorEntry = authorsList.filter(author => author.ID === value)[0]
         if (authorEntry !== undefined) {
-          res.push({key: key, label: "Tac gia: " + authorEntry.name})
+          res.push({key: key, label: "Tác giả: " + authorEntry.name})
         }
       } else if (key === 'manufacturerID') {
-        const name = isBook(location.pathname) ? "Nha xuat ban" : "Nha san xuat"
-        const manufacturerEntry = manufacturers.filter(man => man.id === value)[0]
+        const name = isBook(location.pathname) ? "Nhà xuất bản" : "Nhà sản xuất"
+        const manufacturerEntry = manufacturersList.filter(man => man.ID === value)[0]
         if (manufacturerEntry !== undefined) {
           res.push({key: key, label: name + ': ' + manufacturerEntry.name})
         }
       } else if (key === 'price') {
-        res.push({key: key, label: "Gia: " + value})
+        res.push({key: key, label: "Giá: " + value})
       } else if (value === 'sold_quantity') {
         hasSoldQuantity = true
-        res.push({key: 'order', label: "Ban chay nhat"})
+        res.push({key: 'order', label: "Bán chạy nhất"})
       } else if (key === 'dir') {
         if (!hasSoldQuantity)
-          res.push({key: 'order', label: value === 'asc' ? 'Gia tang dan' : 'Gia giam dan'})
+          res.push({key: 'order', label: value === 'asc' ? 'Giá tăng dần' : 'Giá giảm dần'})
       }
     })
     return res
@@ -151,12 +164,12 @@ function ProductFilterPage() {
     <>
     <Grid container>
       <Grid item xs={12}>
-        <div className='pageTitle'>{title}</div>
+        <div className='pageTitle'>{categoryObj.name}</div>
       </Grid>    
     </Grid>       
     <Grid container>
         <Grid item xs={12}>
-            <div style={filterTypeLabel}>The loai hien tai</div>
+            <div style={filterTypeLabel}>Thể loại hiện tại</div>
             <CustomSelect
                 id="category-select"
                 value={location.pathname}
@@ -168,23 +181,23 @@ function ProductFilterPage() {
                     value={'/' + category.unique_name} 
                     onClick={() => {
                       navigate('/' + category.unique_name)
-                      setFilters({})
+                      setFilters({categoryID: category.ID})
                     }}
                     >
-                        {category.title}                    
+                        {category.name}                    
                     </MenuItem>
                 ))}
             </CustomSelect>
         </Grid>
         <Grid item xs={12}>
-            <div style={filterTypeLabel}>Chon theo tieu chi</div>
+            <div style={filterTypeLabel}>Chọn theo tiêu chí</div>
             <Grid container spacing={4}>
             <Grid item>
-            <PopupButton label="Chon tac gia" highlightcolor={filters["authorID"] ? "red" : undefined}>
-            {authors.map((author, index) => (
+            <PopupButton label="Chọn tác giả" highlightcolor={filters["authorID"] ? "red" : undefined}>
+            {authorsList.map((author, index) => (
                 <MenuItem 
                 key={index} 
-                onClick={() => handleFilterChange({target: {name: 'authorID', value: author.id}})}>
+                onClick={() => handleFilterChange({target: {name: 'authorID', value: author.ID}})}>
                     {author.name}                    
                 </MenuItem>
             ))}
@@ -192,20 +205,20 @@ function ProductFilterPage() {
             </Grid>
             <Grid item>
             <PopupButton 
-            label={isBook(location.pathname) ? "Chon nha xuat ban" : "Chon nha san xuat"}
+            label={isBook(location.pathname) ? "Chọn nhà xuất bản" : "Chọn nhà sản xuất"}
             highlightcolor={filters["manufacturerID"] ? "red" : undefined}
             >
-            {manufacturers.map((manufacturer, index) => (
+            {manufacturersList.map((manufacturer, index) => (
                 <MenuItem 
                 key={index} 
-                onClick={() => handleFilterChange({target: {name: 'manufacturerID', value: manufacturer.id}})}>
+                onClick={() => handleFilterChange({target: {name: 'manufacturerID', value: manufacturer.ID}})}>
                     {manufacturer.name}                    
                 </MenuItem>
             ))}   
             </PopupButton>   
             </Grid> 
             <Grid item>
-            <PopupButton label="Gia" highlightcolor={filters["price"] ? "red" : undefined}>
+            <PopupButton label="Giá" highlightcolor={filters["price"] ? "red" : undefined}>
               <Grid container sx={{width: '300px'}} justifyContent="center">
               <Grid item xs={6}>
               <div style={{margin: '5px'}}>{currentPrice[0]}d</div>
@@ -229,7 +242,7 @@ function ProductFilterPage() {
               onClick={() => handleFilterChange({target: {name: 'price', value: priceToQueryValue(currentPrice)}})}
               sx={{margin: '5px'}} 
               >
-                Xem ket qua
+                Xem kết quả
               </SndLayerButton>
               </Grid>
               </Grid>
@@ -238,7 +251,7 @@ function ProductFilterPage() {
             </Grid>                  
         </Grid>        
         <Grid item xs={12}>
-            <div style={filterTypeLabel}>Sap xep theo</div>
+            <div style={filterTypeLabel}>Sắp xếp theo</div>
             <Grid container spacing={4}>
             <Grid item>
                 <SndLayerButton 
@@ -249,7 +262,7 @@ function ProductFilterPage() {
                 }}
                 highlightcolor={filters.order === 'filter_price' && filters.dir === 'asc' ? "red" : undefined}
                 > 
-                    Gia tang dan
+                    Giá tăng dần
                 </SndLayerButton>
             </Grid>
             <Grid item>
@@ -261,7 +274,7 @@ function ProductFilterPage() {
                 }}
                 highlightcolor={filters.order === 'filter_price' && filters.dir === 'dsc' ? "red" : undefined}
                 > 
-                    Gia giam dan
+                    Giá giảm dần
                 </SndLayerButton>
             </Grid> 
             <Grid item>
@@ -272,14 +285,14 @@ function ProductFilterPage() {
                 }}
                 highlightcolor={filters.order === 'sold_quantity' && filters.dir === 'dsc' ? "red" : undefined}
                 > 
-                    Ban chay nhat
+                    Bán chạy nhất
                 </SndLayerButton>
             </Grid>             
             </Grid>                  
         </Grid>   
         {Object.keys(filters).length !==  0 && (
         <Grid item xs={12}>
-            <div style={filterTypeLabel}>Dang loc theo</div>
+            <div style={filterTypeLabel}>Đang lọc theo</div>
             <Grid container spacing={4}>
             {getLabelsCurrentFilter().map((item, index) => (
               <Grid item key={index}>
@@ -311,7 +324,7 @@ function ProductFilterPage() {
               <Grid item>
               <FilteringQuitButton
               variant="contained"
-              label="Xoa tat ca" 
+              label="Xoá tất cả" 
               onClick={() => {
                 setFilters({})
                 navigate(location.pathname)
