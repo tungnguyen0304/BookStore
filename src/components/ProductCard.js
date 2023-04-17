@@ -10,17 +10,14 @@ import addcart from "../images/add-cart.svg";
 import view from "../images/view.svg";
 const ProductCard = ({grid, product}) => {
   let location = useLocation();
+  console.log(grid);
   const VNCurrencyFormatter = new Intl.NumberFormat('vi', {
     style: "currency",
     currency: "VND"
   })    
 
   return (
-      <div
-        className={` ${
-          location.pathname == "/product" ? `gr-${grid}` : "col-3"
-        } `}
-      >
+      <div className="gr-3">
         <Link
           // to={`${
           //   location.pathname == "/"

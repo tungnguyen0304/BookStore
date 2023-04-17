@@ -58,7 +58,7 @@ const Home = () => {
                   </div>
                 </div>
                 <div className="row">
-                  <div className="col-12 d-flex d-row gap-15">
+                  <div className="col-12 d-flex d-row gap-10">
                     {products[category.ID].map((product) => (
                       <ProductCard product={product} key={product.ID} />
                     ))}
@@ -76,9 +76,11 @@ const Home = () => {
               </div>
             </div>
             <div className="row">
-              {products["top_sellers"].map((product) => (
-                <ProductCard product={product} key={product.ID} />
-              ))}
+              <div className="col-12 d-flex flex-wrap gap-10">
+                {products["top_sellers"].map((product) => (
+                  <ProductCard className="gr-3" product={product} key={product.ID} />
+                ))}
+              </div>
             </div>
           </Container>
         )}

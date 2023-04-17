@@ -44,6 +44,10 @@
     border-color: inherit;
   }
 
+  .gap-5 {
+    gap: 5px;
+  }
+
   .gap-10 {
     gap: 10px;
   }
@@ -349,6 +353,14 @@
   .product-card .product-details h5 {
     font-size: 15px;
     color: var(--color-1c1c1b);
+    white-space: nowrap;
+    /* ngăn ngừa phần tử title xuống dòng */
+    overflow: hidden;
+    /* ẩn bớt phần tử title vượt quá kích thước định sẵn */
+    text-overflow: ellipsis;
+    /* hiển thị dấu chấm sau phần tử title nếu vượt quá kích thước định sẵn */
+    max-width: 500px;
+    /* định sẵn chiều rộng tối đa của phần tử title */
   }
 
   .product-card .product-details p.price {
