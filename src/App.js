@@ -21,6 +21,15 @@ import TermAndContions from "./pages/TermAndContions";
 import SingleProduct from "./pages/SingleProduct";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
+import AdminAddProduct from "./webpages/admin/AdminAddProduct";
+import AdminEditProduct from "./webpages/admin/AdminEditProduct";
+import AdminManageProductInfo from "./webpages/admin/AdminManageProductInfo";
+import AdminCommentsList from "./webpages/admin/AdminCommentsList";
+import AdminDashboard from "./webpages/admin/AdminDashboard";
+import AdminOrdersList from "./webpages/admin/AdminOrdersList";
+import AdminProductsList from "./webpages/admin/AdminProductsList";
+import UsersAdminPage from "./webpages/admin/AdminUsersList";
+
 function App() {
   return (
     <>
@@ -46,6 +55,16 @@ function App() {
             <Route path="refund-policy" element={<RefundPloicy />} />
             <Route path="shipping-policy" element={<ShippingPolicy />} />
             <Route path="term-conditions" element={<TermAndContions />} />
+            <Route path="admin">
+              <Route index element={<AdminDashboard/>}/>
+              <Route path="products" element={<AdminProductsList/>}/>
+              <Route path="products/add" element={<AdminAddProduct/>}/>
+              <Route path="products/edit?:id" element={<AdminEditProduct/>}/>
+              <Route path="products/info" element={<AdminManageProductInfo/>}/>
+              <Route path="comments" element={<AdminCommentsList/>}/>
+              <Route path="orders" element={<AdminOrdersList/>}/>
+              <Route path="users" element={<UsersAdminPage/>}/>
+            </Route>
           </Route>
         </Routes>
       </BrowserRouter>
