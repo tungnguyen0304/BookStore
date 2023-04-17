@@ -5,7 +5,7 @@ import prodcompare from "../images/prodcompare.svg";
 import wish from "../images/wish.svg";
 import wishlist from "../images/wishlist.svg";
 import watch from "../images/watch.jpg";
-import watch2 from "../images/watch-1.avif";
+import watch2 from "../images/watch-1.jpg";
 import addcart from "../images/add-cart.svg";
 import view from "../images/view.svg";
 const ProductCard = (props) => {
@@ -37,7 +37,7 @@ const ProductCard = (props) => {
           </div>
           <div className="product-image">
             <img src={watch} className="img-fluid" alt="product image" />
-            <img src={watch2} className="img-fluid" alt="product image" />
+            <img src={watch2} className="img-fluid" alt="product image1" />
           </div>
           <div className="product-details">
             <h6 className="brand">Havels</h6>
@@ -96,7 +96,7 @@ const ProductCard = (props) => {
           </div>
           <div className="product-image">
             <img src={watch} className="img-fluid" alt="product image" />
-            <img src={watch2} className="img-fluid" alt="product image" />
+            <img src={watch2} className="img-fluid" alt="product image1" />
           </div>
           <div className="product-details">
             <h6 className="brand">Havels</h6>
