@@ -30,7 +30,7 @@
 }
 
 body {
-  font-family: 'Rubik', sans-serif;
+  font-family: 'Playfair Display', serif;
 }
 
 a {
@@ -482,4 +482,5 @@ footer .input-group-text {
   padding: 8px;
   border-radius: 3px;
 }
+
 /* Our Store end here */

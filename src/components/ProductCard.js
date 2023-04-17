@@ -39,7 +39,6 @@ const ProductCard = ({grid, product}) => {
           </div>
           <div className="product-image">
             <img src={product.image} className="img-fluid" alt="product image" />
-            <img src={product.image} className="img-fluid" alt="product image1" />
           </div>
           <div className="product-details">
             <h6 className="brand">{product.manufacturer_name}</h6>
