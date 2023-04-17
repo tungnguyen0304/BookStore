@@ -30,7 +30,7 @@ const Home = () => {
       return response.data
     })
     .then(response => {
-      console.log(response)
+      // console.log(response)
       setProducts(response)
     }) 
     .catch(error => {

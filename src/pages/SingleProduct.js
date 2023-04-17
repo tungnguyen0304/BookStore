@@ -33,7 +33,7 @@ const SingleProduct = () => {
       params: {unique_name: uniqueName}
     })
     .then(response => {
-      console.log(response)
+      // console.log(response)
       return response.data
     })
     .then(response => {
@@ -64,7 +64,9 @@ const SingleProduct = () => {
           <div className="col-6">
             <div className="main-product-image">
               <div>
-                <ReactImageZoom {...props} />
+                {Object.keys(product).length !== 0 && 
+                <ReactImageZoom {...props} img={product.image} />
+                }
               </div>
             </div>
           </div>
@@ -233,23 +235,23 @@ const SingleProduct = () => {
           </div>
         </div>
       </Container>
-      <Container class1="popular-wrapper py-5 home-wrapper-2">
+      {/* <Container class1="popular-wrapper py-5 home-wrapper-2">
         <div className="row">
           <div className="col-12">
             <h3 className="section-heading">Our Popular Products</h3>
           </div>
         </div>
         <div className="row">
-          {/* <ProductCard /> */}
+          <ProductCard />
         </div>
-      </Container>
+      </Container> */}
 
       <div
         className="modal fade"
         id="staticBackdrop"
         data-bs-backdrop="static"
         data-bs-keyboard="false"
-        tabindex="-1"
+        tabIndex="-1"
         aria-labelledby="staticBackdropLabel"
         aria-hidden="true"
       >
