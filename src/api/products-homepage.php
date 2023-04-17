@@ -10,10 +10,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $results = array();
     foreach ($categories as $category) {
         $stmt = mysqli_prepare($conn, "
-            SELECT *
-            FROM product
-            WHERE categoryID = ?
-            ORDER BY sold_qty DESC
+            SELECT p.*, a.name AS author_name, m.name AS manufacturer_name, m.country
+            FROM product p
+            LEFT JOIN author a ON p.authorID = a.ID
+            LEFT JOIN manufacturer m ON p.manufacturerID = m.ID
+            WHERE p.categoryID = ?
+            ORDER BY p.sold_qty DESC
             LIMIT 8
         ");
         mysqli_stmt_bind_param($stmt, 'i', $category);
@@ -26,9 +28,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
     // Next, retrieve top 8 products overall
     $stmt = mysqli_prepare($conn, "
-        SELECT *
-        FROM product
-        ORDER BY sold_qty DESC
+        SELECT p.*, a.name AS author_name, m.name AS manufacturer_name, m.country
+        FROM product p
+        LEFT JOIN author a ON p.authorID = a.ID
+        LEFT JOIN manufacturer m ON p.manufacturerID = m.ID
+        ORDER BY p.sold_qty DESC
         LIMIT 8
     ");
     mysqli_stmt_execute($stmt);

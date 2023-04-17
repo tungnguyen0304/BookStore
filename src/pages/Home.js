@@ -19,7 +19,7 @@ const Home = () => {
       return response.data
     })
     .then(response => {
-      console.log(JSON.parse(response.categoriesList))
+      // console.log(JSON.parse(response.categoriesList))
       setCategoriesList(JSON.parse(response.categoriesList))
     }) 
     .catch(error => {

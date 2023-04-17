@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import axios from "axios";
 import ReactStars from "react-rating-stars-component";
 import BreadCrumb from "../components/BreadCrumb";
 import Meta from "../components/Meta";
@@ -10,30 +11,54 @@ import { AiOutlineHeart } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import watch from "../images/watch.jpg";
 import Container from "../components/Container";
+function getUniqueNameFromUrl(url) {
+  // Split the URL string by the '/' character
+  const urlParts = url.split('/');
+  // Select the last element of the resulting array
+  const uniqueName = urlParts[urlParts.length - 1];
+  // Return the unique name
+  return uniqueName;
+}
+
 const SingleProduct = () => {
+  const [product, setProduct] = useState({})
+  const uniqueName = getUniqueNameFromUrl(window.location.href)
+  const VNCurrencyFormatter = new Intl.NumberFormat('vi', {
+    style: "currency",
+    currency: "VND"
+  })   
+  // // fecth product
+  useEffect(() => {
+    axios.get('http://localhost/api/product-info.php', {
+      params: {unique_name: uniqueName}
+    })
+    .then(response => {
+      console.log(response)
+      return response.data
+    })
+    .then(response => {
+        setProduct(response)
+    }) 
+    .catch(error => {
+      if (error.response.status === 404) {
+        // navigate('/error/404');
+      }
+    });   
+  }, [])
   const props = {
     width: 594,
     height: 600,
     zoomWidth: 600,
 
-    img: "https://images.pexels.com/photos/190819/pexels-photo-190819.jpeg?cs=srgb&dl=pexels-fernando-arcos-190819.jpg&fm=jpg",
+    img: product.image,
   };
 
   const [orderedProduct, setorderedProduct] = useState(true);
-  const copyToClipboard = (text) => {
-    console.log("text", text);
-    var textField = document.createElement("textarea");
-    textField.innerText = text;
-    document.body.appendChild(textField);
-    textField.select();
-    document.execCommand("copy");
-    textField.remove();
-  };
   const closeModal = () => {};
   return (
     <>
-      <Meta title={"Product Name"} />
-      <BreadCrumb title="Product Name" />
+      <Meta title={product.name} />
+      <BreadCrumb title={product.name} />
       <Container class1="main-product-wrapper py-5 home-wrapper-2">
         <div className="row">
           <div className="col-6">
@@ -42,46 +67,16 @@ const SingleProduct = () => {
                 <ReactImageZoom {...props} />
               </div>
             </div>
-            <div className="other-product-images d-flex flex-wrap gap-15">
-              <div>
-                <img
-                  src="https://images.pexels.com/photos/190819/pexels-photo-190819.jpeg?cs=srgb&dl=pexels-fernando-arcos-190819.jpg&fm=jpg"
-                  className="img-fluid"
-                  alt=""
-                />
-              </div>
-              <div>
-                <img
-                  src="https://images.pexels.com/photos/190819/pexels-photo-190819.jpeg?cs=srgb&dl=pexels-fernando-arcos-190819.jpg&fm=jpg"
-                  className="img-fluid"
-                  alt=""
-                />
-              </div>
-              <div>
-                <img
-                  src="https://images.pexels.com/photos/190819/pexels-photo-190819.jpeg?cs=srgb&dl=pexels-fernando-arcos-190819.jpg&fm=jpg"
-                  className="img-fluid"
-                  alt=""
-                />
-              </div>
-              <div>
-                <img
-                  src="https://images.pexels.com/photos/190819/pexels-photo-190819.jpeg?cs=srgb&dl=pexels-fernando-arcos-190819.jpg&fm=jpg"
-                  className="img-fluid"
-                  alt=""
-                />
-              </div>
-            </div>
           </div>
           <div className="col-6">
             <div className="main-product-details">
               <div className="border-bottom">
                 <h3 className="title">
-                  Kids Headphones Bulk 10 Pack Multi Colored For Students
+                  {product.name}
                 </h3>
               </div>
               <div className="border-bottom py-3">
-                <p className="price">$ 100</p>
+                <p className="price">{VNCurrencyFormatter.format(product.price)}</p>
                 <div className="d-flex align-items-center gap-10">
                   <ReactStars
                     count={5}
@@ -115,28 +110,7 @@ const SingleProduct = () => {
                 </div>
                 <div className="d-flex gap-10 align-items-center my-2">
                   <h3 className="product-heading">Availablity :</h3>
-                  <p className="product-data">In Stock</p>
-                </div>
-                <div className="d-flex gap-10 flex-column mt-2 mb-3">
-                  <h3 className="product-heading">Size :</h3>
-                  <div className="d-flex flex-wrap gap-15">
-                    <span className="badge border border-1 bg-white text-dark border-secondary">
-                      S
-                    </span>
-                    <span className="badge border border-1 bg-white text-dark border-secondary">
-                      M
-                    </span>
-                    <span className="badge border border-1 bg-white text-dark border-secondary">
-                      XL
-                    </span>
-                    <span className="badge border border-1 bg-white text-dark border-secondary">
-                      XXL
-                    </span>
-                  </div>
-                </div>
-                <div className="d-flex gap-10 flex-column mt-2 mb-3">
-                  <h3 className="product-heading">Color :</h3>
-                  <Color />
+                  <p className="product-data">{product.in_stock? "Còn hàng": "Ngừng kinh doanh"}</p>
                 </div>
                 <div className="d-flex align-items-center gap-15 flex-row mt-2 mb-3">
                   <h3 className="product-heading">Quantity :</h3>
@@ -163,39 +137,6 @@ const SingleProduct = () => {
                     <button className="button signup">Buy It Now</button>
                   </div>
                 </div>
-                <div className="d-flex align-items-center gap-15">
-                  <div>
-                    <a href="">
-                      <TbGitCompare className="fs-5 me-2" /> Add to Compare
-                    </a>
-                  </div>
-                  <div>
-                    <a href="">
-                      <AiOutlineHeart className="fs-5 me-2" /> Add to Wishlist
-                    </a>
-                  </div>
-                </div>
-                <div className="d-flex gap-10 flex-column  my-3">
-                  <h3 className="product-heading">Shipping & Returns :</h3>
-                  <p className="product-data">
-                    Free shipping and returns available on all orders! <br /> We
-                    ship all US domestic orders within
-                    <b>5-10 business days!</b>
-                  </p>
-                </div>
-                <div className="d-flex gap-10 align-items-center my-3">
-                  <h3 className="product-heading">Product Link:</h3>
-                  <a
-                    href="javascript:void(0);"
-                    onClick={() => {
-                      copyToClipboard(
-                        "https://images.pexels.com/photos/190819/pexels-photo-190819.jpeg?cs=srgb&dl=pexels-fernando-arcos-190819.jpg&fm=jpg"
-                      );
-                    }}
-                  >
-                    Copy Product Link
-                  </a>
-                </div>
               </div>
             </div>
           </div>
@@ -204,13 +145,10 @@ const SingleProduct = () => {
       <Container class1="description-wrapper py-5 home-wrapper-2">
         <div className="row">
           <div className="col-12">
-            <h4>Description</h4>
+            <h4>Mô tả</h4>
             <div className="bg-white p-3">
               <p>
-                Lorem ipsum dolor, sit amet consectetur adipisicing elit.
-                Tenetur nisi similique illum aut perferendis voluptas, quisquam
-                obcaecati qui nobis officia. Voluptatibus in harum deleniti
-                labore maxime officia esse eos? Repellat?
+                {product.description}
               </p>
             </div>
           </div>
@@ -302,7 +240,7 @@ const SingleProduct = () => {
           </div>
         </div>
         <div className="row">
-          <ProductCard />
+          {/* <ProductCard /> */}
         </div>
       </Container>
 

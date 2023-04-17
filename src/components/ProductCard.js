@@ -8,10 +8,12 @@ import watch from "../images/watch.jpg";
 import watch2 from "../images/watch-1.jpg";
 import addcart from "../images/add-cart.svg";
 import view from "../images/view.svg";
-const ProductCard = (props) => {
-  const { grid } = props;
-  console.log(grid);
+const ProductCard = ({grid, product}) => {
   let location = useLocation();
+  const VNCurrencyFormatter = new Intl.NumberFormat('vi', {
+    style: "currency",
+    currency: "VND"
+  })    
 
   return (
       <div
@@ -20,13 +22,14 @@ const ProductCard = (props) => {
         } `}
       >
         <Link
-          to={`${
-            location.pathname == "/"
-              ? "/product/:id"
-              : location.pathname == "/product/:id"
-              ? "/product/:id"
-              : ":id"
-          }`}
+          // to={`${
+          //   location.pathname == "/"
+          //     ? "/product/:id"
+          //     : location.pathname == "/product/:id"
+          //     ? "/product/:id"
+          //     : ":id"
+          // }`}
+          to = {"/product/" + product.unique_name}
           className="product-card position-relative"
         >
           <div className="wishlist-icon position-absolute">
@@ -35,13 +38,13 @@ const ProductCard = (props) => {
             </button>
           </div>
           <div className="product-image">
-            <img src={watch} className="img-fluid" alt="product image" />
-            <img src={watch2} className="img-fluid" alt="product image1" />
+            <img src={product.image} className="img-fluid" alt="product image" />
+            <img src={product.image} className="img-fluid" alt="product image1" />
           </div>
           <div className="product-details">
-            <h6 className="brand">Havels</h6>
+            <h6 className="brand">{product.manufacturer_name}</h6>
             <h5 className="product-title">
-              Kids headphones bulk 10 pack multi colored for students
+              {product.name}
             </h5>
             <ReactStars
               count={5}
@@ -51,12 +54,9 @@ const ProductCard = (props) => {
               activeColor="#ffd700"
             />
             <p className={`description ${grid === 12 ? "d-block" : "d-none"}`}>
-              At vero eos et accusamus et iusto odio dignissimos ducimus qui
-              blanditiis praesentium voluptatum deleniti atque corrupti quos
-              dolores et quas molestias excepturi sint occaecati cupiditate non
-              provident, similique sunt...
+              {product.description}
             </p>
-            <p className="price">$100.00</p>
+            <p className="price">{VNCurrencyFormatter.format(product.price)}</p>
           </div>
           <div className="action-bar position-absolute">
             <div className="d-flex flex-column gap-15">
