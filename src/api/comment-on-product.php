@@ -1,15 +1,23 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 session_start();
-if (isset($_SESSION['ID'])) {
+require_once('cors.php');
+if ($_SERVER['REQUEST_METHOD'] == 'POST' and isset($_SESSION['ID'])) {
     require_once('DBConnect.php');
     require_once('utils/test_input.php');
 
     // get the userID from the session variable
     $userID = $_SESSION['ID'];
 
-    // sanitize and validate the post data
-    $productID = isset($_POST['productID']) ? test_input($_POST['productID']) : '';
-    $content = isset($_POST['content']) ? test_input($_POST['content']) : '';
+    // read the raw request body and decode it as JSON
+    $request_body = file_get_contents('php://input');
+    $data = json_decode($request_body);
+
+    // extract the productID and content values from the JSON data
+    $productID = isset($data->productID) ? test_input($data->productID) : '';
+    $content = isset($data->content) ? test_input($data->content) : '';
 
     // check if the required fields are not empty
     if ($productID !== '' && $content !== '') {

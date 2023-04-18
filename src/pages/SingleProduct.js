@@ -27,7 +27,9 @@ function getUniqueNameFromUrl(url) {
 
 const SingleProduct = () => {
   const [qty, setQty] = useState(0)
+  const [review, setReview] = useState('')
   const [product, setProduct] = useState({})
+  const [allReviews, setAllReviews] = useState([])
   const onIncrease = () => {
     setQty(qty => qty + 1)
     increaseInLocalCart(product)
@@ -38,6 +40,25 @@ const SingleProduct = () => {
       decreaseInLocalCart(product)
       console.log(getLocalCartContent())
   };      
+  const handleChange = (event) => setReview(event.target.value)
+  const handleSubmitReview = event => {
+    event.preventDefault()
+    if (!review.trim()) {
+      // check if the review content is empty or only whitespace
+      alert('Vui lòng nhập nội dung đánh giá.'); // display an error message
+      return; // stop further processing
+    }
+    axios.post('http://localhost/api/comment-on-product.php', { 
+      productID: product.ID,
+      content: review.trim()
+    })
+    .then(response => {
+      console.log('Đánh giá của bạn đã được gửi thành công.'); // display a success message
+    })
+    .catch(error => {
+      console.log(error)
+    });        
+  }
   const uniqueName = getUniqueNameFromUrl(window.location.href)
   const VNCurrencyFormatter = new Intl.NumberFormat('vi', {
     style: "currency",
@@ -45,30 +66,32 @@ const SingleProduct = () => {
   })   
   // // fecth product
   useEffect(() => {
-    // set qty of product by the current qty in cart
-    setQty(getQuantityByUniqueName(uniqueName))
-    // fetch product info by unique name
-    axios.get('http://localhost/api/product-info.php', {
-      params: {unique_name: uniqueName}
-    })
-    .then(response => {
-      // console.log(response)
-      return response.data
-    })
-    .then(response => {
-        setProduct(response)
-    }) 
-    .catch(error => {
-      if (error.response.status === 404) {
-        // navigate('/error/404');
+    async function fetchData() {
+      try {
+        // set qty of product by the current qty in cart
+        setQty(getQuantityByUniqueName(uniqueName));
+        // fetch product info by unique name
+        const productResponse = await axios.get('http://localhost/api/product-info.php', {
+          params: { unique_name: uniqueName }
+        });
+        setProduct(productResponse.data);
+        // fetch product comments
+        const commentsResponse = await axios.get('http://localhost/api/product-comments.php', {
+          params: { productID: productResponse.data.ID }
+        });
+        setAllReviews(commentsResponse.data);
+      } catch (error) {
+        if (error.response.status === 404) {
+          // navigate('/error/404');
+        }
       }
-    });   
-  }, [])
+    }
+    fetchData();
+  }, [uniqueName]);
   const props = {
     width: 594,
     height: 600,
     zoomWidth: 600,
-
     img: product.image,
   };
 
@@ -136,7 +159,6 @@ const SingleProduct = () => {
                   <p className="product-data">{product.in_stock? "Còn hàng": "Ngừng kinh doanh"}</p>
                 </div>
                 <div className="d-flex align-items-center gap-15 flex-row mt-2 mb-3">
-                  {/* <h3 className="product-heading">Quantity :</h3> */}
                   {qty?
                   <div className="">
                     <IconButton aria-label="Remove button" size="small" onClick={onDecrease}>
@@ -181,30 +203,10 @@ const SingleProduct = () => {
       <Container class1="reviews-wrapper home-wrapper-2">
         <div className="row">
           <div className="col-12">
-            <h3 id="review">Reviews</h3>
+            <h3 id="review">Đánh giá sản phẩm</h3>
             <div className="review-inner-wrapper">
-              <div className="review-head d-flex justify-content-between align-items-end">
-                <div>
-                  <h4 className="mb-2">Customer Reviews</h4>
-                  <div className="d-flex align-items-center gap-10">
-                    <ReactStars
-                      count={5}
-                      size={24}
-                      value={4}
-                      edit={false}
-                      activeColor="#ffd700"
-                    />
-                    <p className="mb-0">Based on 2 Reviews</p>
-                  </div>
-                </div>
-                <div>
-                  <a className="text-dark text-decoration-underline" href="">
-                    Write a Review
-                  </a>
-                </div>
-              </div>
               <div className="review-form py-4">
-                <h4>Write a Review</h4>
+                <h4>Viết đánh giá</h4>
                 <form action="" className="d-flex flex-column gap-15">
                   <div>
                     <ReactStars
@@ -217,23 +219,27 @@ const SingleProduct = () => {
                   </div>
                   <div>
                     <textarea
-                      name=""
-                      id=""
+                      name="review"
+                      value={review}
+                      onChange={handleChange}
                       className="w-100 form-control"
                       cols="30"
                       rows="4"
-                      placeholder="Comments"
+                      placeholder="Đánh giá của bạn..."
                     ></textarea>
                   </div>
                   <div className="d-flex justify-content-end">
-                    <button className="button border-0">Submit Review</button>
+                    <button type="submit" className="button border-0" onClick={handleSubmitReview}>
+                      Gửi đánh giá
+                    </button>
                   </div>
                 </form>
               </div>
               <div className="reviews mt-4">
-                <div className="review">
+                {allReviews.map(review => 
+                <div className="review" key={review.ID}>
                   <div className="d-flex gap-10 align-items-center">
-                    <h6 className="mb-0">Navdeep</h6>
+                    <h6 className="mb-0">{review.name}</h6>
                     <ReactStars
                       count={5}
                       size={24}
@@ -243,13 +249,11 @@ const SingleProduct = () => {
                     />
                   </div>
                   <p className="mt-3">
-                    Lorem ipsum dolor sit amet consectetur, adipisicing elit.
-                    Consectetur fugit ut excepturi quos. Id reprehenderit
-                    voluptatem placeat consequatur suscipit ex. Accusamus dolore
-                    quisquam deserunt voluptate, sit magni perspiciatis quas
-                    iste?
+                    {review.content}
                   </p>
-                </div>
+                  <span>{review.comment_datetime}</span>
+                </div>                  
+                )}
               </div>
             </div>
           </div>

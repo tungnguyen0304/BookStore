@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost
--- Generation Time: Apr 16, 2023 at 06:06 AM
+-- Generation Time: Apr 18, 2023 at 05:52 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -187,6 +187,14 @@ CREATE TABLE `product_comment` (
   `comment_datetime` datetime NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_bin;
 
+--
+-- Dumping data for table `product_comment`
+--
+
+INSERT INTO `product_comment` (`ID`, `userID`, `productID`, `content`, `comment_datetime`) VALUES
+(1, 3, 18, 'Hay quá anh ạ, em đọc không hiểu gì hết', '2023-04-18 05:45:09'),
+(2, 23, 18, 'Tôi dân Bách Khoa nên thấy bình thường', '2023-04-18 05:46:47');
+
 -- --------------------------------------------------------
 
 --
@@ -317,7 +325,7 @@ ALTER TABLE `product`
 -- AUTO_INCREMENT for table `product_comment`
 --
 ALTER TABLE `product_comment`
-  MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT;
+  MODIFY `ID` int(10) UNSIGNED NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `user`
