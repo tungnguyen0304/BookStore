@@ -11,6 +11,11 @@ import { AiOutlineHeart } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import watch from "../images/watch.jpg";
 import Container from "../components/Container";
+import { IconButton } from '@mui/material';
+import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
+import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
+import {getLocalCartContent, getQuantityByUniqueName, decreaseInLocalCart, increaseInLocalCart} from '../webpages/cart-payment/setCartLocal';
+
 function getUniqueNameFromUrl(url) {
   // Split the URL string by the '/' character
   const urlParts = url.split('/');
@@ -21,7 +26,18 @@ function getUniqueNameFromUrl(url) {
 }
 
 const SingleProduct = () => {
+  const [qty, setQty] = useState(0)
   const [product, setProduct] = useState({})
+  const onIncrease = () => {
+    setQty(qty => qty + 1)
+    increaseInLocalCart(product)
+    console.log(getLocalCartContent())
+}
+  const onDecrease = () => {
+      setQty(qty => qty - 1)
+      decreaseInLocalCart(product)
+      console.log(getLocalCartContent())
+  };      
   const uniqueName = getUniqueNameFromUrl(window.location.href)
   const VNCurrencyFormatter = new Intl.NumberFormat('vi', {
     style: "currency",
@@ -29,6 +45,9 @@ const SingleProduct = () => {
   })   
   // // fecth product
   useEffect(() => {
+    // set qty of product by the current qty in cart
+    setQty(getQuantityByUniqueName(uniqueName))
+    // fetch product info by unique name
     axios.get('http://localhost/api/product-info.php', {
       params: {unique_name: uniqueName}
     })
@@ -53,8 +72,6 @@ const SingleProduct = () => {
     img: product.image,
   };
 
-  const [orderedProduct, setorderedProduct] = useState(true);
-  const closeModal = () => {};
   return (
     <>
       <Meta title={product.name} />
@@ -65,7 +82,7 @@ const SingleProduct = () => {
             <div className="main-product-image">
               <div>
                 {Object.keys(product).length !== 0 && 
-                <ReactImageZoom {...props} img={product.image} />
+                  <ReactImageZoom {...props} />
                 }
               </div>
             </div>
@@ -95,49 +112,54 @@ const SingleProduct = () => {
               </div>
               <div className=" py-3">
                 <div className="d-flex gap-10 align-items-center my-2">
-                  <h3 className="product-heading">Type :</h3>
-                  <p className="product-data">Watch</p>
+                  <h3 className="product-heading">Tác giả:</h3>
+                  <p className="product-data">{product.author_name}</p>
                 </div>
                 <div className="d-flex gap-10 align-items-center my-2">
-                  <h3 className="product-heading">Brand :</h3>
-                  <p className="product-data">Havells</p>
+                  <h3 className="product-heading">NXB/NSX:</h3>
+                  <p className="product-data">{product.manufacturer_name}</p>
                 </div>
                 <div className="d-flex gap-10 align-items-center my-2">
-                  <h3 className="product-heading">Category :</h3>
-                  <p className="product-data">Watch</p>
+                  <h3 className="product-heading">Thể loại:</h3>
+                  <p className="product-data">{product.category_name}</p>
                 </div>
                 <div className="d-flex gap-10 align-items-center my-2">
-                  <h3 className="product-heading">Tags :</h3>
-                  <p className="product-data">Watch</p>
+                  <h3 className="product-heading">Số lượng còn lại:</h3>
+                  <p className="product-data">{product.current_qty}</p>
                 </div>
                 <div className="d-flex gap-10 align-items-center my-2">
-                  <h3 className="product-heading">Availablity :</h3>
+                  <h3 className="product-heading">Số lượng đã bán:</h3>
+                  <p className="product-data">{product.sold_qty}</p>
+                </div>                                
+                <div className="d-flex gap-10 align-items-center my-2">
+                  <h3 className="product-heading">Trạng thái:</h3>
                   <p className="product-data">{product.in_stock? "Còn hàng": "Ngừng kinh doanh"}</p>
                 </div>
                 <div className="d-flex align-items-center gap-15 flex-row mt-2 mb-3">
-                  <h3 className="product-heading">Quantity :</h3>
+                  {/* <h3 className="product-heading">Quantity :</h3> */}
+                  {qty?
                   <div className="">
-                    <input
-                      type="number"
-                      name=""
-                      min={1}
-                      max={10}
-                      className="form-control"
-                      style={{ width: "70px" }}
-                      id=""
-                    />
+                    <IconButton aria-label="Remove button" size="small" onClick={onDecrease}>
+                      <RemoveCircleOutlineIcon />
+                    </IconButton>
+                    <span>{qty}</span>
+                    <IconButton aria-label="Add button" size="small" onClick={onIncrease}>
+                      <AddCircleOutlineIcon />
+                    </IconButton>                     
                   </div>
+                  :
                   <div className="d-flex align-items-center gap-30 ms-5">
                     <button
                       className="button border-0"
                       data-bs-toggle="modal"
                       data-bs-target="#staticBackdrop"
                       type="button"
+                      onClick={onIncrease}
                     >
                       Add to Cart
                     </button>
-                    <button className="button signup">Buy It Now</button>
                   </div>
+                  }
                 </div>
               </div>
             </div>
@@ -175,13 +197,11 @@ const SingleProduct = () => {
                     <p className="mb-0">Based on 2 Reviews</p>
                   </div>
                 </div>
-                {orderedProduct && (
-                  <div>
-                    <a className="text-dark text-decoration-underline" href="">
-                      Write a Review
-                    </a>
-                  </div>
-                )}
+                <div>
+                  <a className="text-dark text-decoration-underline" href="">
+                    Write a Review
+                  </a>
+                </div>
               </div>
               <div className="review-form py-4">
                 <h4>Write a Review</h4>
@@ -246,7 +266,7 @@ const SingleProduct = () => {
         </div>
       </Container> */}
 
-      <div
+      {/* <div
         className="modal fade"
         id="staticBackdrop"
         data-bs-backdrop="static"
@@ -290,16 +310,16 @@ const SingleProduct = () => {
               <Link
                 className="text-dark"
                 to="/product"
-                onClick={() => {
-                  closeModal();
-                }}
+                // onClick={() => {
+                //   closeModal();
+                // }}
               >
                 Continue To Shopping
               </Link>
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
     </>
   );
 };

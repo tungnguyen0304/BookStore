@@ -8,14 +8,20 @@ const getLocalCartContent = () => {
     return cartContent
 }
 
+const getQuantityByUniqueName = unique_name => {
+  const cart = JSON.parse(localStorage.getItem('cart')) || []; // retrieve cart items from localStorage
+  const item = cart.find(item => item.unique_name === unique_name); // find the item with the matching unique_name
+  return item ? item.qty : 0; // return the quantity if the item was found, otherwise 0
+}
+
 const decreaseInLocalCart = (obj) => {
     let cartContent = getLocalCartContent()
-    const exist = cartContent.find((x) => x.id === obj.id);
+    const exist = cartContent.find((x) => x.ID === obj.ID);
     if (exist.qty === 1) {
-        cartContent = cartContent.filter((x) => x.id !== obj.id)
+        cartContent = cartContent.filter((x) => x.ID !== obj.ID)
     } else {
         cartContent = cartContent.map((x) =>
-          x.id === obj.id ? { ...exist, qty: exist.qty - 1 } : x
+          x.ID === obj.ID ? { ...exist, qty: exist.qty - 1 } : x
         )
     }
     localStorage.setItem("cart", JSON.stringify(cartContent))
@@ -23,10 +29,10 @@ const decreaseInLocalCart = (obj) => {
 
 const increaseInLocalCart = (obj) => {
   let cartContent = getLocalCartContent()
-  const exist = cartContent.find((x) => x.id === obj.id);
+  const exist = cartContent.find((x) => x.ID === obj.ID);
   if (exist) {
       cartContent = cartContent.map((x) =>
-        x.id === obj.id ? { ...exist, qty: exist.qty + 1 } : x
+        x.ID === obj.ID ? { ...exist, qty: exist.qty + 1 } : x
       )
   } else {
     cartContent = [...cartContent, { ...obj, qty: 1 }]
@@ -36,8 +42,8 @@ const increaseInLocalCart = (obj) => {
 
 const removeFromLocalCart = (obj) => {
     let cartContent = getLocalCartContent()
-    cartContent = cartContent.filter(x => x.id !== obj.id)
+    cartContent = cartContent.filter(x => x.ID !== obj.ID)
     localStorage.setItem("cart", JSON.stringify(cartContent))
 }
 
-export {getLocalCartContent, decreaseInLocalCart, increaseInLocalCart, removeFromLocalCart}
+export {getLocalCartContent, getQuantityByUniqueName, decreaseInLocalCart, increaseInLocalCart, removeFromLocalCart}

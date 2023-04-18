@@ -6,14 +6,24 @@ if ($_SERVER['REQUEST_METHOD'] === 'GET') {
         $ID = $_GET['id'];
         require_once('DBConnect.php');
         // Get data from the database
-        $qry = "SELECT * FROM product WHERE ID = ?";
+        $qry = "SELECT p.*, a.name AS author_name, m.name AS manufacturer_name, m.country, c.name AS category_name
+                FROM product p
+                LEFT JOIN author a ON p.authorID = a.ID
+                LEFT JOIN manufacturer m ON p.manufacturerID = m.ID
+                LEFT JOIN category c ON p.categoryID = c.ID
+                WHERE p.ID = ?";
         $stmt = mysqli_prepare($conn, $qry);
         mysqli_stmt_bind_param($stmt, 's', $ID);
     } else if (isset($_GET['unique_name'])) {
         $unique_name = $_GET['unique_name'];
         require_once('DBConnect.php');
         // Get data from the database
-        $qry = "SELECT * FROM product WHERE unique_name = ?";
+        $qry = "SELECT p.*, a.name AS author_name, m.name AS manufacturer_name, m.country, c.name AS category_name
+                FROM product p
+                LEFT JOIN author a ON p.authorID = a.ID
+                LEFT JOIN manufacturer m ON p.manufacturerID = m.ID
+                LEFT JOIN category c ON p.categoryID = c.ID
+                WHERE p.unique_name = ?";
         $stmt = mysqli_prepare($conn, $qry);
         mysqli_stmt_bind_param($stmt, 's', $unique_name);        
     }
