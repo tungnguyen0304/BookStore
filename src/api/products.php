@@ -8,7 +8,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $authorID = isset($_GET['authorID']) ? mysqli_real_escape_string($conn, $_GET['authorID']) : '';
     $manufacturerID = isset($_GET['manufacturerID']) ? mysqli_real_escape_string($conn, $_GET['manufacturerID']) : '';
     $price = isset($_GET['price']) ? $_GET['price'] : '';
-    $order = isset($_GET['order']) ? $_GET['order'] : '';
+    $order = isset($_GET['order']) ? mysqli_real_escape_string($conn, $_GET['order']) : '';
     $dir = isset($_GET['dir']) ? $_GET['dir'] : '';
     $page = isset($_GET['page']) ? mysqli_real_escape_string($conn, $_GET['page']) : '';
 
@@ -23,25 +23,33 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
     // Check if an author ID was provided
     if (!empty($authorID)) {
-        // Add a WHERE clause to filter by author ID
+        // Split the author ID string into an array of IDs
+        $authorIDs = explode('-', $authorID);
+        // Use the array of IDs to create a comma-separated list for use in the SQL query
+        $authorIDList = implode(',', $authorIDs);
+        // Add a WHERE clause to filter by author IDs
         if (strpos($sql, 'WHERE') !== false) {
             // If a WHERE clause has already been added, use AND to add another condition
-            $sql .= " AND authorID = '$authorID'";
+            $sql .= " AND authorID IN ($authorIDList)";
         } else {
             // Otherwise, start a new WHERE clause
-            $sql .= " WHERE authorID = '$authorID'";
+            $sql .= " WHERE authorID IN ($authorIDList)";
         }
     }
 
     // Check if a manufacturer ID was provided
     if (!empty($manufacturerID)) {
-        // Add a WHERE clause to filter by manufacturer ID
+        // Split the manufacturer ID string into an array of IDs
+        $manufacturerIDs = explode('-', $manufacturerID);
+        // Use the array of IDs to create a comma-separated list for use in the SQL query
+        $manufacturerIDList = implode(',', $manufacturerIDs);
+        // Add a WHERE clause to filter by manufacturer IDs
         if (strpos($sql, 'WHERE') !== false) {
             // If a WHERE clause has already been added, use AND to add another condition
-            $sql .= " AND manufacturerID = '$manufacturerID'";
+            $sql .= " AND manufacturerID IN ($manufacturerIDList)";
         } else {
             // Otherwise, start a new WHERE clause
-            $sql .= " WHERE manufacturerID = '$manufacturerID'";
+            $sql .= " WHERE manufacturerID IN ($manufacturerIDList)";
         }
     }
 
@@ -65,7 +73,20 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     // Check if an order parameter was provided
     if (!empty($order)) {
         // Determine the column to order by based on the parameter value
-        $orderColumn = $order == 'filter_price' ? 'price' : 'sold_qty';
+        switch ($order) {
+            case 'price':
+                $orderColumn = 'price';
+                break;
+            case 'sold_qty':
+                $orderColumn = 'sold_qty';
+                break;
+            case 'title':
+                $orderColumn = 'name';
+                break;
+            default:
+                $orderColumn = 'sold_qty';
+                break;
+        }
         $sql .= ' ORDER BY ' . $orderColumn;
 
         // Check if a direction parameter was also provided

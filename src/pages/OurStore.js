@@ -1,203 +1,270 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useLocation, useNavigate } from 'react-router-dom';
+import axios from "axios";
 import BreadCrumb from "../components/BreadCrumb";
 import Meta from "../components/Meta";
 import ReactStars from "react-rating-stars-component";
 import ProductCard from "../components/ProductCard";
 import Color from "../components/Color";
 import Container from "../components/Container";
+import { Slider } from "@mui/material";
+import styled from "@emotion/styled";
+const StyledSlider = styled(Slider)({
+  color: "primary",
+});
+const Checkbox = ({ isChecked, label, checkHandler, index }) => {
+  return (
+    <div>
+      <input
+        type="checkbox"
+        id={`checkbox-${index}`}
+        checked={isChecked}
+        onChange={checkHandler}
+      />
+      <label htmlFor={`checkbox-${index}`}>{label}</label>
+    </div>
+  )
+}
 
 const OurStore = () => {
-  const [grid, setGrid] = useState(4);
+  const navigate = useNavigate();
+  const [authorsList, setAuthorsList] = useState([])
+  const [manufacturersList, setManufacturersList] = useState([])  
+  const [categoriesList, setCategoriesList] = useState([]);
+  const [products, setProducts] = useState([]);
+  const [grid, setGrid] = useState(4)
+  const [page, setPage] = useState(1)
+  const [categoryObj, setCategoryObj] = useState({
+    ID: '',
+    name: '',
+    unique_name: ''
+  });
+  const location = useLocation() 
+  useEffect(() => {
+    axios
+      .get("http://localhost/api/product-info-option.php")
+      .then((response) => {
+        return response.data;
+      })
+      .then((response) => {
+        const authorsListWithChecked = JSON.parse(response.authorsList).map((author) => ({
+          ...author,
+          checked: false,
+        }));
+        setAuthorsList(authorsListWithChecked);
+    
+        const manufacturersListWithChecked = JSON.parse(response.manufacturersList).map((manufacturer) => ({
+          ...manufacturer,
+          checked: false,
+        }));
+        setManufacturersList(manufacturersListWithChecked);
+    
+        setCategoriesList(JSON.parse(response.categoriesList));
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);   
+  const getCategoryObj = pathname => {
+    const pathArray = pathname.split('/');
+    const unique_name = pathArray.pop(); // retrieves the last element of the array
+    for (const category of categoriesList) {
+        if (category.unique_name === unique_name) {
+            return category
+        }
+    }
+  }    
+  useEffect(() => {
+    if (categoriesList.length > 0) {
+      const category = getCategoryObj(location.pathname);
+      if (category) {
+        setCategoryObj(category)
+        setFilters(prev => ({...prev, categoryID: category.ID}))
+      }
+    }
+  }, [categoriesList, location.pathname]);   
+
+  const priceRange = [0, 1000000]
+  const [currentPrice, setCurrentPrice] = useState(priceRange)
+  const VNCurrencyFormatter = new Intl.NumberFormat('vi', {
+    style: "currency",
+    currency: "VND"
+  })  
+  const priceToQueryValue = priceRange => {
+    return priceRange[0] + '-' + priceRange[1]
+  }
+  const handleViewPrice = () => {
+    setFilters(prev => ({...prev, price: priceToQueryValue(currentPrice)}))
+  }
+  const updateAuthorsCheck = ID => {
+    const newAuthorsList = authorsList.map((author) =>
+      author.ID == ID
+        ? { ...author, checked: !author.checked}
+        : author
+    )
+    setAuthorsList(newAuthorsList)
+    const checkedAuthorIDs = newAuthorsList.filter((author) => author.checked).map((author) => author.ID);
+    const authorsIDFilter = checkedAuthorIDs.join('-');  
+    console.log(authorsIDFilter)
+    setFilters(prev => ({...prev, authorID: authorsIDFilter}))
+  }  
+  const updateManuCheck = ID => {
+    const newManusList = manufacturersList.map((manu) =>
+      manu.ID == ID
+        ? { ...manu, checked: !manu.checked}
+        : manu
+    )
+    setManufacturersList(newManusList)
+    const checkedManuIDs = newManusList.filter((manu) => manu.checked).map((manu) => manu.ID);
+    const manusIDFilter = checkedManuIDs.join('-');  
+    console.log(manusIDFilter)
+    setFilters(prev => ({...prev, manufacturerID: manusIDFilter}))    
+  }    
+  const [sorting, setSorting] = useState('')
+  const handleSortingChange = e => {
+    const selected = e.target.value
+    setSorting(selected)
+    const [order, dir] = selected.split('-');
+    setFilters(prev => ({...prev, order: order, dir: dir}));    
+  }
+
+  // Parse the filter parameters from the URL query string
+  const [filters, setFilters] = useState({})
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search)
+    const filterObj = {}
+    for (const [key, value] of queryParams.entries()) {
+      filterObj[key] = value;
+    }
+    setFilters(filterObj);
+  }, []); // empty array means it just run on mount (on load)
+
+  // Fetch the filtered product data from the server
+  useEffect(() => {
+    const params = {...filters, page: page, categoryID: categoryObj.ID};
+    console.log(params);
+    axios.get('http://localhost/api/products.php', {params: params})
+      .then(response => {
+        setProducts(response.data);
+        console.log(response);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+    let paramsInURL = {...filters}
+    // the path already include category so we don't need to have param categoryID
+    delete paramsInURL.categoryID
+    // also remove empty value attr
+    paramsInURL = Object.fromEntries(
+      Object.entries(paramsInURL)
+        .filter(([key, value]) => value !== '' && value !== null && value !== undefined)
+    );
+    navigate(location.pathname + '?' + new URLSearchParams(paramsInURL).toString())
+  }, [filters]);
+
   return (
     <>
-      <Meta title={"Sản phẩm"} />
-      <BreadCrumb title="Our Store" />
+      <Meta title={categoryObj.name} />
+      <BreadCrumb title={categoryObj.name} />
       <Container class1="store-wrapper home-wrapper-2 py-5">
         <div className="row">
           <div className="col-3">
             <div className="filter-card mb-3">
-              <h3 className="filter-title">Shop By Categories</h3>
+              <h3 className="filter-title">Lựa chọn thể loại</h3>
               <div>
                 <ul className="ps-0">
-                  <li>Watch</li>
-                  <li>Tv</li>
-                  <li>Camera</li>
-                  <li>Laptop</li>
+                  {categoriesList.map(category => 
+                    <li key={category.ID}>
+                      <a href={"/category/" + category.unique_name}>
+                        {category.name}
+                      </a>
+                    </li>
+                  )}
                 </ul>
               </div>
             </div>
             <div className="filter-card mb-3">
-              <h3 className="filter-title">Filter By</h3>
+              <h3 className="filter-title">Lọc theo</h3>
               <div>
-                <h5 className="sub-title">Availablity</h5>
-                <div>
-                  <div className="form-check">
-                    <input
-                      className="form-check-input"
-                      type="checkbox"
-                      value=""
-                      id=""
-                    />
-                    <label className="form-check-label" htmlFor="">
-                      In Stock (1)
-                    </label>
-                  </div>
-                  <div className="form-check">
-                    <input
-                      className="form-check-input"
-                      type="checkbox"
-                      value=""
-                      id=""
-                    />
-                    <label className="form-check-label" htmlFor="">
-                      Out of Stock(0)
-                    </label>
-                  </div>
-                </div>
-                <h5 className="sub-title">Price</h5>
+                <h5 className="sub-title">Giá</h5>
                 <div className="d-flex align-items-center gap-10">
-                  <div className="form-floating">
-                    <input
-                      type="email"
-                      className="form-control"
-                      id="floatingInput"
-                      placeholder="From"
-                    />
-                    <label htmlFor="floatingInput">From</label>
-                  </div>
-                  <div className="form-floating">
-                    <input
-                      type="email"
-                      className="form-control"
-                      id="floatingInput1"
-                      placeholder="To"
-                    />
-                    <label htmlFor="floatingInput1">To</label>
-                  </div>
+                  <div className="container" style={{ width: '300px' }}>
+                    <div className="row justify-content-center">
+                      <div className="col-6">
+                        <div style={{ margin: '5px' }}>{VNCurrencyFormatter.format(currentPrice[0])}</div>
+                      </div>
+                      <div className="col-6">
+                        <div style={{ textAlign: 'right', margin: '5px' }}>{VNCurrencyFormatter.format(currentPrice[1])}</div>
+                      </div>
+                      <div className="col-12">
+                        <div className="row d-flex justify-content-center">
+                          <div style={{ width: '80%' }}>
+                            <StyledSlider
+                              value={currentPrice}
+                              onChange={(e, newVal) => setCurrentPrice(newVal)}
+                              step={10000}
+                              min={priceRange[0]}
+                              max={priceRange[1]}
+                            />      
+                          </div>
+                          <div className="row d-flex align-items-center">
+                            <button
+                              className="button border-0"
+                              type="button"
+                              onClick={handleViewPrice}
+                            >
+                              Xem kết quả
+                            </button>
+                          </div>                          
+                        </div>
+                      </div>
+                    </div>
+                  </div>                  
                 </div>
-                <h5 className="sub-title">Colors</h5>
+                <h5 className="sub-title">Tác giả</h5>
                 <div>
-                  <Color />
-                </div>
-                <h5 className="sub-title">Size</h5>
+                  {authorsList.map((author, index) => 
+                    <Checkbox
+                      key={author.ID}
+                      isChecked={author.checked}
+                      checkHandler={() => updateAuthorsCheck(author.ID)}
+                      label={author.name}
+                      index={index}
+                    />  
+                  )}
+                </div>    
+                <h5 className="sub-title">NXB/NSX</h5>
                 <div>
-                  <div className="form-check">
-                    <input
-                      className="form-check-input"
-                      type="checkbox"
-                      value=""
-                      id="color-1"
-                    />
-                    <label className="form-check-label" htmlFor="color-1">
-                      S (2)
-                    </label>
-                  </div>
-                  <div className="form-check">
-                    <input
-                      className="form-check-input"
-                      type="checkbox"
-                      value=""
-                      id="color-2"
-                    />
-                    <label className="form-check-label" htmlFor="color-2">
-                      M (2)
-                    </label>
-                  </div>
-                </div>
+                  {manufacturersList.map((manu, index) => 
+                    <Checkbox
+                      key={manu.ID}
+                      isChecked={manu.checked}
+                      checkHandler={() => updateManuCheck(manu.ID)}
+                      label={manu.name}
+                      index={index}
+                    />  
+                  )}
+                </div>                                  
               </div>
             </div>
-            <div className="filter-card mb-3">
-              <h3 className="filter-title">Product Tags</h3>
-              <div>
-                <div className="product-tags d-flex flex-wrap align-items-center gap-10">
-                  <span className="badge bg-light text-secondary rounded-3 py-2 px-3">
-                    Headphone
-                  </span>
-                  <span className="badge bg-light text-secondary rounded-3 py-2 px-3">
-                    Laptop
-                  </span>
-                  <span className="badge bg-light text-secondary rounded-3 py-2 px-3">
-                    Mobile
-                  </span>
-                  <span className="badge bg-light text-secondary rounded-3 py-2 px-3">
-                    Wire
-                  </span>
-                </div>
-              </div>
-            </div>
-            <div className="filter-card mb-3">
-              <h3 className="filter-title">Random Product</h3>
-              <div>
-                <div className="random-products mb-3 d-flex">
-                  <div className="w-50">
-                    <img
-                      src="images/watch.jpg"
-                      className="img-fluid"
-                      alt="watch"
-                    />
-                  </div>
-                  <div className="w-50">
-                    <h5>
-                      Kids headphones bulk 10 pack multi colored for students
-                    </h5>
-                    <ReactStars
-                      count={5}
-                      size={24}
-                      value={4}
-                      edit={false}
-                      activeColor="#ffd700"
-                    />
-                    <b>$ 300</b>
-                  </div>
-                </div>
-                <div className="random-products d-flex">
-                  <div className="w-50">
-                    <img
-                      src="images/watch.jpg"
-                      className="img-fluid"
-                      alt="watch"
-                    />
-                  </div>
-                  <div className="w-50">
-                    <h5>
-                      Kids headphones bulk 10 pack multi colored for students
-                    </h5>
-                    <ReactStars
-                      count={5}
-                      size={24}
-                      value={4}
-                      edit={false}
-                      activeColor="#ffd700"
-                    />
-                    <b>$ 300</b>
-                  </div>
-                </div>
-              </div>
-            </div>
-          </div>
+          </div> 
           <div className="col-9">
             <div className="filter-sort-grid mb-4">
               <div className="d-flex justify-content-between align-items-center">
                 <div className="d-flex align-items-center gap-10">
                   <p className="mb-0 d-block" style={{ width: "100px" }}>
-                    Sort By:
+                    Sắp xếp theo
                   </p>
                   <select
-                    name=""
-                    defaultValue={"manula"}
+                    value={sorting}
+                    onChange={handleSortingChange}
                     className="form-control form-select"
-                    id=""
                   >
-                    <option value="manual">Featured</option>
-                    <option value="best-selling">Best selling</option>
-                    <option value="title-ascending">Alphabetically, A-Z</option>
-                    <option value="title-descending">
-                      Alphabetically, Z-A
-                    </option>
-                    <option value="price-ascending">Price, low to high</option>
-                    <option value="price-descending">Price, high to low</option>
-                    <option value="created-ascending">Date, old to new</option>
-                    <option value="created-descending">Date, new to old</option>
+                    <option value="sold_qty-dsc">Bán chạy nhất</option>
+                    <option value="title-asc">A-Z</option>
+                    <option value="title-dsc">Z-A</option>
+                    <option value="price-asc">Giá thấp đến cao</option>
+                    <option value="price-dsc">Giá cao đến thấp</option>
                   </select>
                 </div>
                 <div className="d-flex align-items-center gap-10">
@@ -242,7 +309,9 @@ const OurStore = () => {
             </div>
             <div className="products-list pb-5">
               <div className="d-flex gap-10 flex-wrap">
-                <ProductCard grid={grid} />
+                {products.map(item => 
+                  <ProductCard key={item.ID} product={item}/>
+                )}
               </div>
             </div>
           </div>

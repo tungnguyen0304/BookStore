@@ -178,7 +178,7 @@ const SingleProduct = () => {
                       type="button"
                       onClick={onIncrease}
                     >
-                      Add to Cart
+                      Thêm giỏ hàng
                     </button>
                   </div>
                   }
