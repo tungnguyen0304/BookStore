@@ -118,28 +118,38 @@ const Header = () => {
                       aria-labelledby="dropdownMenuButton1"
                     >
                       <li>
-                        <Link className="dropdown-item text-white" to="">
-                          Action
+                        <Link className="dropdown-item text-white" to="/category/sach-trong-nuoc">
+                          Sách trong nước
                         </Link>
                       </li>
                       <li>
-                        <Link className="dropdown-item text-white" to="">
-                          Another action
+                        <Link className="dropdown-item text-white" to="/category/sach-ngoai-quoc">
+                          Sách ngoại quốc
                         </Link>
                       </li>
                       <li>
-                        <Link className="dropdown-item text-white" to="">
-                          Something else here
+                        <Link className="dropdown-item text-white" to="/category/van-phong-pham">
+                          Văn phòng phẩm
                         </Link>
                       </li>
+                      <li>
+                        <Link className="dropdown-item text-white" to="/category/do-choi">
+                          Đồ chơi
+                        </Link>
+                      </li> 
+                      <li>
+                        <Link className="dropdown-item text-white" to="/category/hang-luu-niem">
+                          Hàng lưu niệm
+                        </Link>
+                      </li>                                            
                     </ul>
                   </div>
                 </div>
                 <div className="menu-links">
                   <div className="d-flex align-items-center gap-15">
                     <NavLink to="/">Trang chủ</NavLink>
-                    <NavLink to="/product">Sản phẩm</NavLink>
-                    <NavLink to="/blogs">Blogs</NavLink>
+                    {/* <NavLink to="/product">Sản phẩm</NavLink>
+                    <NavLink to="/blogs">Blogs</NavLink> */}
                     <NavLink to="/contact">Liên hệ</NavLink>
                   </div>
                 </div>

@@ -34,7 +34,7 @@ const OurStore = () => {
   const [products, setProducts] = useState([]);
   const [grid, setGrid] = useState(4)
   const [page, setPage] = useState(1)
-  const [categoryObj, setCategoryObj] = useState({
+  const [currentCategory, setCurrentCategory] = useState({
     ID: '',
     name: '',
     unique_name: ''
@@ -47,11 +47,8 @@ const OurStore = () => {
     style: "currency",
     currency: "VND"
   })  
-  const priceToQueryValue = priceRange => {
-    return priceRange[0] + '-' + priceRange[1]
-  }
   const handleViewPrice = () => {
-    setFilters(prev => ({...prev, price: priceToQueryValue(currentPrice)}))
+    setFilters(prev => ({...prev, price: currentPrice[0] + '-' + currentPrice[1]}))
   }
   const updateAuthorsCheck = ID => {
     const newAuthorsList = authorsList.map((author) =>
@@ -86,180 +83,107 @@ const OurStore = () => {
   }
 
   const [filters, setFilters] = useState({})  
-  // Fecth product filter option
+  // Fecth product filtering options and parse initial URL
   useEffect(() => {
+    let fetchedAuthorsList = []
+    let fetchedManusList = []
+    let fetchedCatesList = []
+
     async function fetchProductFilter() {
       try {
         const response = (await axios.get("http://localhost/api/product-info-option.php")).data;
-        const authorsListWithChecked = JSON.parse(response.authorsList).map((author) => ({
+        fetchedAuthorsList = JSON.parse(response.authorsList).map((author) => ({
           ...author,
           checked: false,
         }));
-        setAuthorsList(authorsListWithChecked);
+        setAuthorsList(fetchedAuthorsList);
   
-        const manufacturersListWithChecked = JSON.parse(response.manufacturersList).map((manufacturer) => ({
+        fetchedManusList = JSON.parse(response.manufacturersList).map((manufacturer) => ({
           ...manufacturer,
           checked: false,
         }));
-        setManufacturersList(manufacturersListWithChecked);
-  
-        setCategoriesList(JSON.parse(response.categoriesList));
+        setManufacturersList(fetchedManusList);
+        
+        fetchedCatesList = JSON.parse(response.categoriesList)
+        setCategoriesList(fetchedCatesList);
   
         return response;
       } catch (error) {
         console.log(error);
       }
     }
+    async function parseParam() {
+      if (fetchedAuthorsList.length === 0 || fetchedManusList.length === 0) return;
+      const filterObj = {};
+      // Parse author IDs
+      const authorIDs = initialQueryParams.get("authorID");
+      if (authorIDs) {
+        filterObj.authorID = authorIDs;
+        const authorIDArr = authorIDs.split("-").map((id) => parseInt(id));
+        setAuthorsList(fetchedAuthorsList.map((author) => ({
+            ...author,
+            checked: authorIDArr.includes(author.ID),
+          }
+        )));
+      }
+      // Parse manufacturer ID
+      const manufacturerIDs = initialQueryParams.get("manufacturerID");
+      if (manufacturerIDs) {
+        filterObj.manufacturerID = manufacturerIDs;
+        const manuIDArr = manufacturerIDs.split("-").map((id) => parseInt(id));
+        setManufacturersList(fetchedManusList.map((manufacturer) => ({
+            ...manufacturer,
+            checked: manuIDArr.includes(manufacturer.ID),
+          }
+        )));
+      }
+      // Parse price range
+      const priceRange = initialQueryParams.get("price");
+      if (priceRange) {
+        filterObj.price = priceRange;
+        const [min, max] = priceRange.split("-").map((price) => Number(price));
+        setCurrentPrice([min, max]);
+      }
   
-    fetchProductFilter();
-  }, []);
+      // Parse sorting order and direction
+      const order = initialQueryParams.get("order");
+      const dir = initialQueryParams.get("dir");
+      if (order && dir) {
+        filterObj.order = order;
+        filterObj.dir = dir;
+        setSorting(order + "-" + dir);
+      }
   
-  // useEffect(() => {
-  //   async function parseParam() {
-  //     console.log("aaa", authorsList);
-  //     console.log("bbb", manufacturersList);
-  //     if (authorsList.length === 0 || manufacturersList.length === 0) return;
-  //     console.log("cccc");
-  //     const filterObj = {};
-  //     // Parse author IDs
-  //     const authorIDs = initialQueryParams.get("authorID");
-  //     console.log(authorIDs);
-  //     if (authorIDs) {
-  //       console.log("ABC");
-  //       filterObj.authorID = authorIDs;
-  //       const authorIDArr = authorIDs.split("-").map((id) => parseInt(id));
-  //       console.log(authorsList);
-  //       setAuthorsList((prevAuthorsList) => {
-  //         const newAuthorsList = prevAuthorsList.map((author) => ({
-  //           ...author,
-  //           checked: authorIDArr.includes(author.ID),
-  //         }));
-  //         return newAuthorsList;
-  //       });
-  //       console.log("CBA");
-  //     }
-  //     // Parse manufacturer ID
-  //     const manufacturerIDs = initialQueryParams.get("manufacturerID");
-  //     if (manufacturerIDs) {
-  //       filterObj.manufacturerID = manufacturerIDs;
-  //       const manuIDArr = manufacturerIDs.split("-").map((id) => parseInt(id));
-  //       setManufacturersList((prevManufacturersList) => {
-  //         const newManufacturersList = prevManufacturersList.map((manufacturer) => ({
-  //           ...manufacturer,
-  //           checked: manuIDArr.includes(manufacturer.ID),
-  //         }));
-  //         return newManufacturersList;
-  //       });
-  //     }
-  //     // Parse price range
-  //     const priceRange = initialQueryParams.get("price");
-  //     if (priceRange) {
-  //       filterObj.price = priceRange;
-  //       const [min, max] = priceRange.split("-").map((price) => Number(price));
-  //       setCurrentPrice([min, max]);
-  //     }
-  
-  //     // Parse sorting order and direction
-  //     const order = initialQueryParams.get("order");
-  //     const dir = initialQueryParams.get("dir");
-  //     if (order && dir) {
-  //       filterObj.order = order;
-  //       filterObj.dir = dir;
-  //       setSorting(order + "-" + dir);
-  //     }
-  
-  //     setFilters(filterObj);
-  //   }
-  
-  //   parseParam();
-  // }, [authorsList, manufacturersList]);
-  
-
-  const getCategoryObj = pathname => {
-    const pathArray = pathname.split('/');
-    const unique_name = pathArray.pop(); // retrieves the last element of the array
-    for (const category of categoriesList) {
-        if (category.unique_name === unique_name) {
-            return category
-        }
+      setFilters(filterObj);
     }
-  }    
-  useEffect(() => {
-    if (categoriesList.length > 0) {
-      const category = getCategoryObj(location.pathname);
-      if (category) {
-        setCategoryObj(category)
-        setFilters(prev => ({...prev, categoryID: category.ID}))
+    const getCategoryObj = (pathname, categoriesList) => {
+      const pathArray = pathname.split('/');
+      const unique_name = pathArray.pop(); // retrieves the last element of the array
+      for (const category of categoriesList) {
+          if (category.unique_name === unique_name) {
+              return category
+          }
+      }
+    }        
+    async function setCurrentCategoryFromURL() {
+      const currentCategory = getCategoryObj(location.pathname, fetchedCatesList)
+      if (currentCategory) {
+        setCurrentCategory(currentCategory)
+        setFilters(prev => ({...prev, categoryID: currentCategory.ID}))
       }
     }
-  }, [categoriesList]);    
-
-  useEffect(() => {
-    // console.log("aaa", authorsList)
-    // console.log("bbb", manufacturersList)
-    // if (authorsList.length === 0 || manufacturersList.length === 0)
-    //   return
-    // console.log("cccc")
-    // const filterObj = {}
-    // // Parse author IDs
-    // const authorIDs = initialQueryParams.get('authorID')
-    // console.log(authorIDs)
-    // if (authorIDs) {
-    //   console.log("ABC")
-    //   filterObj.authorID = authorIDs
-    //   const authorIDArr = authorIDs.split('-').map(id => parseInt(id));
-    //   console.log(authorsList)
-    //   const newAuthorsList = authorsList.map(author => ({
-    //     ...author,
-    //     checked: authorIDArr.includes(author.ID)
-    //   }))
-    //   console.log(newAuthorsList)
-    //   setAuthorsList(newAuthorsList)
-    //   console.log("CBA")
-    // }   
-    // // Parse manufacturer ID
-    // const manufacturerIDs = initialQueryParams.get('manufacturerID')
-    // if (manufacturerIDs) {
-    //   filterObj.manufacturerID = manufacturerIDs
-    //   const manuIDArr = manufacturerIDs.split('-').map(id => parseInt(id));
-    //   setManufacturersList(prev => {
-    //     return prev.map(manufacturer => ({
-    //       ...manufacturer,
-    //       checked: manuIDArr.includes(manufacturer.ID)
-    //     }))
-    //   })
-    // }     
-    // // Parse price range
-    // const priceRange = initialQueryParams.get('price')
-    // if (priceRange) {
-    //   filterObj.price = priceRange
-    //   const [min, max] = priceRange.split('-').map(price => Number(price))
-    //   setCurrentPrice([min, max])
-    // }
     
+    // fecth authors/manus first then parse param later
+    fetchProductFilter().then(parseParam).then(setCurrentCategoryFromURL);
+  }, []);
 
-    // // Parse sorting order and direction
-    // const order = initialQueryParams.get('order')
-    // const dir = initialQueryParams.get('dir')
-    // if (order && dir) {
-    //   filterObj.order = order
-    //   filterObj.dir = dir
-    //   setSorting(order + '-' + dir)
-    // }
-
-    // setFilters(filterObj);    
-  }, []);    
-
-  // Fetch the filtered product data from the server
+  // Fetch new product data from the server everytime the filters change
   useEffect(() => {
-    console.log(filters)
-    console.log(authorsList)
-    const params = {...filters, page: page, categoryID: categoryObj.ID};
+    const params = {...filters, page: page, categoryID: currentCategory.ID};
     // console.log(params);
     axios.get('http://localhost/api/products.php', {params: params})
       .then(response => {
         setProducts(response.data);
-        // console.log(response);
       })
       .catch(error => {
         console.error(error);
@@ -277,8 +201,8 @@ const OurStore = () => {
 
   return (
     <>
-      <Meta title={categoryObj.name} />
-      <BreadCrumb title={categoryObj.name} />
+      <Meta title={currentCategory.name} />
+      <BreadCrumb title={currentCategory.name} />
       <Container class1="store-wrapper home-wrapper-2 py-5">
         <div className="row">
           <div className="col-3">
