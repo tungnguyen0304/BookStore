@@ -3,9 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import axios from "axios";
 import BreadCrumb from "../components/BreadCrumb";
 import Meta from "../components/Meta";
-import ReactStars from "react-rating-stars-component";
 import ProductCard from "../components/ProductCard";
-import Color from "../components/Color";
 import Container from "../components/Container";
 import { Slider } from "@mui/material";
 import styled from "@emotion/styled";
@@ -34,67 +32,20 @@ const OurStore = () => {
   const [products, setProducts] = useState([]);
   const [grid, setGrid] = useState(4)
   const [page, setPage] = useState(1)
-  const [categoryObj, setCategoryObj] = useState({
+  const [currentCategory, setCurrentCategory] = useState({
     ID: '',
     name: '',
     unique_name: ''
   });
   const location = useLocation() 
-  useEffect(() => {
-    axios
-      .get("http://localhost/api/product-info-option.php")
-      .then((response) => {
-        return response.data;
-      })
-      .then((response) => {
-        const authorsListWithChecked = JSON.parse(response.authorsList).map((author) => ({
-          ...author,
-          checked: false,
-        }));
-        setAuthorsList(authorsListWithChecked);
-    
-        const manufacturersListWithChecked = JSON.parse(response.manufacturersList).map((manufacturer) => ({
-          ...manufacturer,
-          checked: false,
-        }));
-        setManufacturersList(manufacturersListWithChecked);
-    
-        setCategoriesList(JSON.parse(response.categoriesList));
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);   
-  const getCategoryObj = pathname => {
-    const pathArray = pathname.split('/');
-    const unique_name = pathArray.pop(); // retrieves the last element of the array
-    for (const category of categoriesList) {
-        if (category.unique_name === unique_name) {
-            return category
-        }
-    }
-  }    
-  useEffect(() => {
-    if (categoriesList.length > 0) {
-      const category = getCategoryObj(location.pathname);
-      if (category) {
-        setCategoryObj(category)
-        setFilters(prev => ({...prev, categoryID: category.ID}))
-      }
-    }
-  }, [categoriesList, location.pathname]);   
-
   const priceRange = [0, 1000000]
   const [currentPrice, setCurrentPrice] = useState(priceRange)
   const VNCurrencyFormatter = new Intl.NumberFormat('vi', {
     style: "currency",
     currency: "VND"
   })  
-  const priceToQueryValue = priceRange => {
-    return priceRange[0] + '-' + priceRange[1]
-  }
   const handleViewPrice = () => {
-    setFilters(prev => ({...prev, price: priceToQueryValue(currentPrice)}))
+    setFilters(prev => ({...prev, price: currentPrice[0] + '-' + currentPrice[1]}))
   }
   const updateAuthorsCheck = ID => {
     const newAuthorsList = authorsList.map((author) =>
@@ -105,7 +56,7 @@ const OurStore = () => {
     setAuthorsList(newAuthorsList)
     const checkedAuthorIDs = newAuthorsList.filter((author) => author.checked).map((author) => author.ID);
     const authorsIDFilter = checkedAuthorIDs.join('-');  
-    console.log(authorsIDFilter)
+    // console.log(authorsIDFilter)
     setFilters(prev => ({...prev, authorID: authorsIDFilter}))
   }  
   const updateManuCheck = ID => {
@@ -117,7 +68,7 @@ const OurStore = () => {
     setManufacturersList(newManusList)
     const checkedManuIDs = newManusList.filter((manu) => manu.checked).map((manu) => manu.ID);
     const manusIDFilter = checkedManuIDs.join('-');  
-    console.log(manusIDFilter)
+    // console.log(manusIDFilter)
     setFilters(prev => ({...prev, manufacturerID: manusIDFilter}))    
   }    
   const [sorting, setSorting] = useState('')
@@ -128,25 +79,110 @@ const OurStore = () => {
     setFilters(prev => ({...prev, order: order, dir: dir}));    
   }
 
-  // Parse the filter parameters from the URL query string
-  const [filters, setFilters] = useState({})
+  const [filters, setFilters] = useState({})  
+  // Fecth product filtering options and parse initial URL
   useEffect(() => {
-    const queryParams = new URLSearchParams(location.search)
-    const filterObj = {}
-    for (const [key, value] of queryParams.entries()) {
-      filterObj[key] = value;
-    }
-    setFilters(filterObj);
-  }, []); // empty array means it just run on mount (on load)
+    let fetchedAuthorsList = []
+    let fetchedManusList = []
+    let fetchedCatesList = []
 
-  // Fetch the filtered product data from the server
+    async function fetchProductFilter() {
+      try {
+        const response = (await axios.get("http://localhost/api/product-info-option.php")).data;
+        fetchedAuthorsList = JSON.parse(response.authorsList).map((author) => ({
+          ...author,
+          checked: false,
+        }));
+        setAuthorsList(fetchedAuthorsList);
+  
+        fetchedManusList = JSON.parse(response.manufacturersList).map((manufacturer) => ({
+          ...manufacturer,
+          checked: false,
+        }));
+        setManufacturersList(fetchedManusList);
+        
+        fetchedCatesList = JSON.parse(response.categoriesList)
+        setCategoriesList(fetchedCatesList);
+  
+        return response;
+      } catch (error) {
+        console.log(error);
+      }
+    }
+    async function parseParam() {
+      if (fetchedAuthorsList.length === 0 || fetchedManusList.length === 0) 
+        return;
+      const initialQueryParams = new URLSearchParams(location.search)
+      const filterObj = {};
+      // Parse author IDs
+      const authorIDs = initialQueryParams.get("authorID");
+      if (authorIDs) {
+        filterObj.authorID = authorIDs;
+        const authorIDArr = authorIDs.split("-").map((id) => parseInt(id));
+        setAuthorsList(fetchedAuthorsList.map((author) => ({
+            ...author,
+            checked: authorIDArr.includes(author.ID),
+          }
+        )));
+      }
+      // Parse manufacturer ID
+      const manufacturerIDs = initialQueryParams.get("manufacturerID");
+      if (manufacturerIDs) {
+        filterObj.manufacturerID = manufacturerIDs;
+        const manuIDArr = manufacturerIDs.split("-").map((id) => parseInt(id));
+        setManufacturersList(fetchedManusList.map((manufacturer) => ({
+            ...manufacturer,
+            checked: manuIDArr.includes(manufacturer.ID),
+          }
+        )));
+      }
+      // Parse price range
+      const priceRange = initialQueryParams.get("price");
+      if (priceRange) {
+        filterObj.price = priceRange;
+        const [min, max] = priceRange.split("-").map((price) => Number(price));
+        setCurrentPrice([min, max]);
+      }
+  
+      // Parse sorting order and direction
+      const order = initialQueryParams.get("order");
+      const dir = initialQueryParams.get("dir");
+      if (order && dir) {
+        filterObj.order = order;
+        filterObj.dir = dir;
+        setSorting(order + "-" + dir);
+      }
+  
+      setFilters(filterObj);
+    }
+    const getCategoryObj = (pathname, categoriesList) => {
+      const pathArray = pathname.split('/');
+      const unique_name = pathArray.pop(); // retrieves the last element of the array
+      for (const category of categoriesList) {
+          if (category.unique_name === unique_name) {
+              return category
+          }
+      }
+    }        
+    async function setCurrentCategoryFromURL() {
+      const currentCategory = getCategoryObj(location.pathname, fetchedCatesList)
+      if (currentCategory) {
+        setCurrentCategory(currentCategory)
+        setFilters(prev => ({...prev, categoryID: currentCategory.ID}))
+      }
+    }
+    
+    // fecth authors/manus first then parse param later
+    fetchProductFilter().then(parseParam).then(setCurrentCategoryFromURL);
+  }, []);
+
+  // Fetch new product data from the server everytime the filters change
   useEffect(() => {
-    const params = {...filters, page: page, categoryID: categoryObj.ID};
-    console.log(params);
+    const params = {...filters, page: page, categoryID: currentCategory.ID};
+    // console.log(params);
     axios.get('http://localhost/api/products.php', {params: params})
       .then(response => {
         setProducts(response.data);
-        console.log(response);
       })
       .catch(error => {
         console.error(error);
@@ -164,8 +200,8 @@ const OurStore = () => {
 
   return (
     <>
-      <Meta title={categoryObj.name} />
-      <BreadCrumb title={categoryObj.name} />
+      <Meta title={currentCategory.name} />
+      <BreadCrumb title={currentCategory.name} />
       <Container class1="store-wrapper home-wrapper-2 py-5">
         <div className="row">
           <div className="col-3">

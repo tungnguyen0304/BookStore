@@ -9,6 +9,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     require_once('utils/test_input.php');   
     require_once('utils/user_info_utils.php'); 
     require_once('utils/product_utils.php');
+    require_once('utils/check_access.php');
+
+    check_user_access();
     # get ID of user
     $userID = (int) $_SESSION['ID'];    
 

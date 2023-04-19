@@ -10,7 +10,7 @@ import addcart from "../images/add-cart.svg";
 import view from "../images/view.svg";
 const ProductCard = ({grid, product}) => {
   let location = useLocation();
-  console.log(grid);
+  // console.log(grid);
   const VNCurrencyFormatter = new Intl.NumberFormat('vi', {
     style: "currency",
     currency: "VND"

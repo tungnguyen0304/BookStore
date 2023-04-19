@@ -3,10 +3,13 @@ session_start();
 require_once('cors.php');
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     require_once('DBConnect.php');
-    require_once('utils/check_access.php');
     require_once('utils/test_input.php');   
     require_once('utils/user_info_utils.php');
     require_once('utils/get_user_info.php');
+    require_once('utils/check_access.php');
+
+    // check user access
+    check_user_access();
     // get post data from client
     $post_data = json_decode(file_get_contents('php://input'), true);    
     $name = test_input($post_data['name']);
@@ -16,18 +19,6 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
 
     # get ID of user
     $ID = $_SESSION['ID'];
-    if (check_user_access() == 1) {
-        http_response_code(408); // Request Timeout
-        echo "Your session has timeout, login again";
-        mysqli_close($conn);
-        exit();        
-    }
-    else if (check_user_access() == 2) {
-        http_response_code(401); // Unauthorized
-        echo "You are not authorized to access this resource";
-        mysqli_close($conn);
-        exit();        
-    }    
 
     // check validity
     $errors = array();

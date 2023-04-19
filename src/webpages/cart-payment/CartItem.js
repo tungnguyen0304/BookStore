@@ -22,10 +22,7 @@ const subtotalStyle = {
     fontWeight: "bold",
 }
 
-export default function CartItem (props) {
-    const onIncrease = props.onIncrease
-    const onDecrease = props.onDecrease
-    const onDelete = props.onDelete
+export default function CartItem ({product, onIncrease, onDecrease, onDelete}) {
     const calSubtotal = obj => {
         return obj.price * obj.qty
     }
@@ -35,36 +32,35 @@ export default function CartItem (props) {
     })    
 
     return (
-        <>
       <div className='shadowedBox secondLayerBox'>
       <Box sx={{ flexGrow: 1 }}>
         <Grid container item xs={12} spacing={1}>
             <Grid item>
-                <img src={props.obj.img} style={imgStyle} alt="product" />
+                <img src={product.image} style={imgStyle} alt="product" />
             </Grid>
             <Grid container item xs alignItems="center">
                 <Grid container item xs={11}>
                     <Grid item xs={12} sm={5}>
                         <div style={bookTitleStyle}>
-                            {props.obj.title}
+                            {product.name}
                         </div>
-                        <div>Giá: {VNCurrencyFormatter.format(props.obj.price)}</div>
+                        <div>Giá: {VNCurrencyFormatter.format(product.price)}</div>
                     </Grid>
                     <Grid item xs={12} sm={3} sx={{ display: 'flex', alignItems: 'center' }}>
-                        <IconButton aria-label="Remove button" size="small" onClick={() => onDecrease(props.obj)}>
+                        <IconButton aria-label="Remove button" size="small" onClick={() => onDecrease(product)}>
                             <RemoveCircleOutlineIcon />
                         </IconButton>
-                        <span>{props.obj.qty}</span>
-                        <IconButton aria-label="Add button" size="small" onClick={() => onIncrease(props.obj)}>
+                        <span>{product.qty}</span>
+                        <IconButton aria-label="Add button" size="small" onClick={() => onIncrease(product)}>
                             <AddCircleOutlineIcon />
                         </IconButton>          
                     </Grid>
                     <Grid item xs={12} sm={4} display={{ xs: "none", sm: "block" }} sx={{ display: 'flex', alignItems: 'center' }}>
-                        <div style={subtotalStyle}>{VNCurrencyFormatter.format(calSubtotal(props.obj))}</div>
+                        <div style={subtotalStyle}>{VNCurrencyFormatter.format(calSubtotal(product))}</div>
                     </Grid>
                 </Grid>
                 <Grid item xs={1}>
-                    <IconButton aria-label="Delete button" onClick={() => onDelete(props.obj)}> 
+                    <IconButton aria-label="Delete button" onClick={() => onDelete(product)}> 
                         <DeleteIcon />
                     </IconButton>
                 </Grid>  
@@ -72,6 +68,5 @@ export default function CartItem (props) {
         </Grid>
       </Box>  
       </div>
-      </>
     )
 }

@@ -5,6 +5,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     require_once('../utils/test_input.php');
     require_once('../utils/check_access.php');
 
+    // check admin access
     check_admin_access();
 
     // sanitize and validate the q parameter
