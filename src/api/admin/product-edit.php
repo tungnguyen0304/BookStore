@@ -1,10 +1,16 @@
 <?php 
-require_once('cors.php');
+require_once('../cors.php');
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    require_once('DBConnect.php');
-    require_once('utils/get_unique_name.php');    
-    require_once('utils/product_utils.php');
-    require_once('utils/get_and_check_product_input.php');
+    require_once('../DBConnect.php');
+    require_once('../utils/get_unique_name.php');    
+    require_once('../utils/get_and_check_product_input.php');   
+    require_once('../utils/product_utils.php'); 
+    require_once('../utils/test_input.php');   
+    require_once('../utils/check_access.php');    
+
+    // check admin access
+    check_admin_access();    
+
     # get ID of product
     $ID = test_input($post_data['ID']);
     $ID_error = check_product_ID($conn, $ID);

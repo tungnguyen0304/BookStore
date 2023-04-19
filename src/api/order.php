@@ -9,12 +9,9 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     require_once('utils/test_input.php');   
     require_once('utils/user_info_utils.php'); 
     require_once('utils/product_utils.php');
-    if (!isset($_SESSION['ID'])) {
-        http_response_code(408); // Request Timeout
-        echo "Your session has timeout, login again";
-        mysqli_close($conn);
-        exit();         
-    }    
+    require_once('utils/check_access.php');
+
+    check_user_access();
     # get ID of user
     $userID = (int) $_SESSION['ID'];    
 

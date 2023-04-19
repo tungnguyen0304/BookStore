@@ -7,7 +7,9 @@ require_once('cors.php');
 if ($_SERVER['REQUEST_METHOD'] == 'POST' and isset($_SESSION['ID'])) {
     require_once('DBConnect.php');
     require_once('utils/test_input.php');
+    require_once('utils/check_access.php');
 
+    check_user_access();
     // get the userID from the session variable
     $userID = $_SESSION['ID'];
 

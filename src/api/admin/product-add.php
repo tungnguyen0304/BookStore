@@ -1,10 +1,15 @@
 <?php 
-require_once('cors.php');
+require_once('../cors.php');
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    require_once('DBConnect.php');
-    require_once('utils/get_unique_name.php');    
-    require_once('utils/get_and_check_product_input.php');
-    
+    require_once('../DBConnect.php');
+    require_once('../utils/get_unique_name.php');    
+    require_once('../utils/get_and_check_product_input.php');    
+    require_once('../utils/test_input.php');   
+    require_once('../utils/check_access.php');
+
+    // check admin access
+    check_admin_access();    
+
     if (!empty($errors)) {
         http_response_code(400); // invalid user input
         header('Content-Type: application/json');

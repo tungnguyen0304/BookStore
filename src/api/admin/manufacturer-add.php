@@ -1,8 +1,13 @@
 <?php 
-require_once('cors.php');
+require_once('../cors.php');
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    require_once('DBConnect.php');
-    require_once('utils/test_input.php');   
+    require_once('../DBConnect.php');
+    require_once('../utils/test_input.php');   
+    require_once('../utils/check_access.php');
+
+    // check admin access
+    check_admin_access();
+      
     // get post data from client
     $post_data = json_decode(file_get_contents('php://input'), true); 
     $name = test_input($post_data['name']);
