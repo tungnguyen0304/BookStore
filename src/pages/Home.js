@@ -8,6 +8,30 @@ import SpecialProduct from "../components/SpecialProduct";
 import Container from "../components/Container";
 import { services } from "../utils/Data";
 import Meta from "../components/Meta";
+import "react-slideshow-image/dist/styles.css";
+import { Slide } from "react-slideshow-image";
+
+const divStyle = {
+  display: 'flex',
+  alignItems: 'center',
+  justifyContent: 'center',
+  backgroundSize: 'contain',
+  backgroundRepeat: 'no-repeat',
+  backgroundPosition: 'center center',
+  height: "422px",
+  weight: "636px",
+};
+const slideImages = [
+  {
+    url: "images/flash_sale.jpg",
+  },
+  {
+    url: "images/flash_sale2.jpg",
+  },
+  {
+    url: "images/flash_sale3.jpg",
+  },
+];
 
 const Home = () => {
   const [categoriesList, setCategoriesList] = useState([]);
@@ -43,6 +67,58 @@ const Home = () => {
   return (
     <>
       <Meta title={"Trang chủ"} />
+      <Container class1="home-wrapper-1 py-5">
+        <div className="row">
+          <div className="col-6">
+            <div className="main-banner position-relative ">
+              <Slide>
+                {slideImages.map((slideImage, index) => (
+                  <div key={index}>
+                    <div
+                      style={{
+                        ...divStyle,
+                        backgroundImage: `url(${slideImage.url})`,
+                      }}
+                    ></div>
+                  </div>
+                ))}
+              </Slide>
+            </div>
+          </div>
+          <div className="col-6">
+            <div className="d-flex flex-wrap gap-10 justify-content-between align-items-center">
+              <div className="small-banner position-relative">
+                <img
+                  src="images/catbanner-01.jpg"
+                  className="img-fluid rounded-3"
+                  alt="main banner"
+                />
+              </div>
+              <div className="small-banner position-relative">
+                <img
+                  src="images/catbanner-02.jpg"
+                  className="img-fluid rounded-3"
+                  alt="main banner"
+                />
+              </div>
+              <div className="small-banner position-relative ">
+                <img
+                  src="images/catbanner-03.jpg"
+                  className="img-fluid rounded-3"
+                  alt="main banner"
+                />
+              </div>
+              <div className="small-banner position-relative ">
+                <img
+                  src="images/catbanner-04.jpg"
+                  className="img-fluid rounded-3"
+                  alt="main banner"
+                />
+              </div>
+            </div>
+          </div>
+        </div>
+      </Container>
       {categoriesList.length !== 0 &&
         Object.keys(products).length !== 0 &&
         categoriesList.map(
@@ -58,7 +134,7 @@ const Home = () => {
                   </div>
                 </div>
                 <div className="row">
-                  <div className="col-12 d-flex d-row gap-10">
+                  <div className="col-12 d-flex d-row gap-10 align-items-center">
                     {products[category.ID].map((product) => (
                       <ProductCard product={product} key={product.ID} />
                     ))}
@@ -76,9 +152,13 @@ const Home = () => {
               </div>
             </div>
             <div className="row">
-              <div className="col-12 d-flex flex-wrap gap-10">
+              <div className="col-12 d-flex flex-wrap gap-10 align-items-center">
                 {products["top_sellers"].map((product) => (
-                  <ProductCard className="gr-3" product={product} key={product.ID} />
+                  <ProductCard
+                    className="gr-3"
+                    product={product}
+                    key={product.ID}
+                  />
                 ))}
               </div>
             </div>

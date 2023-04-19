@@ -31,7 +31,7 @@
   }
 
   body {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Roboto Slab', serif;
   }
 
   a {
@@ -149,6 +149,10 @@
   /* Footer Part Ends Here */
 
   /* Home Page */
+  .slide-container {
+    width: 636px;
+    height: 422px;
+  }
   .main-banner-content {
     top: 15%;
     left: 5%;
@@ -317,7 +321,6 @@
   /*  Blog Part ends here */
 
   /* Product Card */
-
   .product-card {
     background-color: white;
     border-radius: 10px;
