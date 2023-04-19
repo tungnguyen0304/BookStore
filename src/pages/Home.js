@@ -119,6 +119,7 @@ const Home = () => {
           </div>
         </div>
       </Container>
+      
       {categoriesList.length !== 0 &&
         Object.keys(products).length !== 0 &&
         categoriesList.map(
@@ -129,10 +130,10 @@ const Home = () => {
                 class1="featured-wrapper py-5 home-wrapper-2"
               >
                 <div className="row">
-                  <div className="col-6">
+                  <div className="col-9">
                     <h3 className="section-heading">{category.name}</h3>
                   </div>
-                  <div className="col-6">
+                  <div className="col-3">
                     <a href={'/category/' + category.unique_name}>Xem tất cả</a>
                   </div>                  
                 </div>
