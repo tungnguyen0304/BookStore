@@ -6,14 +6,14 @@ import Home from "./pages/Home";
 import About from "./pages/About";
 import Contact from "./pages/Contact";
 import OurStore from "./pages/OurStore";
-import Blog from "./pages/Blog";
+// import Blog from "./pages/Blog";
 import CompareProduct from "./pages/CompareProduct";
-import Wishlist from "./pages/Wishlist";
+// import Wishlist from "./pages/Wishlist";
 import Login from "./pages/Login";
 import Forgotpassword from "./pages/Forgotpassword";
 import Signup from "./pages/Signup";
 import Resetpassword from "./pages/Resetpassword";
-import SingleBlog from "./pages/SingleBlog";
+// import SingleBlog from "./pages/SingleBlog";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import RefundPloicy from "./pages/RefundPloicy";
 import ShippingPolicy from "./pages/ShippingPolicy";
@@ -21,6 +21,8 @@ import TermAndContions from "./pages/TermAndContions";
 import SingleProduct from "./pages/SingleProduct";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
+import ViewProfile from "./webpages/user-page/ViewProfile";
+import EditProfile from "./webpages/user-page/EditProfile";
 import AdminAddProduct from "./webpages/admin/AdminAddProduct";
 import AdminEditProduct from "./webpages/admin/AdminEditProduct";
 import AdminManageProductInfo from "./webpages/admin/AdminManageProductInfo";
@@ -41,16 +43,15 @@ function App() {
             <Route path="contact" element={<Contact />} />
             <Route path="category/:unique_name" element={<OurStore />} />
             <Route path="product/:unique_name" element={<SingleProduct />} />
-            {/* <Route path="blogs" element={<Blog />} /> */}
-            {/* <Route path="blog/:id" element={<SingleBlog />} /> */}
             <Route path="cart" element={<Cart />} />
             <Route path="checkout" element={<Checkout />} />
             <Route path="compare-product" element={<CompareProduct />} />
-            {/* <Route path="wishlist" element={<Wishlist />} /> */}
             <Route path="login" element={<Login />} />
             <Route path="forgot-password" element={<Forgotpassword />} />
             <Route path="signup" element={<Signup />} />
             <Route path="reset-password" element={<Resetpassword />} />
+            <Route path="view-profile" element={<ViewProfile />} />
+            <Route path="edit-profile" element={<EditProfile />} /> 
             <Route path="privacy-policy" element={<PrivacyPolicy />} />
             <Route path="refund-policy" element={<RefundPloicy />} />
             <Route path="shipping-policy" element={<ShippingPolicy />} />

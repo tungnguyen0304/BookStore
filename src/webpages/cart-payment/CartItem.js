@@ -32,7 +32,6 @@ export default function CartItem ({product, onIncrease, onDecrease, onDelete}) {
     })    
 
     return (
-        <>
       <div className='shadowedBox secondLayerBox'>
       <Box sx={{ flexGrow: 1 }}>
         <Grid container item xs={12} spacing={1}>
@@ -69,6 +68,5 @@ export default function CartItem ({product, onIncrease, onDecrease, onDelete}) {
         </Grid>
       </Box>  
       </div>
-      </>
     )
 }

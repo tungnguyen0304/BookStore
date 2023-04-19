@@ -1,12 +1,12 @@
 import React from "react";
 import BreadCrumb from "../components/BreadCrumb";
 import Meta from "../components/Meta";
-import { AiFillDelete } from "react-icons/ai";
 import { Link } from "react-router-dom";
 import Container from "../components/Container";
 import { useState } from "react";
 import {getLocalCartContent, decreaseInLocalCart, increaseInLocalCart, removeFromLocalCart} from '../webpages/cart-payment/setCartLocal';
 import CartItem from "../webpages/cart-payment/CartItem";
+import EmptyCart from '../images/empty-cart.jpg'
 
 const Cart = () => {
   const [cartContent, setCartContent] = useState(getLocalCartContent())
@@ -55,6 +55,7 @@ const Cart = () => {
     <>
       <Meta title={"Giỏ hàng"} />
       <BreadCrumb title="Giỏ hàng" />
+      {cartContent.length !== 0 ? (
       <Container class1="cart-wrapper home-wrapper-2 py-5">
         <div className="row">
           <div className="col-12">
@@ -64,7 +65,7 @@ const Cart = () => {
           </div>
           <div className="col-12 py-2 mt-4">
             <div className="d-flex justify-content-between align-items-baseline">
-              <Link to="/product" className="button">
+              <Link to="/" className="button">
                 Tiếp tục mua sắm
               </Link>
               <div className="d-flex flex-column align-items-end">
@@ -79,6 +80,12 @@ const Cart = () => {
           </div>
         </div>
       </Container>
+      ) : (
+        <div>
+          <img src={EmptyCart} style={{display:"block",width:"30%",margin:"auto"}} alt='Empty cart'/>
+          <div style={{fontWeight:'bold',textAlign:'center'}}>Giỏ hàng trống</div>
+        </div>
+      )}
     </>
   );
 };

@@ -96,8 +96,7 @@ const GuestHeader = () => {
 
 const handleLogOut = async () => {
   try {
-    const response = await axios.post('http://www.btl-web.com/api/logout.php')
-    Cookies.remove('session_id')
+    const response = await axios.post('http://localhost/api/logout.php')
     Cookies.remove('role')
     console.log(response)
     window.location.href = '/'
