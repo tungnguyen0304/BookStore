@@ -40,50 +40,7 @@ const OurStore = () => {
     unique_name: ''
   });
   const location = useLocation() 
-  useEffect(() => {
-    axios
-      .get("http://localhost/api/product-info-option.php")
-      .then((response) => {
-        return response.data;
-      })
-      .then((response) => {
-        const authorsListWithChecked = JSON.parse(response.authorsList).map((author) => ({
-          ...author,
-          checked: false,
-        }));
-        setAuthorsList(authorsListWithChecked);
-    
-        const manufacturersListWithChecked = JSON.parse(response.manufacturersList).map((manufacturer) => ({
-          ...manufacturer,
-          checked: false,
-        }));
-        setManufacturersList(manufacturersListWithChecked);
-    
-        setCategoriesList(JSON.parse(response.categoriesList));
-      })
-      .catch((error) => {
-        console.log(error);
-      });
-  }, []);   
-  const getCategoryObj = pathname => {
-    const pathArray = pathname.split('/');
-    const unique_name = pathArray.pop(); // retrieves the last element of the array
-    for (const category of categoriesList) {
-        if (category.unique_name === unique_name) {
-            return category
-        }
-    }
-  }    
-  useEffect(() => {
-    if (categoriesList.length > 0) {
-      const category = getCategoryObj(location.pathname);
-      if (category) {
-        setCategoryObj(category)
-        setFilters(prev => ({...prev, categoryID: category.ID}))
-      }
-    }
-  }, [categoriesList, location.pathname]);   
-
+  const initialQueryParams = new URLSearchParams(location.search)
   const priceRange = [0, 1000000]
   const [currentPrice, setCurrentPrice] = useState(priceRange)
   const VNCurrencyFormatter = new Intl.NumberFormat('vi', {
@@ -105,7 +62,7 @@ const OurStore = () => {
     setAuthorsList(newAuthorsList)
     const checkedAuthorIDs = newAuthorsList.filter((author) => author.checked).map((author) => author.ID);
     const authorsIDFilter = checkedAuthorIDs.join('-');  
-    console.log(authorsIDFilter)
+    // console.log(authorsIDFilter)
     setFilters(prev => ({...prev, authorID: authorsIDFilter}))
   }  
   const updateManuCheck = ID => {
@@ -117,7 +74,7 @@ const OurStore = () => {
     setManufacturersList(newManusList)
     const checkedManuIDs = newManusList.filter((manu) => manu.checked).map((manu) => manu.ID);
     const manusIDFilter = checkedManuIDs.join('-');  
-    console.log(manusIDFilter)
+    // console.log(manusIDFilter)
     setFilters(prev => ({...prev, manufacturerID: manusIDFilter}))    
   }    
   const [sorting, setSorting] = useState('')
@@ -128,25 +85,181 @@ const OurStore = () => {
     setFilters(prev => ({...prev, order: order, dir: dir}));    
   }
 
-  // Parse the filter parameters from the URL query string
-  const [filters, setFilters] = useState({})
+  const [filters, setFilters] = useState({})  
+  // Fecth product filter option
   useEffect(() => {
-    const queryParams = new URLSearchParams(location.search)
-    const filterObj = {}
-    for (const [key, value] of queryParams.entries()) {
-      filterObj[key] = value;
+    async function fetchProductFilter() {
+      try {
+        const response = (await axios.get("http://localhost/api/product-info-option.php")).data;
+        const authorsListWithChecked = JSON.parse(response.authorsList).map((author) => ({
+          ...author,
+          checked: false,
+        }));
+        setAuthorsList(authorsListWithChecked);
+  
+        const manufacturersListWithChecked = JSON.parse(response.manufacturersList).map((manufacturer) => ({
+          ...manufacturer,
+          checked: false,
+        }));
+        setManufacturersList(manufacturersListWithChecked);
+  
+        setCategoriesList(JSON.parse(response.categoriesList));
+  
+        return response;
+      } catch (error) {
+        console.log(error);
+      }
     }
-    setFilters(filterObj);
-  }, []); // empty array means it just run on mount (on load)
+  
+    fetchProductFilter();
+  }, []);
+  
+  // useEffect(() => {
+  //   async function parseParam() {
+  //     console.log("aaa", authorsList);
+  //     console.log("bbb", manufacturersList);
+  //     if (authorsList.length === 0 || manufacturersList.length === 0) return;
+  //     console.log("cccc");
+  //     const filterObj = {};
+  //     // Parse author IDs
+  //     const authorIDs = initialQueryParams.get("authorID");
+  //     console.log(authorIDs);
+  //     if (authorIDs) {
+  //       console.log("ABC");
+  //       filterObj.authorID = authorIDs;
+  //       const authorIDArr = authorIDs.split("-").map((id) => parseInt(id));
+  //       console.log(authorsList);
+  //       setAuthorsList((prevAuthorsList) => {
+  //         const newAuthorsList = prevAuthorsList.map((author) => ({
+  //           ...author,
+  //           checked: authorIDArr.includes(author.ID),
+  //         }));
+  //         return newAuthorsList;
+  //       });
+  //       console.log("CBA");
+  //     }
+  //     // Parse manufacturer ID
+  //     const manufacturerIDs = initialQueryParams.get("manufacturerID");
+  //     if (manufacturerIDs) {
+  //       filterObj.manufacturerID = manufacturerIDs;
+  //       const manuIDArr = manufacturerIDs.split("-").map((id) => parseInt(id));
+  //       setManufacturersList((prevManufacturersList) => {
+  //         const newManufacturersList = prevManufacturersList.map((manufacturer) => ({
+  //           ...manufacturer,
+  //           checked: manuIDArr.includes(manufacturer.ID),
+  //         }));
+  //         return newManufacturersList;
+  //       });
+  //     }
+  //     // Parse price range
+  //     const priceRange = initialQueryParams.get("price");
+  //     if (priceRange) {
+  //       filterObj.price = priceRange;
+  //       const [min, max] = priceRange.split("-").map((price) => Number(price));
+  //       setCurrentPrice([min, max]);
+  //     }
+  
+  //     // Parse sorting order and direction
+  //     const order = initialQueryParams.get("order");
+  //     const dir = initialQueryParams.get("dir");
+  //     if (order && dir) {
+  //       filterObj.order = order;
+  //       filterObj.dir = dir;
+  //       setSorting(order + "-" + dir);
+  //     }
+  
+  //     setFilters(filterObj);
+  //   }
+  
+  //   parseParam();
+  // }, [authorsList, manufacturersList]);
+  
+
+  const getCategoryObj = pathname => {
+    const pathArray = pathname.split('/');
+    const unique_name = pathArray.pop(); // retrieves the last element of the array
+    for (const category of categoriesList) {
+        if (category.unique_name === unique_name) {
+            return category
+        }
+    }
+  }    
+  useEffect(() => {
+    if (categoriesList.length > 0) {
+      const category = getCategoryObj(location.pathname);
+      if (category) {
+        setCategoryObj(category)
+        setFilters(prev => ({...prev, categoryID: category.ID}))
+      }
+    }
+  }, [categoriesList]);    
+
+  useEffect(() => {
+    // console.log("aaa", authorsList)
+    // console.log("bbb", manufacturersList)
+    // if (authorsList.length === 0 || manufacturersList.length === 0)
+    //   return
+    // console.log("cccc")
+    // const filterObj = {}
+    // // Parse author IDs
+    // const authorIDs = initialQueryParams.get('authorID')
+    // console.log(authorIDs)
+    // if (authorIDs) {
+    //   console.log("ABC")
+    //   filterObj.authorID = authorIDs
+    //   const authorIDArr = authorIDs.split('-').map(id => parseInt(id));
+    //   console.log(authorsList)
+    //   const newAuthorsList = authorsList.map(author => ({
+    //     ...author,
+    //     checked: authorIDArr.includes(author.ID)
+    //   }))
+    //   console.log(newAuthorsList)
+    //   setAuthorsList(newAuthorsList)
+    //   console.log("CBA")
+    // }   
+    // // Parse manufacturer ID
+    // const manufacturerIDs = initialQueryParams.get('manufacturerID')
+    // if (manufacturerIDs) {
+    //   filterObj.manufacturerID = manufacturerIDs
+    //   const manuIDArr = manufacturerIDs.split('-').map(id => parseInt(id));
+    //   setManufacturersList(prev => {
+    //     return prev.map(manufacturer => ({
+    //       ...manufacturer,
+    //       checked: manuIDArr.includes(manufacturer.ID)
+    //     }))
+    //   })
+    // }     
+    // // Parse price range
+    // const priceRange = initialQueryParams.get('price')
+    // if (priceRange) {
+    //   filterObj.price = priceRange
+    //   const [min, max] = priceRange.split('-').map(price => Number(price))
+    //   setCurrentPrice([min, max])
+    // }
+    
+
+    // // Parse sorting order and direction
+    // const order = initialQueryParams.get('order')
+    // const dir = initialQueryParams.get('dir')
+    // if (order && dir) {
+    //   filterObj.order = order
+    //   filterObj.dir = dir
+    //   setSorting(order + '-' + dir)
+    // }
+
+    // setFilters(filterObj);    
+  }, []);    
 
   // Fetch the filtered product data from the server
   useEffect(() => {
+    console.log(filters)
+    console.log(authorsList)
     const params = {...filters, page: page, categoryID: categoryObj.ID};
-    console.log(params);
+    // console.log(params);
     axios.get('http://localhost/api/products.php', {params: params})
       .then(response => {
         setProducts(response.data);
-        console.log(response);
+        // console.log(response);
       })
       .catch(error => {
         console.error(error);
