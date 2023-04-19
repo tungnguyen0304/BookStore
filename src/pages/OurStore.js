@@ -3,9 +3,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import axios from "axios";
 import BreadCrumb from "../components/BreadCrumb";
 import Meta from "../components/Meta";
-import ReactStars from "react-rating-stars-component";
 import ProductCard from "../components/ProductCard";
-import Color from "../components/Color";
 import Container from "../components/Container";
 import { Slider } from "@mui/material";
 import styled from "@emotion/styled";
@@ -40,7 +38,6 @@ const OurStore = () => {
     unique_name: ''
   });
   const location = useLocation() 
-  const initialQueryParams = new URLSearchParams(location.search)
   const priceRange = [0, 1000000]
   const [currentPrice, setCurrentPrice] = useState(priceRange)
   const VNCurrencyFormatter = new Intl.NumberFormat('vi', {
@@ -113,7 +110,9 @@ const OurStore = () => {
       }
     }
     async function parseParam() {
-      if (fetchedAuthorsList.length === 0 || fetchedManusList.length === 0) return;
+      if (fetchedAuthorsList.length === 0 || fetchedManusList.length === 0) 
+        return;
+      const initialQueryParams = new URLSearchParams(location.search)
       const filterObj = {};
       // Parse author IDs
       const authorIDs = initialQueryParams.get("authorID");
