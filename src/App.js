@@ -41,12 +41,12 @@ function App() {
             <Route path="contact" element={<Contact />} />
             <Route path="category/:unique_name" element={<OurStore />} />
             <Route path="product/:unique_name" element={<SingleProduct />} />
-            <Route path="blogs" element={<Blog />} />
-            <Route path="blog/:id" element={<SingleBlog />} />
+            {/* <Route path="blogs" element={<Blog />} /> */}
+            {/* <Route path="blog/:id" element={<SingleBlog />} /> */}
             <Route path="cart" element={<Cart />} />
             <Route path="checkout" element={<Checkout />} />
             <Route path="compare-product" element={<CompareProduct />} />
-            <Route path="wishlist" element={<Wishlist />} />
+            {/* <Route path="wishlist" element={<Wishlist />} /> */}
             <Route path="login" element={<Login />} />
             <Route path="forgot-password" element={<Forgotpassword />} />
             <Route path="signup" element={<Signup />} />

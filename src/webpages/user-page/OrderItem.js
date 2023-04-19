@@ -32,13 +32,13 @@ export default function OrderItems ({product}) {
         <Box sx={{ flexGrow: 1 }}>
           <Grid container item xs={12} spacing={1}>
               <Grid item>
-                  <img src={product.img} style={imgStyle} alt="product" />
+                  <img src={product.image} style={imgStyle} alt="product" />
               </Grid>
               <Grid container item xs>
                 <Grid item xs={12} sm={7}>
                     <div>
                         <div style={bookTitleStyle}>
-                            {product.title}
+                            {product.name}
                         </div>
                         <div>Số lượng: {product.qty}</div>
                         <div>Giá: {VNCurrencyFormatter.format(product.price)}</div>
