@@ -138,17 +138,14 @@ const AccountButton = () => {
 }
 
 const Header = () => {
-  // const [searchTerm, setSearchTerm] = React.useState("");
+  const [searchTerm, setSearchTerm] = React.useState("");
   const userRole = useSelector((state) => state.userRole);
-  // const dispatch = useDispatch();
-  // const handleSearchSubmit = async (term) => {
-  //   try {
-  //     const response = await axios.get(`http://localhost/api/books/search/${term}`);
-  //     console.log(response.data);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };  
+  const navigate = useNavigate()
+  
+  const handleSubmit = (e) => {
+    e.preventDefault();
+    navigate('/catalog-search?q=' + searchTerm);
+  }
 
   return (
     <>
@@ -161,18 +158,21 @@ const Header = () => {
               </h2>
             </div>
             <div className="col-5">
+            <form onSubmit={handleSubmit}>
               <div className="input-group">
                 <input
-                  type="text"
+                  value={searchTerm}
+                  onChange={(e) => setSearchTerm(e.target.value)}
                   className="form-control py-2"
                   placeholder="Tìm kiếm sản phẩm ở đây ..."
                   aria-label="Search Product Here..."
                   aria-describedby="basic-addon2"
                 />
-                <span className="input-group-text p-3" id="basic-addon2">
+                <button className="input-group-text p-3" type="submit" id="basic-addon2">
                   <BsSearch className="fs-6" />
-                </span>
+                </button>
               </div>
+            </form>
             </div>
             <div className="col-4">
               <div className="header-upper-links d-flex align-items-center justify-content-between">
@@ -271,8 +271,6 @@ const Header = () => {
                 <div className="menu-links">
                   <div className="d-flex align-items-center gap-15">
                     <NavLink to="/">Trang chủ</NavLink>
-                    {/* <NavLink to="/product">Sản phẩm</NavLink>
-                    <NavLink to="/blogs">Blogs</NavLink> */}
                     <NavLink to="/contact">Liên hệ</NavLink>
                   </div>
                 </div>
