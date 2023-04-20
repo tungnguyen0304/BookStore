@@ -14,35 +14,35 @@ const getQuantityByUniqueName = unique_name => {
   return item ? item.qty : 0; // return the quantity if the item was found, otherwise 0
 }
 
-const decreaseInLocalCart = (obj) => {
+const decreaseInLocalCart = (product) => {
     let cartContent = getLocalCartContent()
-    const exist = cartContent.find((x) => x.ID === obj.ID);
+    const exist = cartContent.find((x) => x.ID === product.ID);
     if (exist.qty === 1) {
-        cartContent = cartContent.filter((x) => x.ID !== obj.ID)
+        cartContent = cartContent.filter((x) => x.ID !== product.ID)
     } else {
         cartContent = cartContent.map((x) =>
-          x.ID === obj.ID ? { ...exist, qty: exist.qty - 1 } : x
+          x.ID === product.ID ? { ...exist, qty: exist.qty - 1 } : x
         )
     }
     localStorage.setItem("cart", JSON.stringify(cartContent))
 }
 
-const increaseInLocalCart = (obj) => {
+const increaseInLocalCart = (product) => {
   let cartContent = getLocalCartContent()
-  const exist = cartContent.find((x) => x.ID === obj.ID);
+  const exist = cartContent.find((x) => x.ID === product.ID);
   if (exist) {
       cartContent = cartContent.map((x) =>
-        x.ID === obj.ID ? { ...exist, qty: exist.qty + 1 } : x
+        x.ID === product.ID ? { ...exist, qty: exist.qty + 1 } : x
       )
   } else {
-    cartContent = [...cartContent, { ...obj, qty: 1 }]
+    cartContent = [...cartContent, { ...product, qty: 1 }]
   }
   localStorage.setItem("cart", JSON.stringify(cartContent))
 }
 
-const removeFromLocalCart = (obj) => {
+const removeFromLocalCart = (product) => {
     let cartContent = getLocalCartContent()
-    cartContent = cartContent.filter(x => x.ID !== obj.ID)
+    cartContent = cartContent.filter(x => x.ID !== product.ID)
     localStorage.setItem("cart", JSON.stringify(cartContent))
 }
 
