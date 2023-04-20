@@ -25,16 +25,16 @@ import AdminOrdersList from './admin/AdminOrdersList';
 import AdminManageProductInfo from './admin/AdminManageProductInfo';
 import './index.css';
 
-const userInfo = {
-    id: '123',
-    username: 'vana',
-    name: 'Nguyen Van A',
-    role: '1', // user
-    phone: '0909090920',
-    email: 'abc@hcmut.edu.vn',
-    address: '474374, Bach Khoa',
-}
-localStorage.setItem("user", JSON.stringify(userInfo)); // it's retrieved from server after login / register
+// const userInfo = {
+//     id: '123',
+//     username: 'vana',
+//     name: 'Nguyen Van A',
+//     role: '1', // user
+//     phone: '0909090920',
+//     email: 'abc@hcmut.edu.vn',
+//     address: '474374, Bach Khoa',
+// }
+// localStorage.setItem("user", JSON.stringify(userInfo)); // it's retrieved from server after login / register
 
 export default function Webpages () {
     return (

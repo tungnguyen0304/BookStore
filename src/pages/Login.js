@@ -4,7 +4,6 @@ import axios from "axios";
 import BreadCrumb from "../components/BreadCrumb";
 import Meta from "../components/Meta";
 import Container from "../components/Container";
-import Cookies from 'js-cookie'
 import { useDispatch } from "react-redux";
 import { login } from "../actions/userRole";
 
@@ -40,6 +39,7 @@ const Login = () => {
     } else {
         try {
           const response = await axios.post('http://localhost/api/verify-login.php', trimmedLoginCre)
+          // console.log(response)
           dispatch(login(response.data.role))
           navigate(-1);
         } catch (error) {

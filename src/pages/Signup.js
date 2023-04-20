@@ -4,8 +4,9 @@ import BreadCrumb from "../components/BreadCrumb";
 import Meta from "../components/Meta";
 import { useNavigate, Link } from "react-router-dom";
 import Container from "../components/Container";
-import Cookies from 'js-cookie'
 import {checkValidName, checkValidUsername, checkValidPass, checkValidEmail, checkValidPhoneNumber} from '../webpages/FormUtil'
+import { useDispatch } from "react-redux";
+import { login } from "../actions/userRole";
 
 // tài khoản mẫu:
 // user: user Bkhoa123@
@@ -16,6 +17,7 @@ import {checkValidName, checkValidUsername, checkValidPass, checkValidEmail, che
 // user: khmt Bkhoa456@
 
 const Signup = () => {
+  const dispatch = useDispatch();
   const [profile, setProfile] = useState({
     name: '',
     username: '',
@@ -71,7 +73,7 @@ const Signup = () => {
     } else {
         try {
           const response = await axios.post('http://localhost/api/register.php', trimmedInfo)
-          Cookies.set('role', response.data.role)
+          dispatch(login('0')) // default is 0 (user)
           navigate(-1)
         } catch (error) {
           if (error.response.status === 400) { // invalid

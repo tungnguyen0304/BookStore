@@ -1,4 +1,5 @@
 <?php
+session_start();
 # 0: ok
 # 1: user logged out or session timed out -> redirect user to re-login
 # 2: unauthorized access

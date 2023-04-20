@@ -5,7 +5,6 @@ import { BsSearch } from "react-icons/bs";
 import user from "../images/user.svg";
 import cart from "../images/cart.svg";
 import menu from "../images/menu.svg";
-import Cookies from 'js-cookie';
 import Avatar from '@mui/material/Avatar';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -112,7 +111,7 @@ const AccountButton = () => {
     anchorOrigin={{ horizontal: 'right', vertical: 'bottom' }}
   >
     <MenuItem>
-      <Avatar /> <MenuLink href='/view-profile'>Hồ sơ của bạn</MenuLink>
+      <Avatar /> <MenuLink onClick={() => navigate('/view-profile')}>Hồ sơ của bạn</MenuLink>
     </MenuItem>
     <MenuItem onClick={handleClose}>
       <Avatar /> <MenuLink href='/edit-profile'>Chỉnh sửa hồ sơ</MenuLink>
@@ -185,7 +184,7 @@ const Header = () => {
                     <img src={cart} alt="cart" />
                   </Link>
                 </div>   
-                {!userRole ? (
+                {userRole === '' ? (
                 <>
                 <div>
                   <Link
