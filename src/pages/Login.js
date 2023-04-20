@@ -4,10 +4,12 @@ import axios from "axios";
 import BreadCrumb from "../components/BreadCrumb";
 import Meta from "../components/Meta";
 import Container from "../components/Container";
-// import CustomInput from "../components/CustomInput";
 import Cookies from 'js-cookie'
+import { useDispatch } from "react-redux";
+import { login } from "../actions/userRole";
 
 const Login = () => {
+  const dispatch = useDispatch();
   const [loginCredential, setLoginCredential] = useState({
     username: '',
     password: ''
@@ -38,8 +40,8 @@ const Login = () => {
     } else {
         try {
           const response = await axios.post('http://localhost/api/verify-login.php', trimmedLoginCre)
-          Cookies.set('role', response.data.role)
-          navigate(-1)
+          dispatch(login(response.data.role))
+          navigate(-1);
         } catch (error) {
           if (error.response.status === 401) {
             setErrors({...errors, password: "Tên đăng nhập hoặc mật khẩu không đúng"})

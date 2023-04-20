@@ -7,6 +7,14 @@ import Container from "../components/Container";
 import Cookies from 'js-cookie'
 import {checkValidName, checkValidUsername, checkValidPass, checkValidEmail, checkValidPhoneNumber} from '../webpages/FormUtil'
 
+// tài khoản mẫu:
+// user: user Bkhoa123@
+// user: user1 Bkhoa456@
+// admin: admin Bkhoa456@
+// user: user123 Bkhoa456@
+// user: bachkhoa Bkhoa456@
+// user: khmt Bkhoa456@
+
 const Signup = () => {
   const [profile, setProfile] = useState({
     name: '',
