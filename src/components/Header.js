@@ -222,6 +222,49 @@ const Header = () => {
           <div className="row">
             <div className="col-12">
               <div className="menu-bottom d-flex align-items-center gap-30">
+                {userRole === '1' && (
+                <div>
+                  <div className="dropdown">
+                    <button
+                      className="btn btn-secondary dropdown-toggle bg-transparent border-0 gap-15 d-flex align-items-center"
+                      type="button"
+                      id="dropdownMenuButton1"
+                      data-bs-toggle="dropdown"
+                      aria-expanded="false"
+                    >
+                      <img src={menu} alt="" />
+                      <span className="me-5">
+                        Quản trị viên
+                      </span>
+                    </button>
+                    <ul
+                      className="dropdown-menu"
+                      aria-labelledby="dropdownMenuButton1"
+                    >
+                      <li>
+                        <Link className="dropdown-item text-white" to="/admin/users">
+                          Quản lý người dùng
+                        </Link>
+                      </li>
+                      <li>
+                        <Link className="dropdown-item text-white" to="/admin/products">
+                          Quản lý sản phẩm
+                        </Link>
+                      </li>
+                      <li>
+                        <Link className="dropdown-item text-white" to="/admin/orders">
+                        Quản lý đơn hàng
+                        </Link>
+                      </li>
+                      <li>
+                        <Link className="dropdown-item text-white" to="/admin/comments">
+                        Quản lý bình luận 
+                        </Link>
+                      </li>                                            
+                    </ul>
+                  </div>
+                </div>                
+                )}
                 <div>
                   <div className="dropdown">
                     <button
