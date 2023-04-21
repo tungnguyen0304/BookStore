@@ -72,7 +72,12 @@ const AdminAddProduct = () => {
 
 
   const handleSubmit = async (e) => {
-    const trimmedProduct = Object.fromEntries(Object.entries(product).map(([key, value]) => [key, value.trim()]))
+    const trimmedProduct = Object.fromEntries(
+      Object.entries(product).map(([key, value]) => [
+        key,
+        typeof value === 'string' ? value.trim() : value,
+      ])
+    );
     const errors = {};
     if (!trimmedProduct.name) errors.name = "Vui lòng điền tên sản phẩm";
 
@@ -90,11 +95,13 @@ const AdminAddProduct = () => {
     if (trimmedProduct.sold_qty === '') errors.sold_qty = "Vui lòng điền số lượng đã bán của sản phẩm";
     else if (trimmedProduct.sold_qty < 0) errors.sold_qty = "Số lượng đã bán của sản phẩm phải lớn hơn 0";
 
-    if (trimmedProduct.authorID === '') errors.authorID = "Tác giả không hợp lệ"
-    else if (checkIDinList(trimmedProduct.authorID, authorsList)) errors.authorID = "Tác giả không hợp lệ"
+    if (trimmedProduct.authorID !== '') {
+      if (!checkIDinList(trimmedProduct.authorID, authorsList)) errors.authorID = "Tác giả không hợp lệ"
+    }
 
-    if (trimmedProduct.manufacturerID === '') errors.manufacturerID = "NXB/NSX không hợp lệ"
-    else if (checkIDinList(trimmedProduct.manufacturerID, manufacturersList)) errors.manufacturerID = "NXB/NSX không hợp lệ"
+    if (trimmedProduct.manufacturerID !== '') {
+      if (!checkIDinList(trimmedProduct.manufacturerID, manufacturersList)) errors.manufacturerID = "NXB/NSX không hợp lệ"
+    }
 
     if (trimmedProduct.description.length > 5000) errors.description = "Mô tả sản phẩm phải ít hơn 5000 ký tự";
 
@@ -104,7 +111,7 @@ const AdminAddProduct = () => {
         window.scrollTo({top: 0, left: 0, behavior: 'smooth'});   
     } else {
         try {
-          const response = await axios.post('http://localhost/api/product-add.php', trimmedProduct)
+          const response = await axios.post('http://localhost/api/admin/product-add.php', trimmedProduct)
           console.log(response)
         } catch (error) {
           console.log(error);

@@ -42,7 +42,12 @@ const Signup = () => {
   const handleSubmit = async (e) => {
     e.preventDefault()
 
-    const trimmedInfo = Object.fromEntries(Object.entries(profile).map(([key, value]) => [key, value.trim()]))
+    const trimmedInfo = Object.fromEntries(
+      Object.entries(profile).map(([key, value]) => [
+        key,
+        typeof value === 'string' ? value.trim() : value,
+      ])
+    );    
     const errors = {};
     if (!checkValidName(trimmedInfo.name))
       errors.name = "Tên không được trống và ít hơn 50 ký tự bao gồm các ký tự Việt Nam và khoảng trắng"

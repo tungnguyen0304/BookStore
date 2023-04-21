@@ -14,7 +14,7 @@ const UsersAdminPage = () => {
     // search bar
   const [searchText, setSearchText] = useState('')
   useEffect(() => {
-    axios.get('http://localhost/api/users-list.php')
+    axios.get('http://localhost/api/admin/users-list.php')
     .then(response => {
       console.log(response)
       return response.data
@@ -51,7 +51,7 @@ const UsersAdminPage = () => {
   }    
   
   const handleSearch = () => {
-    axios.get('http://localhost/api/users-list.php', {
+    axios.get('http://localhost/api/admin/users-list.php', {
       params: {
         q: searchText.trim()
       }
