@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "axios";
-import { NavLink, Link, useNavigate } from "react-router-dom";
+import { NavLink, Link, useNavigate, useDispatch, useSelector } from "react-router-dom";
 import { BsSearch } from "react-icons/bs";
 import user from "../images/user.svg";
 import cart from "../images/cart.svg";
