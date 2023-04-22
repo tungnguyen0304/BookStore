@@ -29,15 +29,15 @@ const GuestHeader = () => {
   const [searchTerm, setSearchTerm] = React.useState("");
 
   const handleSearchSubmit = async (term) => {
-    // try {
-    //   const response = await axios.get(`/api/books/search/${term}`);
-    //   console.log(response.data);
-    // } catch (error) {
-    //   console.log(error);
-    // }
+    try {
+      const response = await axios.get(`/api/books/search/${term}`);
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
-  return (
+  return (  
     <>
     <Grid container alignItems="center" className="header-container">
       <Grid container item xs={2} md={3}>
@@ -117,12 +117,12 @@ const UserHeader = () => {
   };
 
   const handleSearchSubmit = async (term) => {
-    // try {
-    //   const response = await axios.get(`/api/books/search/${term}`);
-    //   console.log(response.data);
-    // } catch (error) {
-    //   console.log(error);
-    // }
+    try {
+      const response = await axios.get(`/api/books/search/${term}`);
+      console.log(response.data);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   return (
