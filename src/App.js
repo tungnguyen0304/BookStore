@@ -3,6 +3,7 @@ import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout";
 import Home from "./pages/Home";
+import CatalogSearch from "./pages/CatalogSearch";
 // import About from "./pages/About";
 import Contact from "./pages/Contact";
 import OurStore from "./pages/OurStore";
@@ -39,6 +40,7 @@ function App() {
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
+            <Route path="catalog-search/:q?" element={<CatalogSearch />} />
             {/* <Route path="about" element={<About />} /> */}
             <Route path="contact" element={<Contact />} />
             <Route path="category/:unique_name" element={<OurStore />} />
@@ -60,7 +62,7 @@ function App() {
               <Route index element={<AdminDashboard/>}/>
               <Route path="products" element={<AdminProductsList/>}/>
               <Route path="products/add" element={<AdminAddProduct/>}/>
-              <Route path="products/edit?:id" element={<AdminEditProduct/>}/>
+              <Route path="products/edit/:id?" element={<AdminEditProduct/>}/>
               <Route path="products/info" element={<AdminManageProductInfo/>}/>
               <Route path="comments" element={<AdminCommentsList/>}/>
               <Route path="orders" element={<AdminOrdersList/>}/>

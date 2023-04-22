@@ -1,6 +1,5 @@
 <?php 
 session_start();
-setcookie('session_id', session_id(), time() + 3600, '/');
 require_once('cors.php');
 // Start the session
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
@@ -83,24 +82,14 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $success = mysqli_stmt_execute($stmt);     
     // If the insert was successful, login that user as well
     if ($success) {
-        // get user info
-        $user = getUserInfoByUsername($conn, $username);
-        // Generate a new session ID
-        $session_id = bin2hex(random_bytes(32));
+        // get the ID of the newly inserted user
+        $user_id = mysqli_insert_id($conn);
 
         // Store the session ID, user ID, role in the session variables
-        $_SESSION['session_id'] = $session_id;
-        $_SESSION['ID'] = $user['ID'];            
-        $_SESSION['role'] = $user['role'];  
+        $_SESSION['ID'] = $user_id;            
+        $_SESSION['role'] = 0;
 
-        // data to return back
-        $res = array(
-            'session_id' => $session_id,
-            'role' => $user['role']
-        );
-
-        header('Content-Type: application/json');
-        echo json_encode($res);
+        echo "Register successfully";
     } else {
         http_response_code(500);
         echo "Access database failed";

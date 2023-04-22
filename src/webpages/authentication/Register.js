@@ -96,7 +96,6 @@ const Register = () => {
               <FormControl fullWidth >
               <label htmlFor="dob">Tên:</label>
               <TextField
-                  
                   name="name"
                   value={profile.name}
                   onChange={handleChange}
@@ -110,13 +109,13 @@ const Register = () => {
           <FormControl fullWidth >
           <label htmlFor="dob">Email:</label>
           <TextField 
-          
-           
-          type="email" name="email" 
-           
-          value={profile.email} onChange={handleChange}
-          error={errors.email ? true : false}
-                  helperText={errors.email} />
+            type="email" 
+            name="email" 
+            value={profile.email} 
+            onChange={handleChange}
+            error={errors.email ? true : false}
+            helperText={errors.email} 
+          />
           </FormControl>
 
           </Grid>
@@ -144,7 +143,6 @@ const Register = () => {
               <TextField
                   type="password"
                   name="password"
-                  
                   value={profile.password}
                   onChange={handleChange}
                   error={errors.password ? true : false}
@@ -158,7 +156,6 @@ const Register = () => {
               <TextField
                   type="text"
                   name="address"
-                  
                   value={profile.address}
                   onChange={handleChange}
                   error={errors.address ? true : false}
@@ -172,7 +169,6 @@ const Register = () => {
               <TextField
                   type="tel"
                   name="phone"
-                  
                   value={profile.phone}
                   onChange={handleChange}
                   error={errors.phone ? true : false}

@@ -1,5 +1,5 @@
 <?php
-    require_once('utils/test_input.php');
+    require_once('test_input.php');
     // get post data from client
     $post_data = json_decode(file_get_contents('php://input'), true);
 
@@ -42,11 +42,15 @@
     if (!is_numeric($price)) $errors['sold_qty'] = "Vui lòng điền số lượng đã bán của sản phẩm";
     else if ((int) $sold_qty < 0) $errors['sold_qty'] = "Số lượng đã bán của sản phẩm phải lớn hơn 0";
 
-    if (!is_numeric($authorID)) $errors['authorID'] = "Tác giả không hợp lệ";
-    else if (!in_array($authorID, $authorIDList)) $errors['authorID'] = "Tác giả không hợp lệ";
+    if (!empty($authorID)) {
+        if (!is_numeric($authorID)) $errors['authorID'] = "Tác giả không hợp lệ";
+        else if (!in_array($authorID, $authorIDList)) $errors['authorID'] = "Tác giả không hợp lệ";
+    }
 
-    if (!is_numeric($manufacturerID)) $errors['manufacturerID'] = "NXB/NSX không hợp lệ";
-    else if (!in_array($manufacturerID, $manufacturerIDList)) $errors['manufacturerID'] = "NXB/NSX không hợp lệ";
+    if (!empty($manufacturerID)) {
+        if (!is_numeric($manufacturerID)) $errors['manufacturerID'] = "NXB/NSX không hợp lệ";
+        else if (!in_array($manufacturerID, $manufacturerIDList)) $errors['manufacturerID'] = "NXB/NSX không hợp lệ";
+    }
     
     if (strlen($description) > 5000) $errors['description'] = "Mô tả sản phẩm phải ít hơn 5000 ký tự";  
 ?>

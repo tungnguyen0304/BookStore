@@ -126,7 +126,6 @@ const Checkout = () => {
             <div className="checkout-left-data">
               <h4 className="mb-3">Thông tin nhận hàng</h4>
               <form
-                action=""
                 className="d-flex gap-15 flex-wrap justify-content-between"
               >
                 <div className="w-100">

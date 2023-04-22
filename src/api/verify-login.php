@@ -2,15 +2,19 @@
 session_start();
 require_once('cors.php');
 // Start the session
-
 if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     require_once('DBConnect.php');
     require_once('utils/test_input.php');   
-    # get username and password
     // get post data from client
     $post_data = json_decode(file_get_contents('php://input'), true);    
     $username = test_input($post_data['username']);
     $password = test_input($post_data['password']);
+    if (empty($username) or empty($password)) {
+        http_response_code(400); // invalid user input
+        echo "Username and Password cannot be empty";
+        mysqli_close($conn);
+        exit();
+    }    
     
     # check login credential in DB
     $qry = "SELECT * FROM user WHERE username = ?";
@@ -26,11 +30,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         
         # ok
         if (password_verify($password, $password_hash)) {
-            // Generate a new session ID
-            // $session_id = bin2hex(random_bytes(32));
-
             // Store the session ID, user ID, role in the session variables
-            // $_SESSION['session_id'] = $session_id;
             $_SESSION['ID'] = $row['ID'];            
             $_SESSION['role'] = $row['role'];  
             // data to return back

@@ -11,9 +11,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $order = isset($_GET['order']) ? mysqli_real_escape_string($conn, $_GET['order']) : '';
     $dir = isset($_GET['dir']) ? $_GET['dir'] : '';
     $page = isset($_GET['page']) ? mysqli_real_escape_string($conn, $_GET['page']) : '';
+    $q = isset($_GET['q']) ? mysqli_real_escape_string($conn, $_GET['q']) : '';
 
     // Set up the base query to fetch products
-    $sql = 'SELECT * FROM product';
+    $sql = 'SELECT p.* FROM product p
+        LEFT JOIN author a ON p.authorID = a.ID
+        LEFT JOIN manufacturer m ON p.manufacturerID = m.ID';
+
+    // Check if a search query was provided
+    if (!empty($q)) {
+        // Add a WHERE clause to filter by search query
+        $sql .= " WHERE p.name LIKE '%$q%' OR a.name LIKE '%$q%' OR m.name LIKE '%$q%'";
+    }
 
     // Check if a category ID was provided
     if (!empty($categoryID)) {
