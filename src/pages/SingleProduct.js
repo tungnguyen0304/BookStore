@@ -72,7 +72,10 @@ const SingleProduct = () => {
         setQty(getQuantityByUniqueName(uniqueName));
         // fetch product info by unique name
         const productResponse = await axios.get('http://localhost/api/product-info.php', {
-          params: { unique_name: uniqueName }
+          params: { 
+            unique_name: uniqueName,
+            id: uniqueName // fallback param
+          }
         });
         setProduct(productResponse.data);
         // fetch product comments

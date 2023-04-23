@@ -1,4 +1,7 @@
 <?php
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+error_reporting(E_ALL);
 require_once('../cors.php');
 if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     require_once('../DBConnect.php');
@@ -13,12 +16,12 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
 
     // prepare a statement to fetch comments
     if ($q === '') {
-        $stmt = mysqli_prepare($conn, 'SELECT c.*, u.name AS user_name, p.name AS product_name FROM comment c 
+        $stmt = mysqli_prepare($conn, 'SELECT c.*, u.username AS user_name, p.name AS product_name FROM product_comment c 
         LEFT JOIN user u ON c.userID = u.ID 
         LEFT JOIN product p ON c.productID = p.ID');
     } else {
         $q = '%'.$q.'%';
-        $stmt = mysqli_prepare($conn, 'SELECT c.*, u.name AS user_name, p.name AS product_name FROM comment c 
+        $stmt = mysqli_prepare($conn, 'SELECT c.*, u.name AS user_name, p.name AS product_name FROM product_comment c 
         LEFT JOIN user u ON c.userID = u.ID 
         LEFT JOIN product p ON c.productID = p.ID 
         WHERE c.content LIKE ?');

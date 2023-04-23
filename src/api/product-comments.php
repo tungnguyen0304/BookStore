@@ -6,9 +6,9 @@ require_once('DBConnect.php');
 $productID = isset($_GET['productID']) ? $_GET['productID'] : '';
 
 // fetch all comments for the given productID
-$sql = "SELECT pc.*, u.name FROM product_comment pc JOIN user u ON pc.userID = u.ID WHERE pc.productID = '$productID'";
+$sql = "SELECT pc.*, u.name FROM product_comment pc JOIN user u ON pc.userID = u.ID 
+        WHERE pc.productID = '$productID' AND pc.status IS NULL";
 $result = mysqli_query($conn, $sql);
-
 // return the comments as a JSON array
 $comments = array();
 while ($row = mysqli_fetch_assoc($result)) {
