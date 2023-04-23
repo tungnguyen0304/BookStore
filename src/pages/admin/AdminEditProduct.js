@@ -106,7 +106,7 @@ const AdminEditProduct = () => {
     const trimmedProduct = Object.fromEntries(
       Object.entries(product).map(([key, value]) => [
         key,
-        typeof value === 'string' ? value.trim() : value,
+        value === null ? '' : typeof value === 'string' ? value.trim() : value,
       ])
     );
     const errors = {};
@@ -127,6 +127,8 @@ const AdminEditProduct = () => {
     else if (trimmedProduct.sold_qty < 0) errors.sold_qty = "Số lượng đã bán của sản phẩm phải lớn hơn 0";
 
     if (trimmedProduct.authorID !== '') {
+      console.log(trimmedProduct.authorID)
+      console.log(authorsList)
       if (!checkIDinList(trimmedProduct.authorID, authorsList)) errors.authorID = "Tác giả không hợp lệ"
     }
 
@@ -142,7 +144,8 @@ const AdminEditProduct = () => {
     } else {
         try {
           const response = await axios.post('http://localhost/api/admin/product-edit.php', trimmedProduct)
-          console.log(response);
+          // console.log(response);
+          navigate(-1)
         } catch (error) {
           console.log(error);
         }

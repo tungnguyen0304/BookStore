@@ -30,8 +30,9 @@ const OurStore = () => {
   const [manufacturersList, setManufacturersList] = useState([])  
   const [categoriesList, setCategoriesList] = useState([]);
   const [products, setProducts] = useState([]);
-  const [grid, setGrid] = useState(4)
+  // const [grid, setGrid] = useState(4)
   const [page, setPage] = useState(1)
+  const [remainQty, setRemainQty] = useState(0)
   const [currentCategory, setCurrentCategory] = useState({
     ID: '',
     name: '',
@@ -45,9 +46,15 @@ const OurStore = () => {
     currency: "VND"
   })  
   const handleViewPrice = () => {
+    // reset page & products
+    setPage(1)
+    setProducts([])    
     setFilters(prev => ({...prev, price: currentPrice[0] + '-' + currentPrice[1]}))
   }
   const updateAuthorsCheck = ID => {
+    // reset page & products
+    setPage(1)
+    setProducts([])    
     const newAuthorsList = authorsList.map((author) =>
       author.ID == ID
         ? { ...author, checked: !author.checked}
@@ -60,6 +67,9 @@ const OurStore = () => {
     setFilters(prev => ({...prev, authorID: authorsIDFilter}))
   }  
   const updateManuCheck = ID => {
+    // reset page & products
+    setPage(1)
+    setProducts([])    
     const newManusList = manufacturersList.map((manu) =>
       manu.ID == ID
         ? { ...manu, checked: !manu.checked}
@@ -73,10 +83,20 @@ const OurStore = () => {
   }    
   const [sorting, setSorting] = useState('')
   const handleSortingChange = e => {
+    // reset page & products
+    setPage(1)
+    setProducts([])
+    // get value     
     const selected = e.target.value
     setSorting(selected)
     const [order, dir] = selected.split('-');
     setFilters(prev => ({...prev, order: order, dir: dir}));    
+  }
+
+  const handleNextPage = () => {
+    const newPage = page + 1
+    setPage(newPage)
+    setFilters(prev => ({...prev, page: newPage}))
   }
 
   const [filters, setFilters] = useState({})  
@@ -85,6 +105,7 @@ const OurStore = () => {
     let fetchedAuthorsList = []
     let fetchedManusList = []
     let fetchedCatesList = []
+    const filterObj = {}
 
     async function fetchProductFilter() {
       try {
@@ -113,7 +134,6 @@ const OurStore = () => {
       if (fetchedAuthorsList.length === 0 || fetchedManusList.length === 0) 
         return;
       const initialQueryParams = new URLSearchParams(location.search)
-      const filterObj = {};
       // Parse author IDs
       const authorIDs = initialQueryParams.get("authorID");
       if (authorIDs) {
@@ -152,8 +172,6 @@ const OurStore = () => {
         filterObj.dir = dir;
         setSorting(order + "-" + dir);
       }
-  
-      setFilters(filterObj);
     }
     const getCategoryObj = (pathname, categoriesList) => {
       const pathArray = pathname.split('/');
@@ -168,34 +186,43 @@ const OurStore = () => {
       const currentCategory = getCategoryObj(location.pathname, fetchedCatesList)
       if (currentCategory) {
         setCurrentCategory(currentCategory)
-        setFilters(prev => ({...prev, categoryID: currentCategory.ID}))
+        filterObj.categoryID = currentCategory.ID
       }
+    }
+
+    async function setFiltersObj() {
+      setFilters(filterObj)
     }
     
     // fecth authors/manus first then parse param later
-    fetchProductFilter().then(parseParam).then(setCurrentCategoryFromURL);
+    fetchProductFilter().then(parseParam).then(setCurrentCategoryFromURL).then(setFiltersObj)    
   }, []);
 
   // Fetch new product data from the server everytime the filters change
   useEffect(() => {
-    const params = {...filters, page: page, categoryID: currentCategory.ID};
-    // console.log(params);
-    axios.get('http://localhost/api/products.php', {params: params})
-      .then(response => {
-        setProducts(response.data);
-      })
-      .catch(error => {
-        console.error(error);
-      });
-    let paramsInURL = {...filters}
-    // the path already include category so we don't need to have param categoryID
-    delete paramsInURL.categoryID
-    // also remove empty value attr
-    paramsInURL = Object.fromEntries(
-      Object.entries(paramsInURL)
-        .filter(([key, value]) => value !== '' && value !== null && value !== undefined)
-    );
-    navigate(location.pathname + '?' + new URLSearchParams(paramsInURL).toString())
+    if (Object.keys(filters).length !== 0) {
+      const params = {...filters, page: page, categoryID: currentCategory.ID};
+      console.log(params);
+      axios.get('http://localhost/api/products.php', {params: params})
+        .then(response => {
+          // console.log([...products] + response.data.products)
+          // console.log(response.data.remain_qty)
+          setProducts(prev => [...prev, ...response.data.products])
+          setRemainQty(response.data.remain_qty)
+        })
+        .catch(error => {
+          console.error(error);
+        });
+      let paramsInURL = {...filters}
+      // the path already include category so we don't need to have param categoryID
+      delete paramsInURL.categoryID
+      // also remove empty value attr
+      paramsInURL = Object.fromEntries(
+        Object.entries(paramsInURL)
+          .filter(([key, value]) => value !== '' && value !== null && value !== undefined)
+      );
+      navigate(location.pathname + '?' + new URLSearchParams(paramsInURL).toString())
+    }
   }, [filters]);
 
   return (
@@ -303,44 +330,6 @@ const OurStore = () => {
                     <option value="price-dsc">Giá cao đến thấp</option>
                   </select>
                 </div>
-                <div className="d-flex align-items-center gap-10">
-                  <p className="totalproducts mb-0">21 Products</p>
-                  <div className="d-flex gap-10 align-items-center grid">
-                    <img
-                      onClick={() => {
-                        setGrid(3);
-                      }}
-                      src="images/gr4.svg"
-                      className="d-block img-fluid"
-                      alt="grid"
-                    />
-                    <img
-                      onClick={() => {
-                        setGrid(4);
-                      }}
-                      src="images/gr3.svg"
-                      className="d-block img-fluid"
-                      alt="grid"
-                    />
-                    <img
-                      onClick={() => {
-                        setGrid(6);
-                      }}
-                      src="images/gr2.svg"
-                      className="d-block img-fluid"
-                      alt="grid"
-                    />
-
-                    <img
-                      onClick={() => {
-                        setGrid(12);
-                      }}
-                      src="images/gr.svg"
-                      className="d-block img-fluid"
-                      alt="grid"
-                    />
-                  </div>
-                </div>
               </div>
             </div>
             <div className="products-list pb-5">
@@ -349,6 +338,16 @@ const OurStore = () => {
                   <ProductCard key={item.ID} product={item}/>
                 )}
               </div>
+              {remainQty > 0 && (
+              <div className="text-center">
+                <button 
+                  className="btn btn-primary btn-md" 
+                  onClick={handleNextPage}
+                > 
+                    Xem thêm {remainQty} sản phẩm
+                </button>
+              </div>
+              )}
             </div>
           </div>
         </div>

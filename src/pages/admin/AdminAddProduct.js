@@ -53,7 +53,7 @@ const AdminAddProduct = () => {
     if (!ID)
       return false 
 
-    for (const item in list) {
+    for (const item of list) {
       if (item.ID == ID) {
         return true
       }
@@ -83,7 +83,7 @@ const AdminAddProduct = () => {
     if (!trimmedProduct.name) errors.name = "Vui lòng điền tên sản phẩm";
 
     if (trimmedProduct.categoryID === '') errors.categoryID = "Vui lòng chọn thể loại sản phẩm"
-    else if (checkIDinList(trimmedProduct.categoryID, categoriesList)) errors.categoryID = "Thể loại sản phẩm không hợp lệ"
+    else if (!checkIDinList(trimmedProduct.categoryID, categoriesList)) errors.categoryID = "Thể loại sản phẩm không hợp lệ"
 
     if (trimmedProduct.image.length > 255) errors.image = "Link hình ảnh phải ít hơn 255 ký tự";
 
@@ -106,6 +106,7 @@ const AdminAddProduct = () => {
 
     if (trimmedProduct.description.length > 5000) errors.description = "Mô tả sản phẩm phải ít hơn 5000 ký tự";
 
+
     // Set errors if any, else submit form
     if (Object.keys(errors).length > 0) {
         setErrors(errors);
@@ -113,7 +114,8 @@ const AdminAddProduct = () => {
     } else {
         try {
           const response = await axios.post('http://localhost/api/admin/product-add.php', trimmedProduct)
-          console.log(response)
+          // console.log(response)
+          navigate(-1)
         } catch (error) {
           console.log(error);
         }
