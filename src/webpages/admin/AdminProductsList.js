@@ -4,7 +4,6 @@ import { Link } from 'react-router-dom';
 import { Table, TableBody, TableCell, TableHead, TableRow, IconButton, Box, Tooltip, Grid, Pagination} from '@mui/material';
 import { Reviews, Edit } from '@mui/icons-material';
 import AlertDialog from '../AlertDialog';
-import ConfirmDialog from '../ConfirmDialog';
 import NormalSearchBar from '../search-bar/NormalSearchBar';
 
 const ProductsAdminPage = () => {
@@ -45,11 +44,6 @@ const ProductsAdminPage = () => {
   const onViewDetail = (product) => {
     setView(product)
   }
-  const [confirmDel, setConfirmDel] = useState(false)
-  const onDelete = (ID) => {
-    setProducts(products.filter(product => product.ID !== ID))
-    // delete in server
-  }    
   
   const handleSearch = () => {
     axios.get('http://localhost/api/admin/products-list.php', {
@@ -121,11 +115,6 @@ const ProductsAdminPage = () => {
                         </IconButton>
                     </Link>
                 </Tooltip>                
-                {/* <Tooltip title="Xóa sản phẩm">
-                  <IconButton color="secondary" onClick={() => setConfirmDel(product.ID)}>
-                    <Delete />
-                  </IconButton>
-                </Tooltip> */}
               </TableCell>
             </TableRow>
           ))}
@@ -179,12 +168,6 @@ const ProductsAdminPage = () => {
         </Table>     
       </>
     </AlertDialog>
-    <ConfirmDialog 
-        isOpen={!!confirmDel} 
-        setOpen={setConfirmDel} 
-        content={"Bạn có chắc chắn muốn xóa sản phẩm có ID = " + confirmDel + " không?"}
-        confirm={() => onDelete(confirmDel)}
-    />
     </>
   );
 };
