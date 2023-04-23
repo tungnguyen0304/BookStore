@@ -4,17 +4,13 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout";
 import Home from "./pages/Home";
 import CatalogSearch from "./pages/CatalogSearch";
-// import About from "./pages/About";
 import Contact from "./pages/Contact";
 import OurStore from "./pages/OurStore";
-// import Blog from "./pages/Blog";
 import CompareProduct from "./pages/CompareProduct";
-// import Wishlist from "./pages/Wishlist";
 import Login from "./pages/Login";
 import Forgotpassword from "./pages/Forgotpassword";
 import Signup from "./pages/Signup";
 import Resetpassword from "./pages/Resetpassword";
-// import SingleBlog from "./pages/SingleBlog";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
 import RefundPloicy from "./pages/RefundPloicy";
 import ShippingPolicy from "./pages/ShippingPolicy";
@@ -22,16 +18,18 @@ import TermAndContions from "./pages/TermAndContions";
 import SingleProduct from "./pages/SingleProduct";
 import Cart from "./pages/Cart";
 import Checkout from "./pages/Checkout";
-import ViewProfile from "./webpages/user-page/ViewProfile";
-import EditProfile from "./webpages/user-page/EditProfile";
-import AdminAddProduct from "./webpages/admin/AdminAddProduct";
-import AdminEditProduct from "./webpages/admin/AdminEditProduct";
-import AdminManageProductInfo from "./webpages/admin/AdminManageProductInfo";
-import AdminCommentsList from "./webpages/admin/AdminCommentsList";
-import AdminDashboard from "./webpages/admin/AdminDashboard";
-import AdminOrdersList from "./webpages/admin/AdminOrdersList";
-import AdminProductsList from "./webpages/admin/AdminProductsList";
-import UsersAdminPage from "./webpages/admin/AdminUsersList";
+import ViewProfile from "./pages/user-page/ViewProfile";
+import EditProfile from "./pages/user-page/EditProfile";
+import UserOrdersList from "./pages/user-page/UserOrdersList";
+import Order from "./pages/user-page/Order";
+import AdminAddProduct from "./pages/admin/AdminAddProduct";
+import AdminEditProduct from "./pages/admin/AdminEditProduct";
+import AdminManageProductInfo from "./pages/admin/AdminManageProductInfo";
+import AdminCommentsList from "./pages/admin/AdminCommentsList";
+import AdminDashboard from "./pages/admin/AdminDashboard";
+import AdminOrdersList from "./pages/admin/AdminOrdersList";
+import AdminProductsList from "./pages/admin/AdminProductsList";
+import UsersAdminPage from "./pages/admin/AdminUsersList";
 
 function App() {
   return (
@@ -41,7 +39,6 @@ function App() {
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
             <Route path="catalog-search/:q?" element={<CatalogSearch />} />
-            {/* <Route path="about" element={<About />} /> */}
             <Route path="contact" element={<Contact />} />
             <Route path="category/:unique_name" element={<OurStore />} />
             <Route path="product/:unique_name" element={<SingleProduct />} />
@@ -54,6 +51,8 @@ function App() {
             <Route path="reset-password" element={<Resetpassword />} />
             <Route path="view-profile" element={<ViewProfile />} />
             <Route path="edit-profile" element={<EditProfile />} /> 
+            <Route path="orders/order/:id?" element={<Order />} /> 
+            <Route path="orders" element={<UserOrdersList />} /> 
             <Route path="privacy-policy" element={<PrivacyPolicy />} />
             <Route path="refund-policy" element={<RefundPloicy />} />
             <Route path="shipping-policy" element={<ShippingPolicy />} />

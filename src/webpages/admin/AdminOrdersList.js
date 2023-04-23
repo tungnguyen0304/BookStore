@@ -108,7 +108,7 @@ const OrdersAdminPage = () => {
               <TableCell>{order.status === 1? "Đã nhận hàng": "Đang giao hàng"}</TableCell>
               <TableCell>
                 <Tooltip title="Xem chi tiết">
-                  <IconButton color="secondary" onClick={() => onViewDetail(order)}>
+                  <IconButton  style={{color: 'green'}} onClick={() => onViewDetail(order)}>
                     <Reviews />
                   </IconButton>
                 </Tooltip>

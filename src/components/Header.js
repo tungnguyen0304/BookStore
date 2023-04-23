@@ -236,6 +236,11 @@ const Header = () => {
                         </Link>
                       </li>
                       <li>
+                        <Link className="dropdown-item text-white" to="/admin/products/info">
+                          Quản lý thông tin SP
+                        </Link>
+                      </li>                      
+                      <li>
                         <Link className="dropdown-item text-white" to="/admin/orders">
                         Quản lý đơn hàng
                         </Link>

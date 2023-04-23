@@ -5,6 +5,7 @@ import { Table, TableBody, TableCell, TableHead, TableRow, IconButton, Box, Tool
 import { ExitToApp, Reviews, Edit } from '@mui/icons-material';
 import AlertDialog from '../AlertDialog';
 import NormalSearchBar from '../search-bar/NormalSearchBar';
+import Meta from "../../components/Meta";
 
 const ProductsAdminPage = () => {
   // fecth from server 
@@ -67,9 +68,10 @@ const ProductsAdminPage = () => {
 
   return (
     <>
+    <Meta title="Quản lý sản phẩm"/>
     <Grid container sx={{ mb: 1, mt: 1 }}>
       <Grid item xs={12} sm={8} md={6}>
-        <div className='pageTitle'>Quản lý sản phẩm</div>
+        <div className='h3'>Quản lý sản phẩm</div>
       </Grid>
       <Grid item xs={12} sm={4} md={6}>
         <NormalSearchBar 
@@ -82,7 +84,7 @@ const ProductsAdminPage = () => {
     </Grid>    
     <Grid container>
       <Link to="add">
-        <Button variant='contained' color="primary">Thêm sản phẩm</Button>
+        <Button variant='contained' color="primary">Thêm sản phẩm mới</Button>
       </Link>
     </Grid>
     <Box>

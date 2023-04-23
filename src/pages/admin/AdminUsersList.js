@@ -5,6 +5,7 @@ import { Delete, Reviews } from '@mui/icons-material';
 import AlertDialog from '../AlertDialog';
 import ConfirmDialog from '../ConfirmDialog';
 import NormalSearchBar from '../search-bar/NormalSearchBar';
+import Meta from "../../components/Meta";
 
 const UsersAdminPage = () => {
   // fecth from server 
@@ -72,9 +73,10 @@ const UsersAdminPage = () => {
 
   return (
     <>
+    <Meta title="Quản lý người dùng"/>
     <Grid container sx={{ mb: 1, mt: 1 }}>
       <Grid item xs={12} sm={8} md={6}>
-        <div className='pageTitle'>Quản lý người dùng</div>
+        <div className='h3'>Quản lý người dùng</div>
       </Grid>
       <Grid item xs={12} sm={4} md={6}>
         <NormalSearchBar 
