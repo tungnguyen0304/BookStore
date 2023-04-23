@@ -24,6 +24,11 @@ function getUniqueNameFromUrl(url) {
   // Return the unique name
   return uniqueName;
 }
+function isInteger(str) {
+  if (typeof str != "string") return false // we only process strings!  
+  return !isNaN(str) && // use type coercion to parse the _entirety_ of the string (`parseFloat` alone does not do this)...
+         !isNaN(parseInt(str)) // ...and ensure strings of whitespace fail
+} 
 
 const SingleProduct = () => {
   const [qty, setQty] = useState(0)
@@ -59,22 +64,23 @@ const SingleProduct = () => {
       console.log(error)
     });        
   }
-  const uniqueName = getUniqueNameFromUrl(window.location.href)
   const VNCurrencyFormatter = new Intl.NumberFormat('vi', {
     style: "currency",
     currency: "VND"
   })   
   // // fecth product
-  useEffect(() => {
+  useEffect(() => {   
     async function fetchData() {
       try {
+        const uniqueName = getUniqueNameFromUrl(window.location.href)
         // set qty of product by the current qty in cart
         setQty(getQuantityByUniqueName(uniqueName));
         // fetch product info by unique name
         const productResponse = await axios.get('http://localhost/api/product-info.php', {
-          params: { 
+          params: isInteger(uniqueName) ? { 
+            id: uniqueName
+          } : {
             unique_name: uniqueName,
-            id: uniqueName // fallback param
           }
         });
         setProduct(productResponse.data);
@@ -90,7 +96,7 @@ const SingleProduct = () => {
       }
     }
     fetchData();
-  }, [uniqueName]);
+  }, []);
   const props = {
     width: 594,
     height: 600,
