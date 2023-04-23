@@ -2,7 +2,7 @@ import React from 'react';
 import { IconButton } from '@mui/material';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
-import DialogContentText from '@mui/material/DialogContentText';
+// import DialogContentText from '@mui/material/DialogContentText';
 import DialogTitle from '@mui/material/DialogTitle';
 import Slide from '@mui/material/Slide';
 import { styled } from '@mui/material/styles';
@@ -48,7 +48,7 @@ const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
-export default function AlertDialogSlide({children, title,viewUserPopup, setView}) {
+export default function AlertDialogSlide({children, title, open, setView}) {
   const handleClose = () => {
     setView(false);
   };
@@ -58,7 +58,7 @@ export default function AlertDialogSlide({children, title,viewUserPopup, setView
       <BootstrapDialog
         onClose={handleClose}
         aria-labelledby="customized-dialog-title"
-        open={viewUserPopup}
+        open={open}
         TransitionComponent={Transition}
         fullWidth={true}
       >
@@ -74,6 +74,6 @@ export default function AlertDialogSlide({children, title,viewUserPopup, setView
 }
 AlertDialogSlide.propTypes = {
   children: PropTypes.node,
-  viewUserPopup: PropTypes.bool.isRequired,
+  open: PropTypes.bool.isRequired,
   setView: PropTypes.func.isRequired
 };

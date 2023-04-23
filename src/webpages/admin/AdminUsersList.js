@@ -129,13 +129,13 @@ const UsersAdminPage = () => {
         <Pagination color="primary" count={pageCount} page={currentPage} onChange={handlePageChange} />
       </Box>
     </Box>
-    <AlertDialog title="Thông tin người dùng" viewUserPopup={!!viewUserPopup} setView={setView}>
+    <AlertDialog title="Thông tin người dùng" open={!!viewUserPopup} setView={setView}>
       <>
         <Table>
             <TableBody>
             <TableRow>
                 <TableCell variant="head">ID</TableCell>
-                <TableCell>{viewUserPopup.id}</TableCell>
+                <TableCell>{viewUserPopup.ID}</TableCell>
             </TableRow>
             <TableRow>
                 <TableCell variant="head">Tên</TableCell>
@@ -166,10 +166,10 @@ const UsersAdminPage = () => {
       </>
     </AlertDialog>
     <ConfirmDialog 
-    isOpen={!!confirmDel} 
-    setOpen={setConfirmDel} 
-    content={"Bạn có chắc chắn muốn xóa user có ID = " + confirmDel + " không?"}
-    confirm={() => onDelete(confirmDel)}
+      isOpen={!!confirmDel} 
+      setOpen={setConfirmDel} 
+      content={"Bạn có chắc chắn muốn xóa user có ID = " + confirmDel + " không?"}
+      confirm={() => onDelete(confirmDel)}
     />
     </>
   );

@@ -1,6 +1,6 @@
 import React from "react";
 import axios from "axios";
-import { NavLink, Link, useNavigate, useDispatch, useSelector } from "react-router-dom";
+import { NavLink, Link, useNavigate } from "react-router-dom";
 import { BsSearch } from "react-icons/bs";
 import user from "../images/user.svg";
 import cart from "../images/cart.svg";
@@ -15,7 +15,9 @@ import Tooltip from '@mui/material/Tooltip';
 import ReceiptLongIcon from '@mui/icons-material/ReceiptLong';
 import Logout from '@mui/icons-material/Logout';
 import styled from '@emotion/styled';
-import { useMediaQuery } from 'react-responsive'
+import { useDispatch, useSelector } from "react-redux";
+import { logout } from "../actions/userRole";
+// import { useMediaQuery } from 'react-responsive'
 
 const MenuLink = styled.a`
   text-decoration: none;
