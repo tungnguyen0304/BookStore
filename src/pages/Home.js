@@ -1,12 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-// import { Link } from "react-router-dom";
-// import Marquee from "react-fast-marquee";
-// import BlogCard from "../components/BlogCard";
 import ProductCard from "../components/ProductCard";
-// import SpecialProduct from "../components/SpecialProduct";
 import Container from "../components/Container";
-// import { services } from "../utils/Data";
 import Meta from "../components/Meta";
 import "react-slideshow-image/dist/styles.css";
 import { Slide } from "react-slideshow-image";
@@ -44,7 +39,6 @@ const Home = () => {
         return response.data;
       })
       .then((response) => {
-        // console.log(JSON.parse(response.categoriesList))
         setCategoriesList(JSON.parse(response.categoriesList));
       })
       .catch((error) => {
@@ -56,7 +50,6 @@ const Home = () => {
         return response.data;
       })
       .then((response) => {
-        // console.log(response)
         setProducts(response);
       })
       .catch((error) => {
@@ -66,8 +59,9 @@ const Home = () => {
 
   return (
     <>
+      <div className="d-flex flex-column">
       <Meta title={"Trang chủ"} />
-      <Container class1="home-wrapper-1 py-5">
+      <div className="home-wrapper-1 py-5">
         <div className="row">
           <div className="col-6">
             <div className="main-banner position-relative ">
@@ -118,16 +112,16 @@ const Home = () => {
             </div>
           </div>
         </div>
-      </Container>
+      </div>
       
       {categoriesList.length !== 0 &&
         Object.keys(products).length !== 0 &&
         categoriesList.map(
           (category, index) =>
             products[category.ID].length !== 0 && (
-              <Container
+              <div
                 key={index}
-                class1="featured-wrapper py-5 home-wrapper-2"
+                className="featured-wrapper py-5 home-wrapper-2"
               >
                 <div className="row">
                   <div className="col-6">
@@ -137,41 +131,46 @@ const Home = () => {
                     <a href={'/category/' + category.unique_name}>Xem tất cả</a>
                   </div>
                 </div>
-                <div className="row">
-                  <div className="col-12 d-flex flex-wrap gap-10 align-items-center">
+                <div className="row flex-wrap align-items-stretch">
+                  {/* <div className="d-flex flex-wrap gap-10 align-items-center"> */}
                     {products[category.ID].map((product) => (
-                      <ProductCard 
-                        product={product} 
-                        key={product.ID}
-                        className="gr-3"  
-                      />
+                      <div key={product.ID} className="col-6 col-md-3">
+                        <ProductCard 
+                          product={product} 
+                        />
+                      </div>
                     ))}
-                  </div>
+                  {/* </div> */}
                 </div>
-              </Container>
+              </div>
             )
         )}
       {Object.keys(products).length !== 0 &&
         products["top_sellers"].length !== 0 && (
-          <Container class1="popular-wrapper py-5 home-wrapper-2">
+          <Container 
+          // class1="popular-wrapper py-5 home-wrapper-2"
+          >
             <div className="row">
               <div className="col-12">
                 <h3 className="section-heading">Sản phẩm bán chạy</h3>
               </div>
             </div>
             <div className="row">
-              <div className="col-12 d-flex flex-wrap gap-10 align-items-center">
+              {/* <div className="col-12 d-flex flex-wrap gap-10 align-items-center"> */}
                 {products["top_sellers"].map((product) => (
-                  <ProductCard
-                    className="gr-3"
-                    product={product}
-                    key={product.ID}
-                  />
+                  <div key={product.ID} className="col-6 col-md-3">
+                    <ProductCard
+                      // className="gr-3"
+                      product={product}
+                      // key={product.ID}
+                    />
+                  </div>
                 ))}
-              </div>
+              {/* </div> */}
             </div>
           </Container>
         )}
+        </div>
     </>
   );
 };

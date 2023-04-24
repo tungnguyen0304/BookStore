@@ -6,13 +6,12 @@ import Home from "./pages/Home";
 import CatalogSearch from "./pages/CatalogSearch";
 import Contact from "./pages/Contact";
 import OurStore from "./pages/OurStore";
-import CompareProduct from "./pages/CompareProduct";
 import Login from "./pages/Login";
 import Forgotpassword from "./pages/Forgotpassword";
 import Signup from "./pages/Signup";
 import Resetpassword from "./pages/Resetpassword";
 import PrivacyPolicy from "./pages/PrivacyPolicy";
-import RefundPloicy from "./pages/RefundPloicy";
+import RefundPolicy from "./pages/RefundPolicy";
 import ShippingPolicy from "./pages/ShippingPolicy";
 import TermAndContions from "./pages/TermAndContions";
 import SingleProduct from "./pages/SingleProduct";
@@ -26,7 +25,6 @@ import AdminAddProduct from "./pages/admin/AdminAddProduct";
 import AdminEditProduct from "./pages/admin/AdminEditProduct";
 import AdminManageProductInfo from "./pages/admin/AdminManageProductInfo";
 import AdminCommentsList from "./pages/admin/AdminCommentsList";
-import AdminDashboard from "./pages/admin/AdminDashboard";
 import AdminOrdersList from "./pages/admin/AdminOrdersList";
 import AdminProductsList from "./pages/admin/AdminProductsList";
 import UsersAdminPage from "./pages/admin/AdminUsersList";
@@ -44,7 +42,6 @@ function App() {
             <Route path="product/:unique_name" element={<SingleProduct />} />
             <Route path="cart" element={<Cart />} />
             <Route path="checkout" element={<Checkout />} />
-            <Route path="compare-product" element={<CompareProduct />} />
             <Route path="login" element={<Login />} />
             <Route path="forgot-password" element={<Forgotpassword />} />
             <Route path="signup" element={<Signup />} />
@@ -54,11 +51,10 @@ function App() {
             <Route path="orders/order/:id?" element={<Order />} /> 
             <Route path="orders" element={<UserOrdersList />} /> 
             <Route path="privacy-policy" element={<PrivacyPolicy />} />
-            <Route path="refund-policy" element={<RefundPloicy />} />
+            <Route path="refund-policy" element={<RefundPolicy />} />
             <Route path="shipping-policy" element={<ShippingPolicy />} />
             <Route path="term-conditions" element={<TermAndContions />} />
             <Route path="admin">
-              <Route index element={<AdminDashboard/>}/>
               <Route path="products" element={<AdminProductsList/>}/>
               <Route path="products/add" element={<AdminAddProduct/>}/>
               <Route path="products/edit/:id?" element={<AdminEditProduct/>}/>
