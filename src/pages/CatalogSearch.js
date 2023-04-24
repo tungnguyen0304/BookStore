@@ -10,10 +10,11 @@ export default function CatalogSearch () {
     const [products, setProducts] = useState([]);
     const [page, setPage] = useState(1)
     const location = useLocation();
+    const [remainQty, setRemainQty] = useState(0)      
     const searchParams = new URLSearchParams(location.search);
-    const query = searchParams.get("q");    
+    const query = searchParams.get("q"); 
 
-    useEffect(() => {
+    useEffect(() => {         
         axios.get(`http://localhost/api/products.php`, {
             params: {
                 q: query,
@@ -21,26 +22,37 @@ export default function CatalogSearch () {
             }
         })
             .then(response => {
-                setProducts(response.data);
+                setProducts(prev => [...prev, ...response.data.products])
+                setRemainQty(response.data.remain_qty)
             })
             .catch(error => {
                 console.log(error);
             });
-    }, [location.search, page]);
+    }, [page]);
 
     return (
         <>
-            <Meta title={"Kết quả tìm kiếm cho " + query} />
-            <BreadCrumb title={"Kết quả tìm kiếm cho " + query} />
-            <Container class1="store-wrapper home-wrapper-2 py-5">
-                <div className="products-list pb-5">
-                    <div className="d-flex gap-10 flex-wrap">
-                        {products.map(item => 
-                            <ProductCard key={item.ID} product={item}/>
-                        )}
-                    </div>
-                </div>        
-            </Container>
+        <Meta title={"Kết quả tìm kiếm cho " + query} />
+        <BreadCrumb title={"Kết quả tìm kiếm cho " + query} />
+        <Container class1="store-wrapper home-wrapper-2 py-5">
+            <div className="products-list pb-5">
+                <div className="d-flex gap-10 flex-wrap">
+                    {products.map(item => 
+                        <ProductCard key={item.ID} product={item}/>
+                    )}
+                </div>
+                {remainQty > 0 && (
+                <div className="text-center">
+                    <button 
+                    className="btn btn-primary btn-md" 
+                    onClick={() => setPage(prev => prev + 1)}
+                    > 
+                        Xem thêm {remainQty} sản phẩm
+                    </button>
+                </div>
+                )}                    
+            </div>        
+        </Container>
         </>
     )
 }

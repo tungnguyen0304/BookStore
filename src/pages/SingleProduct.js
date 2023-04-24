@@ -3,13 +3,8 @@ import axios from "axios";
 import ReactStars from "react-rating-stars-component";
 import BreadCrumb from "../components/BreadCrumb";
 import Meta from "../components/Meta";
-// import ProductCard from "../components/ProductCard";
 import ReactImageZoom from "react-image-zoom";
-// import Color from "../components/Color";
-// import { TbGitCompare } from "react-icons/tb";
-// import { AiOutlineHeart } from "react-icons/ai";
 import { Link } from "react-router-dom";
-// import watch from "../images/watch.jpg";
 import Container from "../components/Container";
 import { IconButton } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
@@ -70,9 +65,7 @@ const SingleProduct = () => {
     })
     .then(response => {
       setReview('')
-      console.log(response)
       setAllReviews(prev => ([...prev, response.data]))
-      // console.log('Đánh giá của bạn đã được gửi thành công.'); // display a success message
     })
     .catch(error => {
       setReviewError('Không thể gửi bình luận! Vui lòng thử lại')
@@ -159,10 +152,10 @@ const SingleProduct = () => {
                     edit={false}
                     activeColor="#ffd700"
                   />
-                  <p className="mb-0 t-review">( 2 Reviews )</p>
+                  <p className="mb-0 t-review">({allReviews.length} đánh giá)</p>
                 </div>
                 <a className="review-btn" href="#review">
-                  Write a Review
+                  Viết đánh giá
                 </a>
               </div>
               <div className=" py-3">

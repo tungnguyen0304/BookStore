@@ -1,13 +1,13 @@
-import React from "react";
+import { React, useEffect, useState, useRef } from "react";
 import axios from "axios";
 import { NavLink, Link, useNavigate } from "react-router-dom";
-import { BsSearch } from "react-icons/bs";
 import user from "../images/user.svg";
 import cart from "../images/cart.svg";
 import menu from "../images/menu.svg";
 import Avatar from '@mui/material/Avatar';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
+import { MenuList } from "@mui/material";
 import ListItemIcon from '@mui/material/ListItemIcon';
 import Divider from '@mui/material/Divider';
 import IconButton from '@mui/material/IconButton';
@@ -17,7 +17,16 @@ import Logout from '@mui/icons-material/Logout';
 import styled from '@emotion/styled';
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../actions/userRole";
+import SuggestionSearchBar from "../components/SuggestionSearchBar";
 // import { useMediaQuery } from 'react-responsive'
+import { List, ListItem, ListItemAvatar, ListItemText } from '@mui/material';
+
+const StyledList = styled(List)({
+  width: '100%',
+  maxWidth: 400,
+  position: 'relative',
+  backgroundColor: '#F2F4F4'
+});
 
 const MenuLink = styled.a`
   text-decoration: none;
@@ -28,7 +37,7 @@ const AccountButton = () => {
   // const userRole = useSelector((state) => state.userRole);
   const dispatch = useDispatch();
   const navigate = useNavigate()
-  const [anchorEl, setAnchorEl] = React.useState(null);
+  const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);  
   const handleClose = () => {
     setAnchorEl(null);
@@ -122,14 +131,47 @@ const AccountButton = () => {
 }
 
 const Header = () => {
-  const [searchTerm, setSearchTerm] = React.useState("");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [products, setProducts] = useState([])
   const userRole = useSelector((state) => state.userRole);
   const navigate = useNavigate()
+  const timeoutRef = useRef(null);
   
   const handleSubmit = (e) => {
     e.preventDefault();
-    navigate('/catalog-search?q=' + searchTerm);
+    if (searchTerm)
+      navigate('/catalog-search?q=' + searchTerm);
   }
+
+  useEffect(() => {
+    if (timeoutRef.current !== null) {
+      clearTimeout(timeoutRef.current);
+    }
+    if (searchTerm === '') {
+      return;
+    }
+  
+    timeoutRef.current = setTimeout(() => {
+      axios.get('http://localhost/api/products.php', {
+        params: {
+          q: searchTerm
+        }
+      })
+      .then(response => {
+        // console.log(response.data.products)
+        const firstFiveProducts = response.data.products.slice(0, 5);
+        setProducts(firstFiveProducts);
+      })
+      .catch(error => {
+        console.error(error);
+      });
+    }, 200);
+  
+    return () => {
+      clearTimeout(timeoutRef.current);
+    };
+  }, [searchTerm]);
+   
 
   return (
     <>
@@ -144,7 +186,7 @@ const Header = () => {
             <div className="col-5">
             <form onSubmit={handleSubmit}>
               <div className="input-group">
-                <input
+                {/* <input
                   value={searchTerm}
                   onChange={(e) => setSearchTerm(e.target.value)}
                   className="form-control py-2"
@@ -154,7 +196,28 @@ const Header = () => {
                 />
                 <button className="input-group-text p-3" type="submit" id="basic-addon2">
                   <BsSearch className="fs-6" />
-                </button>
+                </button> */}
+                <SuggestionSearchBar
+                  label="Tìm kiếm sản phẩm ở đây ..."
+                  searchText={searchTerm}
+                  setSearchText={setSearchTerm}
+                  handleSearch={handleSubmit}
+                >
+                  {products.length !== 0 && (
+                  <MenuList>
+                      {products.map(product => (
+                        <Link key={product.ID} to={"/product/" + product.unique_name}>
+                        <ListItem>
+                          <ListItemAvatar>
+                            <Avatar alt={product.name} src={product.image} />
+                          </ListItemAvatar>
+                          <ListItemText primary={product.name} />
+                        </ListItem>
+                        </Link>
+                    ))}
+                  </MenuList>
+                  )}
+                </SuggestionSearchBar>
               </div>
             </form>
             </div>

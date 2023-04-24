@@ -35,6 +35,11 @@ export default function SuggestionSearchBar ({children, label, searchText, setSe
       setResultsVisible(false);
     }, 200);
   };
+  const handleFocus = () => {
+    setTimeout(() => {
+      setResultsVisible(true);
+    }, 200);
+  };  
 
   return (
     <SearchWrapper>
@@ -43,9 +48,11 @@ export default function SuggestionSearchBar ({children, label, searchText, setSe
         variant="outlined"
         fullWidth
         size='small'
+        autoComplete='off'
         value={searchText}
         onChange={handleInputChange}
         onBlur={handleBlur}
+        onFocus={handleFocus}
         InputProps={{
           endAdornment: (
             <InputAdornment position="end">
