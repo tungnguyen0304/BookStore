@@ -3,18 +3,21 @@ import axios from "axios";
 import ReactStars from "react-rating-stars-component";
 import BreadCrumb from "../components/BreadCrumb";
 import Meta from "../components/Meta";
-import ProductCard from "../components/ProductCard";
+// import ProductCard from "../components/ProductCard";
 import ReactImageZoom from "react-image-zoom";
-import Color from "../components/Color";
-import { TbGitCompare } from "react-icons/tb";
-import { AiOutlineHeart } from "react-icons/ai";
+// import Color from "../components/Color";
+// import { TbGitCompare } from "react-icons/tb";
+// import { AiOutlineHeart } from "react-icons/ai";
 import { Link } from "react-router-dom";
-import watch from "../images/watch.jpg";
+// import watch from "../images/watch.jpg";
 import Container from "../components/Container";
 import { IconButton } from '@mui/material';
 import AddCircleOutlineIcon from '@mui/icons-material/AddCircleOutline';
 import RemoveCircleOutlineIcon from '@mui/icons-material/RemoveCircleOutline';
 import {getLocalCartContent, getQuantityByUniqueName, decreaseInLocalCart, increaseInLocalCart} from '../webpages/cart-payment/setCartLocal';
+import { useSelector } from "react-redux";
+import VerifiedUserIcon from '@mui/icons-material/VerifiedUser';
+import { Tooltip } from "@mui/material";
 
 function getUniqueNameFromUrl(url) {
   // Split the URL string by the '/' character
@@ -31,8 +34,10 @@ function isInteger(str) {
 } 
 
 const SingleProduct = () => {
+  const userRole = useSelector((state) => state.userRole);
   const [qty, setQty] = useState(0)
   const [review, setReview] = useState('')
+  const [reviewError, setReviewError] = useState('')
   const [product, setProduct] = useState({})
   const [allReviews, setAllReviews] = useState([])
   const onIncrease = () => {
@@ -45,29 +50,47 @@ const SingleProduct = () => {
       decreaseInLocalCart(product)
       console.log(getLocalCartContent())
   };      
-  const handleChange = (event) => setReview(event.target.value)
+  const handleChange = (event) => {
+    setReview(event.target.value)
+    if (reviewError) {
+      setReviewError('')
+    }
+  }
   const handleSubmitReview = event => {
     event.preventDefault()
-    if (!review.trim()) {
+    const trimmedReview = review.trim()
+    if (!trimmedReview) {
       // check if the review content is empty or only whitespace
-      alert('Vui lòng nhập nội dung đánh giá.'); // display an error message
+      setReviewError('Vui lòng nhập nội dung đánh giá.'); // display an error message
       return; // stop further processing
     }
     axios.post('http://localhost/api/comment-on-product.php', { 
       productID: product.ID,
-      content: review.trim()
+      content: trimmedReview
     })
     .then(response => {
-      console.log('Đánh giá của bạn đã được gửi thành công.'); // display a success message
+      setReview('')
+      console.log(response)
+      setAllReviews(prev => ([...prev, response.data]))
+      // console.log('Đánh giá của bạn đã được gửi thành công.'); // display a success message
     })
     .catch(error => {
-      console.log(error)
+      setReviewError('Không thể gửi bình luận! Vui lòng thử lại')
     });        
   }
   const VNCurrencyFormatter = new Intl.NumberFormat('vi', {
     style: "currency",
     currency: "VND"
   })   
+  const VNDatetimeFormatter = new Intl.DateTimeFormat("vi", {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+    second: "numeric",
+  });  
   // // fecth product
   useEffect(() => {   
     async function fetchData() {
@@ -214,6 +237,7 @@ const SingleProduct = () => {
           <div className="col-12">
             <h3 id="review">Đánh giá sản phẩm</h3>
             <div className="review-inner-wrapper">
+              {userRole !== '' ? (
               <div className="review-form py-4">
                 <h4>Viết đánh giá</h4>
                 <form action="" className="d-flex flex-column gap-15">
@@ -231,11 +255,12 @@ const SingleProduct = () => {
                       name="review"
                       value={review}
                       onChange={handleChange}
-                      className="w-100 form-control"
+                      className={`w-100 form-control ${reviewError ? 'is-invalid' : ''}`}
                       cols="30"
                       rows="4"
                       placeholder="Đánh giá của bạn..."
                     ></textarea>
+                    {!!reviewError && <span className="invalid-feedback">{reviewError}</span>}
                   </div>
                   <div className="d-flex justify-content-end">
                     <button type="submit" className="button border-0" onClick={handleSubmitReview}>
@@ -244,11 +269,22 @@ const SingleProduct = () => {
                   </div>
                 </form>
               </div>
+              ) : (
+              <div className="text-center text-muted">
+                Bạn phải đăng nhập để bình luận<br/>
+                <Link to="/login">Đăng nhập</Link>
+              </div>
+              )}
               <div className="reviews mt-4">
                 {allReviews.map(review => 
                 <div className="review" key={review.ID}>
                   <div className="d-flex gap-10 align-items-center">
-                    <h6 className="mb-0">{review.name}</h6>
+                    <h6 className="mb-0">{review.username}</h6>
+                    {review.userRole === '1' && (
+                    <Tooltip title="Quản trị viên">
+                      <VerifiedUserIcon/>
+                    </Tooltip>
+                    )}
                     <ReactStars
                       count={5}
                       size={24}
@@ -260,7 +296,7 @@ const SingleProduct = () => {
                   <p className="mt-3">
                     {review.content}
                   </p>
-                  <span>{review.comment_datetime}</span>
+                  <span>{VNDatetimeFormatter.format(new Date(review.comment_datetime))}</span>
                 </div>                  
                 )}
               </div>
@@ -268,71 +304,6 @@ const SingleProduct = () => {
           </div>
         </div>
       </Container>
-      {/* <Container class1="popular-wrapper py-5 home-wrapper-2">
-        <div className="row">
-          <div className="col-12">
-            <h3 className="section-heading">Our Popular Products</h3>
-          </div>
-        </div>
-        <div className="row">
-          <ProductCard />
-        </div>
-      </Container> */}
-
-      {/* <div
-        className="modal fade"
-        id="staticBackdrop"
-        data-bs-backdrop="static"
-        data-bs-keyboard="false"
-        tabIndex="-1"
-        aria-labelledby="staticBackdropLabel"
-        aria-hidden="true"
-      >
-        <div className="modal-dialog modal-dialog-centered ">
-          <div className="modal-content">
-            <div className="modal-header py-0 border-0">
-              <button
-                type="button"
-                className="btn-close"
-                data-bs-dismiss="modal"
-                aria-label="Close"
-              ></button>
-            </div>
-            <div className="modal-body py-0">
-              <div className="d-flex align-items-center">
-                <div className="flex-grow-1 w-50">
-                  <img src={watch} className="img-fluid" alt="product imgae" />
-                </div>
-                <div className="d-flex flex-column flex-grow-1 w-50">
-                  <h6 className="mb-3">Apple Watch</h6>
-                  <p className="mb-1">Quantity: asgfd</p>
-                  <p className="mb-1">Color: asgfd</p>
-                  <p className="mb-1">Size: asgfd</p>
-                </div>
-              </div>
-            </div>
-            <div className="modal-footer border-0 py-0 justify-content-center gap-30">
-              <button type="button" className="button" data-bs-dismiss="modal">
-                View My Cart
-              </button>
-              <button type="button" className="button signup">
-                Checkout
-              </button>
-            </div>
-            <div className="d-flex justify-content-center py-3">
-              <Link
-                className="text-dark"
-                to="/product"
-                // onClick={() => {
-                //   closeModal();
-                // }}
-              >
-                Continue To Shopping
-              </Link>
-            </div>
-          </div>
-        </div>
-      </div> */}
     </>
   );
 };

@@ -32,6 +32,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
         if (password_verify($password, $password_hash)) {
             // Store the session ID, user ID, role in the session variables
             $_SESSION['ID'] = $row['ID'];            
+            $_SESSION['username'] = $row['username'];
             $_SESSION['role'] = $row['role'];  
             // data to return back
             $res = array(

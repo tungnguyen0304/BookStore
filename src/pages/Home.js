@@ -130,19 +130,23 @@ const Home = () => {
                 class1="featured-wrapper py-5 home-wrapper-2"
               >
                 <div className="row">
-                  <div className="col-9">
+                  <div className="col-6">
                     <h3 className="section-heading">{category.name}</h3>
                   </div>
-                  <div className="col-3">
+                  <div className="col-6 d-flex justify-content-end align-items-center">
                     <a href={'/category/' + category.unique_name}>Xem tất cả</a>
-                  </div>                  
+                  </div>
                 </div>
                 <div className="row">
-                  <div className="col-12 d-flex d-row gap-10 align-items-center">
+                  <div className="col-12 d-flex flex-wrap gap-10 align-items-center">
                     {products[category.ID].map((product) => (
-                      <ProductCard product={product} key={product.ID} />
+                      <ProductCard 
+                        product={product} 
+                        key={product.ID}
+                        className="gr-3"  
+                      />
                     ))}
-                  </div>{" "}
+                  </div>
                 </div>
               </Container>
             )

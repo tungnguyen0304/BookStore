@@ -1,10 +1,10 @@
 <?php
-ini_set('display_errors', 1);
-ini_set('display_startup_errors', 1);
-error_reporting(E_ALL);
+// ini_set('display_errors', 1);
+// ini_set('display_startup_errors', 1);
+// error_reporting(E_ALL);
 session_start();
 require_once('cors.php');
-if ($_SERVER['REQUEST_METHOD'] == 'POST' and isset($_SESSION['ID'])) {
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     require_once('DBConnect.php');
     require_once('utils/test_input.php');
     require_once('utils/check_access.php');
@@ -12,6 +12,8 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' and isset($_SESSION['ID'])) {
     check_user_access();
     // get the userID from the session variable
     $userID = $_SESSION['ID'];
+    $username = $_SESSION['username'];
+    $userRole = $_SESSION['role'];
 
     // read the raw request body and decode it as JSON
     $request_body = file_get_contents('php://input');
@@ -30,15 +32,15 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' and isset($_SESSION['ID'])) {
 
         // execute the statement and check if the insertion was successful
         if (mysqli_stmt_execute($stmt)) {
-            // insertion successful, return the inserted comment data
+            // insertion successful, retrieve the inserted comment from the database
             $commentID = mysqli_stmt_insert_id($stmt);
-            $comment = array(
-                'ID' => $commentID,
-                'userID' => $userID,
-                'productID' => $productID,
-                'content' => $content,
-                'comment_datetime' => date('Y-m-d H:i:s')
-            );
+            $stmt = mysqli_prepare($conn, 'SELECT * FROM product_comment WHERE ID = ?');
+            mysqli_stmt_bind_param($stmt, 'i', $commentID);
+            mysqli_stmt_execute($stmt);
+            $result = mysqli_stmt_get_result($stmt);
+            $comment = mysqli_fetch_assoc($result);
+            $comment['username'] = $username;
+            $comment['userRole'] = $userRole;
             header('Content-Type: application/json');
             echo json_encode($comment);
         } else {
@@ -55,9 +57,5 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST' and isset($_SESSION['ID'])) {
         http_response_code(400);
         echo "Missing or invalid parameters";
     }
-} else {
-    // user is not logged in
-    http_response_code(401);
-    echo "Unauthorized";
 }
 ?>
