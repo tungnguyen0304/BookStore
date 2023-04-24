@@ -19,7 +19,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../actions/userRole";
 import SuggestionSearchBar from "../components/SuggestionSearchBar";
 // import { useMediaQuery } from 'react-responsive'
-import { List, ListItem, ListItemAvatar, ListItemText } from '@mui/material';
+import { ListItem, ListItemAvatar, ListItemText } from '@mui/material';
 
 const MenuLink = styled.a`
   text-decoration: none;
@@ -127,7 +127,7 @@ const Header = () => {
   const [products, setProducts] = useState([])
   const userRole = useSelector((state) => state.userRole);
   const navigate = useNavigate()
-  const timeoutRef = useRef(null);
+  const timeoutRef = useRef(null)
   
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -142,7 +142,6 @@ const Header = () => {
     if (searchTerm === '') {
       return;
     }
-  
     timeoutRef.current = setTimeout(() => {
       axios.get('http://localhost/api/products.php', {
         params: {

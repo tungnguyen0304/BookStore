@@ -6,18 +6,33 @@ import Meta from "../components/Meta";
 import ProductCard from "../components/ProductCard";
 import Container from "../components/Container";
 
+function getIntialQuery(location) {
+    const searchParams = new URLSearchParams(location.search);
+    const initialQuery = searchParams.get("q"); 
+    return initialQuery
+}
+
 export default function CatalogSearch () {
     const [products, setProducts] = useState([]);
     const [page, setPage] = useState(1)
     const location = useLocation();
     const [remainQty, setRemainQty] = useState(0)      
-    const searchParams = new URLSearchParams(location.search);
-    const query = searchParams.get("q"); 
+    const [query, setQuery] = useState(getIntialQuery(location))
 
-    useEffect(() => {         
+    useEffect(() => {      
+        const searchParams = new URLSearchParams(location.search);
+        let newQuery = searchParams.get("q");    
+        if (newQuery !== query) {
+            setQuery(newQuery)
+            setPage(1)
+            setProducts([])
+        } else {
+            // query remains the same
+            newQuery = query
+        }
         axios.get(`http://localhost/api/products.php`, {
             params: {
-                q: query,
+                q: newQuery,
                 page: page
             }
         })
@@ -28,7 +43,7 @@ export default function CatalogSearch () {
             .catch(error => {
                 console.log(error);
             });
-    }, [page]);
+    }, [page, location.search]); // run whenever page & search param change
 
     return (
         <>
