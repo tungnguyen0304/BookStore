@@ -1,10 +1,10 @@
 import { Grid, FormControl, TextField } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { GreenButton, RedButton } from '../button-theme/ButtonTheme';
 import ConfirmDialog from '../ConfirmDialog';
 import { useNavigate } from 'react-router-dom';
 import Meta from '../../components/Meta';
+import {checkValidName, checkValidEmail, checkValidPhoneNumber} from '../../utils/FormUtil'
 
 const EditProfile = () => {
   const [profile, setProfile] = useState({
@@ -15,18 +15,6 @@ const EditProfile = () => {
   });
   const [errors, setErrors] = useState(profile);    
 
-  function checkValidName(name) {
-    const validNameRegex = /^[\p{L}\s']{1,50}$/u
-    return validNameRegex.test(name)
-  }
-  function checkValidEmail(email) {
-    const validEmailRegex = /^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{,50}$/;
-    return validEmailRegex.test(email)
-  }
-  function checkValidPhoneNumber(input) {
-    var pattern = /(84|0[3|5|7|8|9])+([0-9]{8})\b/g
-    return pattern.test(input)
-  }   
   // fecth user info
   useEffect(() => {
     axios.get('http://localhost/api/user-info.php')
@@ -51,7 +39,7 @@ const EditProfile = () => {
     }
   };  
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async () => {
     // check thong tin truoc khi submit
     const trimmedInfo = Object.fromEntries(Object.entries(profile).map(([key, value]) => [key, value.trim()]))
     const errors = {};
@@ -78,7 +66,8 @@ const EditProfile = () => {
     } else {
         try {
           const response = await axios.post('http://localhost/api/user-edit.php', trimmedInfo)
-          console.log(response)
+          // console.log(response)
+          navigate('/view-profile')
         } catch (error) {
           if (error.response.status === 400) { // invalid
             console.log(error.response.data)
@@ -99,74 +88,68 @@ const EditProfile = () => {
     <div>
       <Meta title="Chỉnh sửa hồ sơ"/>
       <div className='h3'>Chỉnh sửa hồ sơ</div>
-      <form onSubmit={handleSubmit}>
+      <form>
         <Grid container spacing={2} className='secondLayerBox shadowedBox' style={{overflow:'hidden'}}>
           <Grid item xs={12} sm={6}>
-              <FormControl fullWidth >
+            <FormControl fullWidth >
               <label htmlFor="dob">Tên:</label>
               <TextField
-                  
-                  name="name"
-                  value={profile.name}
-                  onChange={handleChange}
-                  error={errors.name ? true : false}
-                  helperText={errors.name}
+                name="name"
+                value={profile.name}
+                onChange={handleChange}
+                error={errors.name ? true : false}
+                helperText={errors.name}
               />
-              </FormControl>
+            </FormControl>
           </Grid>
 
           <Grid item xs={12} sm={6}>
-              <FormControl fullWidth >
+            <FormControl fullWidth >
               <label htmlFor="dob">Địa chỉ:</label>
               <TextField
-                  
-                  name="address"
-                  value={profile.address}
-                  onChange={handleChange}
-                  error={errors.address ? true : false}
-                  helperText={errors.address}
+                name="address"
+                value={profile.address}
+                onChange={handleChange}
+                error={errors.address ? true : false}
+                helperText={errors.address}
               />
-              </FormControl>
+            </FormControl>
           </Grid>
 
-                      
-                    
           <Grid item xs={12} sm={6}>
-              <FormControl fullWidth >
+            <FormControl fullWidth >
               <label htmlFor="dob">SĐT:</label>
               <TextField
-                  
-                  name="phone"
-                  type="tel"
-                  value={profile.phone}
-                  onChange={handleChange}
-                  error={errors.phone ? true : false}
-                  helperText={errors.phone}
+                name="phone"
+                type="tel"
+                value={profile.phone}
+                onChange={handleChange}
+                error={errors.phone ? true : false}
+                helperText={errors.phone}
               />
-              </FormControl>
+            </FormControl>
           </Grid>
 
           <Grid item xs={12} sm={6}>
-          <FormControl fullWidth >
-          <label htmlFor="dob">Email:</label>
-          <TextField 
-          
-           
-          type="email" name="email" 
-           
-          value={profile.email} onChange={handleChange}
-          error={errors.email ? true : false}
-                  helperText={errors.email} />
-          </FormControl>
+            <FormControl fullWidth >
+              <label htmlFor="dob">Email:</label>
+              <TextField 
+                type="email" 
+                name="email" 
+                value={profile.email} onChange={handleChange}
+                error={errors.email ? true : false}
+                helperText={errors.email} 
+              />
+            </FormControl>
           </Grid>
 
           <Grid item container justifyContent="center">
-            <GreenButton variant="contained" onClick={() => setConfirmSaving(!confirmSaving)}>
-                Lưu
-            </GreenButton>
-            <RedButton variant="contained" onClick={() => setConfirmGoingBack(!confirmGoingBack)}>
-                Thoát
-            </RedButton>            
+            <button type="button" className='btn btn-success' onClick={() => setConfirmSaving(!confirmSaving)}>
+              Lưu
+            </button>
+            <button type="button" className='btn btn-danger' onClick={() => setConfirmGoingBack(!confirmGoingBack)}>
+              Thoát
+            </button>                      
           </Grid>                                                                       
         </Grid>
       </form>
@@ -180,7 +163,7 @@ const EditProfile = () => {
         isOpen={confirmGoingBack} 
         setOpen={setConfirmGoingBack} 
         content="Bạn chắc chắn muốn thoát? Tất cả mọi thay đổi sẽ bị hủy bỏ"
-        confirm={() => {navigate(-1)}}
+        confirm={() => navigate(-1)}
       />            
     </div>
   );

@@ -1,12 +1,12 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
-import Marquee from "react-fast-marquee";
-import BlogCard from "../components/BlogCard";
+// import { Link } from "react-router-dom";
+// import Marquee from "react-fast-marquee";
+// import BlogCard from "../components/BlogCard";
 import ProductCard from "../components/ProductCard";
-import SpecialProduct from "../components/SpecialProduct";
+// import SpecialProduct from "../components/SpecialProduct";
 import Container from "../components/Container";
-import { services } from "../utils/Data";
+// import { services } from "../utils/Data";
 import Meta from "../components/Meta";
 import "react-slideshow-image/dist/styles.css";
 import { Slide } from "react-slideshow-image";

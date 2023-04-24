@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Table, TableBody, TableCell, TableContainer, TableRow, Paper } from '@mui/material';
 import Meta from '../../components/Meta';
+import { Link } from 'react-router-dom';
 
 
 const ViewProfile = () => {
@@ -31,6 +32,9 @@ const ViewProfile = () => {
     <div>
       <Meta title="Hồ sơ của bạn"/>
       <div className='h3'>Hồ sơ của bạn</div>
+      <Link to="/edit-profile">
+        <button className='d-block btn btn-primary'>Chỉnh sửa hồ sơ</button>
+      </Link>
       <TableContainer component={Paper}>
       <Table>
         <TableBody>

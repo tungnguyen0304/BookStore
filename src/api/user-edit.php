@@ -23,21 +23,18 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     // check validity
     $errors = array();
     // check validity
-    $nameRegex = '/^[\p{L}\s\']{1,50}$/u';
-    if (!preg_match($nameRegex, $name)) {
+    if (!checkName($name)) {
         $errors['name'] = "Tên không được trống và ít hơn 50 ký tự bao gồm các ký tự Việt Nam và khoảng trắng";
     } 
 
-    $phoneRegex = '/(84|0[3|5|7|8|9])+([0-9]{8})\b/';
     if (!empty($phone)) {
-        if (!preg_match($phoneRegex, $phone)) {
+        if (!checkPhone($phone)) {
             $errors['phone'] = "SĐT không hợp lệ";
         }
     }
 
-    $emailRegex = '/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{,50}$/';
     if (!empty($email)) {
-        if (!preg_match($emailRegex, $email)) {
+        if (!checkEmail($email)) {
             $errors['email'] = "Email không hợp lệ";
         }    
     }   

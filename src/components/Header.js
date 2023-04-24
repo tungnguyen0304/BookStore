@@ -21,20 +21,12 @@ import SuggestionSearchBar from "../components/SuggestionSearchBar";
 // import { useMediaQuery } from 'react-responsive'
 import { List, ListItem, ListItemAvatar, ListItemText } from '@mui/material';
 
-const StyledList = styled(List)({
-  width: '100%',
-  maxWidth: 400,
-  position: 'relative',
-  backgroundColor: '#F2F4F4'
-});
-
 const MenuLink = styled.a`
   text-decoration: none;
   color: inherit;
 `;
 
 const AccountButton = () => {
-  // const userRole = useSelector((state) => state.userRole);
   const dispatch = useDispatch();
   const navigate = useNavigate()
   const [anchorEl, setAnchorEl] = useState(null);
@@ -158,7 +150,6 @@ const Header = () => {
         }
       })
       .then(response => {
-        // console.log(response.data.products)
         const firstFiveProducts = response.data.products.slice(0, 5);
         setProducts(firstFiveProducts);
       })
@@ -186,17 +177,6 @@ const Header = () => {
             <div className="col-5">
             <form onSubmit={handleSubmit}>
               <div className="input-group">
-                {/* <input
-                  value={searchTerm}
-                  onChange={(e) => setSearchTerm(e.target.value)}
-                  className="form-control py-2"
-                  placeholder="Tìm kiếm sản phẩm ở đây ..."
-                  aria-label="Search Product Here..."
-                  aria-describedby="basic-addon2"
-                />
-                <button className="input-group-text p-3" type="submit" id="basic-addon2">
-                  <BsSearch className="fs-6" />
-                </button> */}
                 <SuggestionSearchBar
                   label="Tìm kiếm sản phẩm ở đây ..."
                   searchText={searchTerm}

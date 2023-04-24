@@ -1,7 +1,6 @@
 import { Grid, FormControl, TextField, Autocomplete } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { GreenButton, RedButton } from '../button-theme/ButtonTheme';
 import ConfirmDialog from '../ConfirmDialog';
 import Meta from "../../components/Meta";
 
@@ -112,9 +111,9 @@ const AdminManageProductInfo = () => {
               </FormControl>
           </Grid>
           <Grid item container justifyContent="center">
-            <GreenButton variant="contained" onClick={() => setConfirmSaveAuthor(!confirmSaveAuthor)}>
-                Lưu
-            </GreenButton>
+            <button type="button" className='btn btn-success' onClick={() => setConfirmSaveAuthor(!confirmSaveAuthor)}>
+              Lưu
+            </button>
           </Grid>                                                                       
         </Grid>
       </form>
@@ -132,31 +131,31 @@ const AdminManageProductInfo = () => {
         <Grid item xs={12} sm={6}>
             <FormControl fullWidth >
             <TextField
-                label="Tên NSX/NXB"
-                name="name"
-                value={manufacturer.name}
-                onChange={handleChangeManu}
-                error={!!manufacturerError.name}
-                helperText={manufacturerError.name}
+              label="Tên NSX/NXB"
+              name="name"
+              value={manufacturer.name}
+              onChange={handleChangeManu}
+              error={!!manufacturerError.name}
+              helperText={manufacturerError.name}
             />
             </FormControl>          
         </Grid>
         <Grid item xs={12} sm={6}>
             <FormControl fullWidth >
                 <TextField
-                    label="Quốc gia"
-                    name="country"
-                    value={manufacturer.country}
-                    onChange={handleChangeManu}
-                    error={!!manufacturerError.country}
-                    helperText={manufacturerError.country}
+                  label="Quốc gia"
+                  name="country"
+                  value={manufacturer.country}
+                  onChange={handleChangeManu}
+                  error={!!manufacturerError.country}
+                  helperText={manufacturerError.country}
                 />
             </FormControl>   
         </Grid>       
         <Grid item container justifyContent="center">
-          <GreenButton variant="contained" onClick={() => setConfirmSaveManu(!confirmSaveManu)}>
-              Lưu
-          </GreenButton>
+          <button type="button" className='btn btn-success' onClick={() => setConfirmSaveManu(!confirmSaveManu)}>
+            Lưu
+          </button>          
         </Grid>                                                                       
       </Grid>
     </form>

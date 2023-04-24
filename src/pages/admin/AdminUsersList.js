@@ -4,7 +4,7 @@ import { Table, TableBody, TableCell, TableHead, TableRow, IconButton, Box, Tool
 import { Delete, Reviews } from '@mui/icons-material';
 import AlertDialog from '../AlertDialog';
 import ConfirmDialog from '../ConfirmDialog';
-import NormalSearchBar from '../search-bar/NormalSearchBar';
+import NormalSearchBar from '../../components/NormalSearchBar';
 import Meta from "../../components/Meta";
 
 const UsersAdminPage = () => {

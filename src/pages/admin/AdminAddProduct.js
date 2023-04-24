@@ -1,7 +1,6 @@
 import { Grid, FormControl, TextField, Autocomplete } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import { GreenButton, RedButton } from '../button-theme/ButtonTheme';
 import ConfirmDialog from '../ConfirmDialog';
 import { useNavigate } from 'react-router-dom';
 import Meta from '../../components/Meta';
@@ -274,12 +273,12 @@ const AdminAddProduct = () => {
               </FormControl>
           </Grid>   
           <Grid item container justifyContent="center">
-            <GreenButton variant="contained" onClick={() => setConfirmSaving(!confirmSaving)}>
-                Lưu
-            </GreenButton>
-            <RedButton variant="contained" onClick={() => setConfirmGoingBack(!confirmGoingBack)}>
-                Thoát
-            </RedButton>            
+            <button type="button" className='btn btn-success' onClick={() => setConfirmSaving(!confirmSaving)}>
+              Lưu
+            </button>
+            <button type="button" className='btn btn-danger' onClick={() => setConfirmGoingBack(!confirmGoingBack)}>
+              Thoát
+            </button>                
           </Grid>                                                                       
         </Grid>
       </form>
