@@ -233,7 +233,7 @@ const OurStore = () => {
         <div className="row">
           <div className="col-12 col-md-3 p-1">
             <div className="filter-card mb-3">
-              <h3 className="filter-title">Lựa chọn thể loại</h3>
+              <h3 className="filter-title">THỂ LOẠI</h3>
               <div>
                 <ul className="ps-0">
                   {categoriesList.map(category => 
