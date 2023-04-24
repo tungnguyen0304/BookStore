@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import ProductCard from "../components/ProductCard";
-// import Container from "../components/Container";
+import Container from "../components/Container";
 import Meta from "../components/Meta";
 import "react-slideshow-image/dist/styles.css";
 import { Slide } from "react-slideshow-image";
@@ -59,7 +59,7 @@ const Home = () => {
 
   return (
     <>
-      <div className="d-flex flex-column">
+      <Container className="d-flex flex-column">
       <Meta title={"Trang chủ"} />
       <div className="home-wrapper-1 py-5">
         <div className="row">
@@ -133,7 +133,7 @@ const Home = () => {
                 </div>
                 <div className="row flex-wrap align-items-stretch">
                     {products[category.ID].map((product) => (
-                      <div key={product.ID} className="col-6 col-md-3 mb-4">
+                      <div key={product.ID} className="col-6 col-md-3 mb-1 p-1">
                         <ProductCard 
                           product={product} 
                         />
@@ -155,7 +155,7 @@ const Home = () => {
             </div>
             <div className="row">
                 {products["top_sellers"].map((product) => (
-                  <div key={product.ID} className="col-6 col-md-3 mb-4">
+                  <div key={product.ID} className="col-6 col-md-3 mb-1 p-1">
                     <ProductCard
                       product={product}
                     />
@@ -164,7 +164,7 @@ const Home = () => {
             </div>
           </div>
         )}
-        </div>
+        </Container>
     </>
   );
 };

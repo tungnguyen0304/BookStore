@@ -10,7 +10,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $results = array();
     foreach ($categories as $category) {
         $stmt = mysqli_prepare($conn, "
-            SELECT p.*, a.name AS author_name, m.name AS manufacturer_name, m.country
+            SELECT p.*, a.name AS author_name, m.name AS manufacturer_name
             FROM product p
             LEFT JOIN author a ON p.authorID = a.ID
             LEFT JOIN manufacturer m ON p.manufacturerID = m.ID

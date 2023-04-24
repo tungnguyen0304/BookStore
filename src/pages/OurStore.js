@@ -5,11 +5,7 @@ import BreadCrumb from "../components/BreadCrumb";
 import Meta from "../components/Meta";
 import ProductCard from "../components/ProductCard";
 import Container from "../components/Container";
-import { Slider } from "@mui/material";
-import styled from "@emotion/styled";
-const StyledSlider = styled(Slider)({
-  color: "primary",
-});
+
 const Checkbox = ({ isChecked, label, checkHandler, index }) => {
   return (
     <div>
@@ -19,7 +15,7 @@ const Checkbox = ({ isChecked, label, checkHandler, index }) => {
         checked={isChecked}
         onChange={checkHandler}
       />
-      <label htmlFor={`checkbox-${index}`}>{label}</label>
+      <label htmlFor={`checkbox-${index}`} style={{marginLeft: '5px', fontSize: '14px'}}>{label}</label>
     </div>
   )
 }
@@ -30,7 +26,6 @@ const OurStore = () => {
   const [manufacturersList, setManufacturersList] = useState([])  
   const [categoriesList, setCategoriesList] = useState([]);
   const [products, setProducts] = useState([]);
-  // const [grid, setGrid] = useState(4)
   const [page, setPage] = useState(1)
   const [remainQty, setRemainQty] = useState(0)
   const [currentCategory, setCurrentCategory] = useState({
@@ -39,17 +34,24 @@ const OurStore = () => {
     unique_name: ''
   });
   const location = useLocation() 
-  const priceRange = [0, 1000000]
-  const [currentPrice, setCurrentPrice] = useState(priceRange)
+  const priceRanges = [
+    [0, 150000],
+    [150000, 300000],
+    [300000, 500000],
+    [500000, 700000],
+    [700000, 10000000]
+  ]
+  const [currentPrice, setCurrentPrice] = useState([0,10000000])
   const VNCurrencyFormatter = new Intl.NumberFormat('vi', {
     style: "currency",
     currency: "VND"
   })  
-  const handleViewPrice = () => {
+  const handleChangePrice = (value) => {
     // reset page & products
     setPage(1)
     setProducts([])    
-    setFilters(prev => ({...prev, price: currentPrice[0] + '-' + currentPrice[1]}))
+    setCurrentPrice(value)
+    setFilters(prev => ({...prev, price: value[0] + '-' + value[1]}))
   }
   const updateAuthorsCheck = ID => {
     // reset page & products
@@ -205,8 +207,6 @@ const OurStore = () => {
       console.log(params);
       axios.get('http://localhost/api/products.php', {params: params})
         .then(response => {
-          // console.log([...products] + response.data.products)
-          // console.log(response.data.remain_qty)
           setProducts(prev => [...prev, ...response.data.products])
           setRemainQty(response.data.remain_qty)
         })
@@ -229,9 +229,9 @@ const OurStore = () => {
     <>
       <Meta title={currentCategory.name} />
       <BreadCrumb title={currentCategory.name} />
-      <Container class1="store-wrapper home-wrapper-2 py-5">
+      <Container className="home-wrapper-2 py-5">
         <div className="row">
-          <div className="col-3">
+          <div className="col-12 col-md-3 p-1">
             <div className="filter-card mb-3">
               <h3 className="filter-title">Lựa chọn thể loại</h3>
               <div>
@@ -247,44 +247,21 @@ const OurStore = () => {
               </div>
             </div>
             <div className="filter-card mb-3">
-              <h3 className="filter-title">Lọc theo</h3>
+              <h3 className="filter-title">LỌC THEO</h3>
               <div>
-                <h5 className="sub-title">Giá</h5>
-                <div className="d-flex align-items-center gap-10">
-                  <div className="container" style={{ width: '300px' }}>
-                    <div className="row justify-content-center">
-                      <div className="col-6">
-                        <div style={{ margin: '5px' }}>{VNCurrencyFormatter.format(currentPrice[0])}</div>
-                      </div>
-                      <div className="col-6">
-                        <div style={{ textAlign: 'right', margin: '5px' }}>{VNCurrencyFormatter.format(currentPrice[1])}</div>
-                      </div>
-                      <div className="col-12">
-                        <div className="row d-flex justify-content-center">
-                          <div style={{ width: '80%' }}>
-                            <StyledSlider
-                              value={currentPrice}
-                              onChange={(e, newVal) => setCurrentPrice(newVal)}
-                              step={10000}
-                              min={priceRange[0]}
-                              max={priceRange[1]}
-                            />      
-                          </div>
-                          <div className="row d-flex align-items-center">
-                            <button
-                              className="button border-0"
-                              type="button"
-                              onClick={handleViewPrice}
-                            >
-                              Xem kết quả
-                            </button>
-                          </div>                          
-                        </div>
-                      </div>
-                    </div>
-                  </div>                  
+                <h5 className="sub-title">GIÁ</h5>
+                <div>
+                  {priceRanges.map((range, index) => (
+                    <Checkbox
+                      key={index}
+                      isChecked={currentPrice[0] === range[0] && currentPrice[1] === range[1]}
+                      checkHandler={() => handleChangePrice(range)}
+                      label={range[1] === 10000000 ? `${VNCurrencyFormatter.format(range[0])} - Trở lên` : `${VNCurrencyFormatter.format(range[0])} - ${VNCurrencyFormatter.format(range[1])}`}
+                      index={index}
+                    />      
+                  ))}
                 </div>
-                <h5 className="sub-title">Tác giả</h5>
+                <h5 className="sub-title">TÁC GIẢ</h5>
                 <div>
                   {authorsList.map((author, index) => 
                     <Checkbox
@@ -311,31 +288,31 @@ const OurStore = () => {
               </div>
             </div>
           </div> 
-          <div className="col-9">
+          <div className="col-12 col-md-9">
             <div className="filter-sort-grid mb-4">
-              <div className="d-flex justify-content-between align-items-center">
-                <div className="d-flex align-items-center gap-10">
-                  <p className="mb-0 d-block" style={{ width: "100px" }}>
-                    Sắp xếp theo
-                  </p>
-                  <select
-                    value={sorting}
-                    onChange={handleSortingChange}
-                    className="form-control form-select"
-                  >
-                    <option value="sold_qty-dsc">Bán chạy nhất</option>
-                    <option value="title-asc">A-Z</option>
-                    <option value="title-dsc">Z-A</option>
-                    <option value="price-asc">Giá thấp đến cao</option>
-                    <option value="price-dsc">Giá cao đến thấp</option>
-                  </select>
-                </div>
+              <div className="d-inline-block mx-2">Sắp xếp theo</div>
+              <div className="d-inline-block">
+                <select
+                  value={sorting}
+                  onChange={handleSortingChange}
+                  className="form-control form-select"
+                >
+                  <option value="sold_qty-dsc">Bán chạy nhất</option>
+                  <option value="title-asc">A-Z</option>
+                  <option value="title-dsc">Z-A</option>
+                  <option value="price-asc">Giá thấp đến cao</option>
+                  <option value="price-dsc">Giá cao đến thấp</option>
+                </select>
               </div>
             </div>
+            
+            {products.length !== 0 ? (
             <div className="products-list pb-5">
-              <div className="d-flex gap-10 flex-wrap">
-                {products.map(item => 
-                  <ProductCard key={item.ID} product={item}/>
+              <div className="row d-flex flex-wrap">
+                {products.map(product => 
+                  <div key={product.ID} className="col-6 col-md-4 mb-1 p-1">
+                    <ProductCard product={product}/>
+                  </div>
                 )}
               </div>
               {remainQty > 0 && (
@@ -349,6 +326,9 @@ const OurStore = () => {
               </div>
               )}
             </div>
+            ) : (
+              <div className='text-center lead'>Không có sản phẩm nào</div>
+            )}
           </div>
         </div>
       </Container>

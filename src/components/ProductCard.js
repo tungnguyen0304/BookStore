@@ -24,6 +24,7 @@ const ProductCard = ({product}) => {
           <img src={product.image} alt="product image" />
         </div>
         <div className="product-details mt-auto">
+          <h6 className="brand">{product.author_name}</h6>
           <h6 className="brand">{product.manufacturer_name}</h6>
           <h5 className="product-title">{product.name}</h5>
           <div className="m-auto d-flex justify-content-center">

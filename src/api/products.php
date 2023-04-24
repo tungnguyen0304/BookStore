@@ -14,9 +14,11 @@ if ($_SERVER['REQUEST_METHOD'] == 'GET') {
     $q = isset($_GET['q']) ? mysqli_real_escape_string($conn, $_GET['q']) : '';
 
     // Set up the base query to fetch products
-    $sql = 'SELECT p.* FROM product p
+    $sql = 'SELECT p.*, a.name AS author_name, m.name AS manufacturer_name
+        FROM product p
         LEFT JOIN author a ON p.authorID = a.ID
-        LEFT JOIN manufacturer m ON p.manufacturerID = m.ID';
+        LEFT JOIN manufacturer m ON p.manufacturerID = m.ID
+        ';
 
     if (!empty($q)) {
         // Add a WHERE clause to filter by search query
