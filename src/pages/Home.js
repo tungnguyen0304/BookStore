@@ -80,7 +80,7 @@ const Home = () => {
                 </Slide>
               </div>
             </div>
-            <div className="col-sm-12 col-md-6 my-auto">
+            <div className="col-sm-12 col-md-6  my-auto">
               <div className="d-flex flex-wrap justify-content-between align-items-center">
                 <div className="small-banner position-relative text-center">
                   <img
@@ -175,38 +175,45 @@ const Home = () => {
           (category, index) =>
             products[category.ID].length !== 0 && (
               <div key={index} className="featured-wrapper py-5 home-wrapper-2">
-                <div className="row">
-                  <div className="col-6">
-                    <h3 className="section-heading">{category.name}</h3>
-                  </div>
-                  <div className="col-6 d-flex justify-content-end align-items-center">
-                    <a href={"/category/" + category.unique_name}>Xem tất cả</a>
-                  </div>
-                </div>
-                <div className="row flex-wrap align-items-stretch">
-                  {products[category.ID].map((product) => (
-                    <div key={product.ID} className="col-6 col-md-3 mb-1 p-1">
-                      <ProductCard product={product} />
+                <div className="container">
+                  <div className="row">
+                    <div className="col-sm-12 col-md-6 col-8">
+                      <h3 className="section-heading">{category.name}</h3>
                     </div>
-                  ))}
+                    <div className="col-sm-4 col-md-6 col-4 d-flex justify-content-end align-items-center">
+                      <a href={"/category/" + category.unique_name}>
+                        Xem tất cả
+                      </a>
+                    </div>
+                  </div>
+                  <div className="row flex-wrap align-items-stretch">
+                    {products[category.ID].map((product) => (
+                      <div key={product.ID} className="col-6 col-md-3 mb-1 p-1">
+                        <ProductCard product={product} />
+                      </div>
+                    ))}
+                  </div>
                 </div>
               </div>
             )
         )}
+
       {Object.keys(products).length !== 0 &&
         products["top_sellers"].length !== 0 && (
           <div className="popular-wrapper py-5 home-wrapper-2">
-            <div className="row">
-              <div className="col-12">
-                <h3 className="section-heading">Sản phẩm bán chạy</h3>
-              </div>
-            </div>
-            <div className="row">
-              {products["top_sellers"].map((product) => (
-                <div key={product.ID} className="col-6 col-md-3 mb-1 p-1">
-                  <ProductCard product={product} />
+            <div className="container">
+              <div className="row">
+                <div className="col-sm-12 col-md-6 col-8">
+                  <h3 className="section-heading">Sản phẩm bán chạy</h3>
                 </div>
-              ))}
+              </div>
+              <div className="row">
+                {products["top_sellers"].map((product) => (
+                  <div key={product.ID} className="col-6 col-md-3 mb-1 p-1">
+                    <ProductCard product={product} />
+                  </div>
+                ))}
+              </div>
             </div>
           </div>
         )}
