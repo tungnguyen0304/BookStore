@@ -80,7 +80,7 @@ const Home = () => {
             </div>
           </div>
           <div className="col-6">
-            <div className="d-flex flex-wrap gap-10 justify-content-between align-items-center">
+            <div className="d-flex flex-wrap justify-content-between align-items-center">
               <div className="small-banner position-relative">
                 <img
                   src="images/catbanner-01.jpg"
@@ -132,23 +132,21 @@ const Home = () => {
                   </div>
                 </div>
                 <div className="row flex-wrap align-items-stretch">
-                  {/* <div className="d-flex flex-wrap gap-10 align-items-center"> */}
                     {products[category.ID].map((product) => (
-                      <div key={product.ID} className="col-6 col-md-3">
+                      <div key={product.ID} className="col-6 col-md-3 mb-4">
                         <ProductCard 
                           product={product} 
                         />
                       </div>
                     ))}
-                  {/* </div> */}
                 </div>
               </div>
             )
         )}
       {Object.keys(products).length !== 0 &&
         products["top_sellers"].length !== 0 && (
-          <Container 
-          // class1="popular-wrapper py-5 home-wrapper-2"
+          <div 
+            className="popular-wrapper py-5 home-wrapper-2"
           >
             <div className="row">
               <div className="col-12">
@@ -156,19 +154,15 @@ const Home = () => {
               </div>
             </div>
             <div className="row">
-              {/* <div className="col-12 d-flex flex-wrap gap-10 align-items-center"> */}
                 {products["top_sellers"].map((product) => (
-                  <div key={product.ID} className="col-6 col-md-3">
+                  <div key={product.ID} className="col-6 col-md-3 mb-4">
                     <ProductCard
-                      // className="gr-3"
                       product={product}
-                      // key={product.ID}
                     />
                   </div>
                 ))}
-              {/* </div> */}
             </div>
-          </Container>
+          </div>
         )}
         </div>
     </>
