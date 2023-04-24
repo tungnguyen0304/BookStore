@@ -50,10 +50,13 @@ export default function CatalogSearch () {
         <Meta title={"Kết quả tìm kiếm cho " + query} />
         <BreadCrumb title={"Kết quả tìm kiếm cho " + query} />
         <Container class1="store-wrapper home-wrapper-2 py-5">
+            {products.length !== 0 ? (
             <div className="products-list pb-5">
-                <div className="d-flex gap-10 flex-wrap">
-                    {products.map(item => 
-                        <ProductCard key={item.ID} product={item}/>
+                <div className="d-flex flex-wrap">
+                    {products.map(product => 
+                    <div key={product.ID} className="col-6 col-sm-4 col-md-3 mb-1 p-1">
+                        <ProductCard product={product}/>
+                    </div>
                     )}
                 </div>
                 {remainQty > 0 && (
@@ -67,6 +70,9 @@ export default function CatalogSearch () {
                 </div>
                 )}                    
             </div>        
+            ) : (
+                <div className='text-center lead'>Không có sản phẩm nào</div>
+            )}
         </Container>
         </>
     )
