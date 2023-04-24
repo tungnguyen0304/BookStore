@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import ProductCard from "../components/ProductCard";
-import Container from "../components/Container";
+// import Container from "../components/Container";
 import Meta from "../components/Meta";
 import "react-slideshow-image/dist/styles.css";
 import { Slide } from "react-slideshow-image";
@@ -63,46 +63,46 @@ const Home = () => {
       <Meta title={"Trang chủ"} />
       <div className="home-wrapper-1 py-5">
         <div className="row">
-          <div className="col-6">
-            <div className="main-banner position-relative ">
-              <Slide>
-                {slideImages.map((slideImage, index) => (
-                  <div key={index}>
-                    <div
-                      style={{
-                        ...divStyle,
-                        backgroundImage: `url(${slideImage.url})`,
-                      }}
-                    ></div>
-                  </div>
-                ))}
-              </Slide>
-            </div>
+          <div className="col-sm-12 col-md-6">
+              <div className="main-banner position-relative ">
+                <Slide>
+                  {slideImages.map((slideImage, index) => (
+                    <div key={index}>
+                      <div
+                        style={{
+                          ...divStyle,
+                          backgroundImage: `url(${slideImage.url})`,
+                        }}
+                      ></div>
+                    </div>
+                  ))}
+                </Slide>
+              </div>
           </div>
-          <div className="col-6">
+          <div className="col-sm-12 col-md-6 my-auto">
             <div className="d-flex flex-wrap justify-content-between align-items-center">
-              <div className="small-banner position-relative">
+              <div className="small-banner position-relative text-center">
                 <img
                   src="images/catbanner-01.jpg"
                   className="img-fluid rounded-3"
                   alt="main banner"
                 />
               </div>
-              <div className="small-banner position-relative">
+              <div className="small-banner position-relative text-center">
                 <img
                   src="images/catbanner-02.jpg"
                   className="img-fluid rounded-3"
                   alt="main banner"
                 />
               </div>
-              <div className="small-banner position-relative ">
+              <div className="small-banner position-relative text-center">
                 <img
                   src="images/catbanner-03.jpg"
                   className="img-fluid rounded-3"
                   alt="main banner"
                 />
               </div>
-              <div className="small-banner position-relative ">
+              <div className="small-banner position-relative text-center">
                 <img
                   src="images/catbanner-04.jpg"
                   className="img-fluid rounded-3"
