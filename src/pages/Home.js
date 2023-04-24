@@ -7,12 +7,12 @@ import "react-slideshow-image/dist/styles.css";
 import { Slide } from "react-slideshow-image";
 
 const divStyle = {
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'center',
-  backgroundSize: 'contain',
-  backgroundRepeat: 'no-repeat',
-  backgroundPosition: 'center center',
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "center",
+  backgroundSize: "contain",
+  backgroundRepeat: "no-repeat",
+  backgroundPosition: "center center",
   height: "422px",
   weight: "636px",
 };
@@ -59,11 +59,66 @@ const Home = () => {
 
   return (
     <>
-      <Container className="d-flex flex-column">
       <Meta title={"Trang chủ"} />
-      <div className="home-wrapper-1 py-5">
-        <div className="row">
-          <div className="col-sm-12 col-md-6">
+      <Container class1="home-wrapper-1 py-5">
+        <div className="container">
+          <div className="row">
+            {" "}
+            <div className="col-sm-12 col-md-6">
+              <div className="main-banner">
+                <Slide>
+                  {slideImages.map((slideImage, index) => (
+                    <div key={index}>
+                      <div
+                        style={{
+                          ...divStyle,
+                          backgroundImage: `url(${slideImage.url})`,
+                        }}
+                      ></div>
+                    </div>
+                  ))}
+                </Slide>
+              </div>
+            </div>
+            <div className="col-sm-12 col-md-6 my-auto">
+              <div className="d-flex flex-wrap justify-content-between align-items-center">
+                <div className="small-banner position-relative text-center">
+                  <img
+                    src="images/catbanner-01.jpg"
+                    className="img-fluid rounded-3"
+                    alt="main banner"
+                  />
+                </div>
+                <div className="small-banner position-relative text-center">
+                  <img
+                    src="images/catbanner-02.jpg"
+                    className="img-fluid rounded-3"
+                    alt="main banner"
+                  />
+                </div>
+                <div className="small-banner position-relative text-center">
+                  <img
+                    src="images/catbanner-03.jpg"
+                    className="img-fluid rounded-3"
+                    alt="main banner"
+                  />
+                </div>
+                <div className="small-banner position-relative text-center">
+                  <img
+                    src="images/catbanner-04.jpg"
+                    className="img-fluid rounded-3"
+                    alt="main banner"
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </Container>
+
+      {/* <div className="home-wrapper-1 py-5">
+          <div className="row">
+            <div className="col-sm-12 col-md-6">
               <div className="main-banner position-relative ">
                 <Slide>
                   {slideImages.map((slideImage, index) => (
@@ -78,93 +133,83 @@ const Home = () => {
                   ))}
                 </Slide>
               </div>
-          </div>
-          <div className="col-sm-12 col-md-6 my-auto">
-            <div className="d-flex flex-wrap justify-content-between align-items-center">
-              <div className="small-banner position-relative text-center">
-                <img
-                  src="images/catbanner-01.jpg"
-                  className="img-fluid rounded-3"
-                  alt="main banner"
-                />
-              </div>
-              <div className="small-banner position-relative text-center">
-                <img
-                  src="images/catbanner-02.jpg"
-                  className="img-fluid rounded-3"
-                  alt="main banner"
-                />
-              </div>
-              <div className="small-banner position-relative text-center">
-                <img
-                  src="images/catbanner-03.jpg"
-                  className="img-fluid rounded-3"
-                  alt="main banner"
-                />
-              </div>
-              <div className="small-banner position-relative text-center">
-                <img
-                  src="images/catbanner-04.jpg"
-                  className="img-fluid rounded-3"
-                  alt="main banner"
-                />
+            </div>
+            <div className="col-sm-12 col-md-6 my-auto">
+              <div className="d-flex flex-wrap justify-content-between align-items-center">
+                <div className="small-banner position-relative text-center">
+                  <img
+                    src="images/catbanner-01.jpg"
+                    className="img-fluid rounded-3"
+                    alt="main banner"
+                  />
+                </div>
+                <div className="small-banner position-relative text-center">
+                  <img
+                    src="images/catbanner-02.jpg"
+                    className="img-fluid rounded-3"
+                    alt="main banner"
+                  />
+                </div>
+                <div className="small-banner position-relative text-center">
+                  <img
+                    src="images/catbanner-03.jpg"
+                    className="img-fluid rounded-3"
+                    alt="main banner"
+                  />
+                </div>
+                <div className="small-banner position-relative text-center">
+                  <img
+                    src="images/catbanner-04.jpg"
+                    className="img-fluid rounded-3"
+                    alt="main banner"
+                  />
+                </div>
               </div>
             </div>
           </div>
-        </div>
-      </div>
-      
+        </div> */}
+
       {categoriesList.length !== 0 &&
         Object.keys(products).length !== 0 &&
         categoriesList.map(
           (category, index) =>
             products[category.ID].length !== 0 && (
-              <div
-                key={index}
-                className="featured-wrapper py-5 home-wrapper-2"
-              >
+              <div key={index} className="featured-wrapper py-5 home-wrapper-2">
                 <div className="row">
                   <div className="col-6">
                     <h3 className="section-heading">{category.name}</h3>
                   </div>
                   <div className="col-6 d-flex justify-content-end align-items-center">
-                    <a href={'/category/' + category.unique_name}>Xem tất cả</a>
+                    <a href={"/category/" + category.unique_name}>Xem tất cả</a>
                   </div>
                 </div>
                 <div className="row flex-wrap align-items-stretch">
-                    {products[category.ID].map((product) => (
-                      <div key={product.ID} className="col-6 col-md-3 mb-1 p-1">
-                        <ProductCard 
-                          product={product} 
-                        />
-                      </div>
-                    ))}
+                  {products[category.ID].map((product) => (
+                    <div key={product.ID} className="col-6 col-md-3 mb-1 p-1">
+                      <ProductCard product={product} />
+                    </div>
+                  ))}
                 </div>
               </div>
             )
         )}
       {Object.keys(products).length !== 0 &&
         products["top_sellers"].length !== 0 && (
-          <div 
-            className="popular-wrapper py-5 home-wrapper-2"
-          >
+          <div className="popular-wrapper py-5 home-wrapper-2">
             <div className="row">
               <div className="col-12">
                 <h3 className="section-heading">Sản phẩm bán chạy</h3>
               </div>
             </div>
             <div className="row">
-                {products["top_sellers"].map((product) => (
-                  <div key={product.ID} className="col-6 col-md-3 mb-1 p-1">
-                    <ProductCard
-                      product={product}
-                    />
-                  </div>
-                ))}
+              {products["top_sellers"].map((product) => (
+                <div key={product.ID} className="col-6 col-md-3 mb-1 p-1">
+                  <ProductCard product={product} />
+                </div>
+              ))}
             </div>
           </div>
         )}
-        </Container>
     </>
   );
 };

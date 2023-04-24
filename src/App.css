@@ -74,7 +74,7 @@
   }
 
   /* Header Part */
-  @media only screen and (max-width: 480px) {
+  /* @media only screen and (max-width: 480px) {
     .header-upper {
       padding: 10px;
     }
@@ -132,9 +132,9 @@
       width: 100%;
       margin-bottom: 20px;
     }
-  }
+  } */
 
-  @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
+  /* @media only screen and (min-device-width: 768px) and (max-device-width: 1024px) {
     .header-upper {
       padding: 10px;
     }
@@ -192,7 +192,7 @@
       width: 100%;
       margin-bottom: 20px;
     }
-  }
+  } */
 
   .dropdown .dropdown-toggle span{
     display: inline-block;
@@ -271,6 +271,11 @@
   /* Footer Part Ends Here */
 
   /* Home Page */
+  .container {
+    max-width: 80%;
+    height: auto;
+  }
+
   .slide-container {
     width: 636px;
     height: 422px;
