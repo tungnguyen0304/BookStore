@@ -198,10 +198,10 @@ const Checkout = () => {
               <OrderItems key={product.ID} product={product}/>
             ))}            
             <div className="d-flex flex-column align-items-end">
-              Thành tiền: {VNCurrencyFormatter.format(subtotal)}<br/>
-              Phí vận chuyển: {VNCurrencyFormatter.format(deliveryCost)}<br/>
+              <span>Thành tiền: {VNCurrencyFormatter.format(subtotal)}</span>
+              <span>Phí vận chuyển: {VNCurrencyFormatter.format(deliveryCost)}</span>
               <strong>Tổng tiền: {VNCurrencyFormatter.format(total)}</strong>
-              <button onClick={handleSubmit} className="button border-0">
+              <button onClick={handleSubmit} className="button border-0 my-2">
                 Đặt hàng
               </button>
             </div>

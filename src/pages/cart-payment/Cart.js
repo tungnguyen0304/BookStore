@@ -63,20 +63,15 @@ const Cart = () => {
               <CartItem key={product.ID} product={product} onIncrease={onIncrease} onDecrease={onDecrease} onDelete={onDelete}/>
             ))}  
           </div>
-          <div className="col-12 py-2 mt-4">
-            <div className="d-flex justify-content-between align-items-baseline">
-              <Link to="/" className="button">
-                Tiếp tục mua sắm
-              </Link>
+          <div className="py-2 mt-4">
               <div className="d-flex flex-column align-items-end">
-                Thành tiền: {VNCurrencyFormatter.format(subtotal)}<br/>
-                Phí vận chuyển: {VNCurrencyFormatter.format(deliveryCost)}<br/>
+                <span>Thành tiền: {VNCurrencyFormatter.format(subtotal)}</span>
+                <span>Phí vận chuyển: {VNCurrencyFormatter.format(deliveryCost)}</span>
                 <strong>Tổng tiền: {VNCurrencyFormatter.format(total)}</strong>
-                <Link to="/checkout" className="button">
+                <Link to="/checkout" className="button my-2">
                   Thanh toán
                 </Link>
               </div>
-            </div>
           </div>
         </div>
       </Container>
