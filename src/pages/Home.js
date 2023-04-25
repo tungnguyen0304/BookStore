@@ -188,7 +188,7 @@ const Home = () => {
                   </div>
                   <div className="row flex-wrap align-items-stretch">
                     {products[category.ID].map((product) => (
-                      <div key={product.ID} className="col-6 col-md-3 mb-1 p-1">
+                      <div key={product.ID} className="col-6 col-sm-4 col-md-3 mb-1 p-1">
                         <ProductCard product={product} />
                       </div>
                     ))}
@@ -209,7 +209,7 @@ const Home = () => {
               </div>
               <div className="row">
                 {products["top_sellers"].map((product) => (
-                  <div key={product.ID} className="col-6 col-md-3 mb-1 p-1">
+                  <div key={product.ID} className="col-6 col-sm-4 col-md-3 mb-1 p-1">
                     <ProductCard product={product} />
                   </div>
                 ))}

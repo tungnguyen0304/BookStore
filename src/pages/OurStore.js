@@ -310,7 +310,7 @@ const OurStore = () => {
             <div className="products-list pb-5">
               <div className="row d-flex flex-wrap">
                 {products.map(product => 
-                  <div key={product.ID} className="col-6 col-md-4 mb-1 p-1">
+                  <div key={product.ID} className="col-6 col-sm-4 col-md-3 mb-1 p-1">
                     <ProductCard product={product}/>
                   </div>
                 )}

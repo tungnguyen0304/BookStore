@@ -289,7 +289,9 @@ const SingleProduct = () => {
                   <p className="mt-3">
                     {review.content}
                   </p>
-                  <span>{VNDatetimeFormatter.format(new Date(review.comment_datetime))}</span>
+                  <div style={{fontSize: '10px'}} className="text-muted">
+                    {VNDatetimeFormatter.format(new Date(review.comment_datetime))}
+                  </div>
                 </div>                  
                 )}
               </div>

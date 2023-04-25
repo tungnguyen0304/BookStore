@@ -4,7 +4,7 @@ import BreadCrumb from "../components/BreadCrumb";
 import Meta from "../components/Meta";
 import { useNavigate, Link } from "react-router-dom";
 import Container from "../components/Container";
-import {checkValidName, checkValidUsername, checkValidPass, checkValidEmail, checkValidPhoneNumber} from '../webpages/FormUtil'
+import {checkValidName, checkValidUsername, checkValidPass, checkValidEmail, checkValidPhoneNumber} from '../utils/FormUtil'
 import { useDispatch } from "react-redux";
 import { login } from "../actions/userRole";
 
@@ -172,8 +172,8 @@ const Signup = () => {
                       Đăng ký
                     </button>
                   </div>
-                  <div>
-                    Đã có tài khoản? 
+                  <div style={{fontSize: '14px'}} className="mt-1 text-center">
+                    Đã có tài khoản?&nbsp;
                     <Link to="/login">
                       Đăng nhập
                     </Link>                    
