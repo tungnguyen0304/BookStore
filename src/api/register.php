@@ -75,25 +75,48 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     # check login credential in DB
     $password_hash = password_hash($password, PASSWORD_DEFAULT);
     $qry = "INSERT INTO user
-    (username, password_hash, name, phone, email, address) 
-    VALUES (?, ?, ?, ?, ?, ?)";
+        (username, password_hash, name, phone, email, address) 
+        VALUES (?, ?, ?, ?, ?, ?)";
     $stmt = mysqli_prepare($conn, $qry);
     mysqli_stmt_bind_param($stmt, 'ssssss', $username, $password_hash, $name, $phone, $email, $address);  
     $success = mysqli_stmt_execute($stmt);     
+    
     // If the insert was successful, login that user as well
     if ($success) {
         // get the ID of the newly inserted user
         $user_id = mysqli_insert_id($conn);
-
-        // Store the session ID, user ID, role in the session variables
-        $_SESSION['ID'] = $user_id;            
-        $_SESSION['role'] = 0;
-
-        echo "Register successfully";
+    
+        // Retrieve the newly inserted user record from the database
+        $qry = "SELECT * FROM user WHERE ID = ?";
+        $stmt = mysqli_prepare($conn, $qry);
+        mysqli_stmt_bind_param($stmt, 'i', $user_id);            
+        $success = mysqli_stmt_execute($stmt);         
+    
+        if ($success) {
+            $result = mysqli_stmt_get_result($stmt);
+            $row = mysqli_fetch_assoc($result);
+    
+            // Store the session ID, user ID, username, role, and initial character of the name in the session variables
+            $_SESSION['ID'] = $row['ID'];            
+            $_SESSION['username'] = $row['username'];
+            $_SESSION['role'] = $row['role'];
+    
+            // Return the same response as in the login.php file
+            $res = array(
+                'role' => $row['role'],
+            );
+    
+            header('Content-Type: application/json');
+            echo json_encode($res);
+        } else {
+            http_response_code(500);
+            echo "Access database failed";
+        }
     } else {
         http_response_code(500);
         echo "Access database failed";
-    }    
+    }
+      
     
     // close DB Connection
     mysqli_close($conn);
