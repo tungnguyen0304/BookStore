@@ -4,7 +4,7 @@ import { BsLinkedin, BsGithub, BsYoutube, BsInstagram } from "react-icons/bs";
 const Footer = () => {
   return (
       <footer className="py-4">
-        <div className="container-fluid">
+        <div className="container">
           <div className="row text-center">
             <div className="col-12 col-sm-6 col-md-4 mt-4">
               <h4 className="text-white mb-4">Liên hệ</h4>

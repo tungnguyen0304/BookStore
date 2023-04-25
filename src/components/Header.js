@@ -167,14 +167,14 @@ const Header = () => {
   return (
     <>
       <header className="header-upper py-3">
-        <div className="container-fluid">
+        <div className="container">
           <div className="row align-items-center">
-            <div className="col-3">
+            <div className="col-12 col-sm-12 col-md-12 col-lg-3 d-flex justify-content-center align-items-center">
               <h2>
                 <Link to='/' className="text-white">Book Store</Link>
               </h2>
             </div>
-            <div className="col-5">
+            <div className="col-12 col-sm-7 col-md-6 col-lg-5">
             <form onSubmit={handleSubmit}>
               <div className="input-group">
                 <SuggestionSearchBar
@@ -201,8 +201,8 @@ const Header = () => {
               </div>
             </form>
             </div>
-            <div className="col-4">
-              <div className="header-upper-links d-flex align-items-center justify-content-between">
+            <div className="col-12 col-sm-5 col-md-6 col-lg-4 mt-2">
+              <div className="header-upper-links d-flex align-items-center gap-30">
                 <div>
                   <Link
                     to="/cart"
@@ -212,17 +212,17 @@ const Header = () => {
                   </Link>
                 </div>   
                 {userRole === '' ? (
-                  <div className="d-flex align-items-center justify-content-end">
+                  <div className="d-flex align-items-center gap-15 justify-content-end">
                     <div className="">
                       <Link to="/login" className="d-flex align-items-center gap-10 text-white">
                         <img src={user} alt="user" />
-                        <div className="mb-0 d-none d-sm-block">Đăng nhập</div>
+                        <div className="mb-0 d-sm-block">Đăng nhập</div>
                       </Link>
                     </div>
-                    <div className="d-none d-md-block">
+                    <div className="d-md-block">
                       <span className="text-white">&nbsp;|&nbsp;</span>
                     </div>
-                    <div className="d-none d-md-block">
+                    <div className="d-md-block">
                       <Link to="/signup" className="d-flex align-items-center gap-10 text-white">
                         <img src={user} alt="user" />
                         <div className="mb-0">Đăng ký</div>
@@ -238,7 +238,7 @@ const Header = () => {
         </div>
       </header>
       <header className="header-bottom py-3">
-        <div className="container-fluid">
+        <div className="container">
           <div className="row">
             <div className="col-12">
               <div className="menu-bottom d-flex flex-wrap align-items-center gap-30">
