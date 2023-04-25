@@ -45,7 +45,7 @@ export default function SuggestionSearchBar ({children, label, searchText, setSe
             onBlur={handleBlur}
             onFocus={handleFocus}
         />
-        <button className="input-group-text p-3 border-0 rounded-end" type="submit" id="basic-addon2">
+        <button className="input-group-text p-3 border-0 rounded-end d-none d-sm-block" type="submit" id="basic-addon2">
             <BsSearch className="fs-6" />
         </button>      
         {resultsVisible && (
