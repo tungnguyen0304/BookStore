@@ -20,6 +20,7 @@ import { logout } from "../actions/userRole";
 import SuggestionSearchBar from "../components/SuggestionSearchBar";
 // import { useMediaQuery } from 'react-responsive'
 import { ListItem, ListItemAvatar, ListItemText } from '@mui/material';
+import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 
 const MenuLink = styled.a`
   text-decoration: none;
@@ -166,7 +167,7 @@ const Header = () => {
   return (
     <>
       <header className="header-upper py-3">
-        <div className="container-xxl">
+        <div className="container-fluid">
           <div className="row align-items-center">
             <div className="col-3">
               <h2>
@@ -211,30 +212,23 @@ const Header = () => {
                   </Link>
                 </div>   
                 {userRole === '' ? (
-                <>
-                <div>
-                  <Link
-                    to="/login"
-                    className="d-flex align-items-center gap-10 text-white"
-                  >
-                    <img src={user} alt="user" />
-                    <p className="mb-0">
-                      Đăng nhập
-                    </p>
-                  </Link>
-                </div>
-                <div>
-                  <Link
-                    to="/signup"
-                    className="d-flex align-items-center gap-10 text-white"
-                  >
-                    <img src={user} alt="user" />
-                    <p className="mb-0">
-                      Đăng ký
-                    </p>
-                  </Link>
-                </div>  
-                </>
+                  <div className="d-flex align-items-center justify-content-end">
+                    <div className="">
+                      <Link to="/login" className="d-flex align-items-center gap-10 text-white">
+                        <img src={user} alt="user" />
+                        <div className="mb-0 d-none d-sm-block">Đăng nhập</div>
+                      </Link>
+                    </div>
+                    <div className="d-none d-md-block">
+                      <span className="text-white">&nbsp;|&nbsp;</span>
+                    </div>
+                    <div className="d-none d-md-block">
+                      <Link to="/signup" className="d-flex align-items-center gap-10 text-white">
+                        <img src={user} alt="user" />
+                        <div className="mb-0">Đăng ký</div>
+                      </Link>
+                    </div>
+                  </div>
                 ) : 
                   <AccountButton/>
                 }
@@ -244,10 +238,10 @@ const Header = () => {
         </div>
       </header>
       <header className="header-bottom py-3">
-        <div className="container-xxl">
+        <div className="container-fluid">
           <div className="row">
             <div className="col-12">
-              <div className="menu-bottom d-flex align-items-center gap-30">
+              <div className="menu-bottom d-flex flex-wrap align-items-center gap-30">
                 {userRole === '1' && (
                 <div>
                   <div className="dropdown">
@@ -258,8 +252,8 @@ const Header = () => {
                       data-bs-toggle="dropdown"
                       aria-expanded="false"
                     >
-                      <img src={menu} alt="" />
-                      <span className="me-5">
+                      <AdminPanelSettingsIcon/>
+                      <span>
                         Quản trị viên
                       </span>
                     </button>
@@ -268,29 +262,29 @@ const Header = () => {
                       aria-labelledby="dropdownMenuButton1"
                     >
                       <li>
-                        <Link className="dropdown-item text-white" to="/admin/users">
+                        <a className="dropdown-item text-white" href="/admin/users">
                           Quản lý người dùng
-                        </Link>
+                        </a>
                       </li>
                       <li>
-                        <Link className="dropdown-item text-white" to="/admin/products">
+                        <a className="dropdown-item text-white" href="/admin/products">
                           Quản lý sản phẩm
-                        </Link>
+                        </a>
                       </li>
                       <li>
-                        <Link className="dropdown-item text-white" to="/admin/products/info">
-                          Quản lý thông tin SP
-                        </Link>
+                        <a className="dropdown-item text-white" href="/admin/products/info">
+                          Quản lý thông tin sản phẩm
+                        </a>
                       </li>                      
                       <li>
-                        <Link className="dropdown-item text-white" to="/admin/orders">
+                        <a className="dropdown-item text-white" href="/admin/orders">
                         Quản lý đơn hàng
-                        </Link>
+                        </a>
                       </li>
                       <li>
-                        <Link className="dropdown-item text-white" to="/admin/comments">
+                        <a className="dropdown-item text-white" href="/admin/comments">
                         Quản lý bình luận 
-                        </Link>
+                        </a>
                       </li>                                            
                     </ul>
                   </div>
@@ -306,7 +300,7 @@ const Header = () => {
                       aria-expanded="false"
                     >
                       <img src={menu} alt="" />
-                      <span className="me-5">
+                      <span>
                         Danh mục cửa hàng
                       </span>
                     </button>
@@ -315,34 +309,34 @@ const Header = () => {
                       aria-labelledby="dropdownMenuButton1"
                     >
                       <li>
-                        <Link className="dropdown-item text-white" to="/category/sach-trong-nuoc">
+                        <a className="dropdown-item text-white" href="/category/sach-trong-nuoc">
                           Sách trong nước
-                        </Link>
+                        </a>
                       </li>
                       <li>
-                        <Link className="dropdown-item text-white" to="/category/sach-ngoai-quoc">
+                        <a className="dropdown-item text-white" href="/category/sach-ngoai-quoc">
                           Sách ngoại quốc
-                        </Link>
+                        </a>
                       </li>
                       <li>
-                        <Link className="dropdown-item text-white" to="/category/van-phong-pham">
+                        <a className="dropdown-item text-white" href="/category/van-phong-pham">
                           Văn phòng phẩm
-                        </Link>
+                        </a>
                       </li>
                       <li>
-                        <Link className="dropdown-item text-white" to="/category/do-choi">
+                        <a className="dropdown-item text-white" href="/category/do-choi">
                           Đồ chơi
-                        </Link>
+                        </a>
                       </li> 
                       <li>
-                        <Link className="dropdown-item text-white" to="/category/hang-luu-niem">
+                        <a className="dropdown-item text-white" href="/category/hang-luu-niem">
                           Hàng lưu niệm
-                        </Link>
+                        </a>
                       </li>                                            
                     </ul>
                   </div>
                 </div>
-                <div className="menu-links">
+                <div className="menu-links d-none d-sm-block">
                   <div className="d-flex align-items-center gap-15">
                     <NavLink to="/">Trang chủ</NavLink>
                     <NavLink to="/contact">Liên hệ</NavLink>

@@ -60,10 +60,10 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     $prevPhone = $userData['phone'];
     $prevEmail = $userData['email'];
     # check if phone, email is conflict
-    if (!empty($phone) && $prevPhone != $phone && checkPhoneExist($conn, $phone)) {
+    if (!empty($phone) && $prevPhone != $phone && checkPhoneUsedByOthers($conn, $phone)) {
         $errors['phone'] = "Số điện thoại đã được sử dụng, vui lòng sử dụng số điện thoại khác";
     }
-    if (!empty($email) && $prevPhone != $email && checkEmailExist($conn, $email)) {
+    if (!empty($email) && $prevPhone != $email && checkEmailUsedByOthers($conn, $email)) {
         $errors['email'] = "Email đã được sử dụng, vui lòng sử dụng email khác";
     }    
     

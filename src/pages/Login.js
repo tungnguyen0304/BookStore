@@ -105,8 +105,8 @@ const Login = () => {
                       Đăng nhập
                     </button>
                   </div>
-                  <div>
-                    Chưa có tài khoản? 
+                  <div style={{fontSize: '14px'}} className="mt-1 text-center">
+                    Chưa có tài khoản?&nbsp;
                     <Link to="/signup">
                       Đăng ký
                     </Link>                    

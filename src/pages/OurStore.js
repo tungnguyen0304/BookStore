@@ -48,11 +48,17 @@ const OurStore = () => {
   })  
   const handleChangePrice = (value) => {
     // reset page & products
-    setPage(1)
-    setProducts([])    
-    setCurrentPrice(value)
-    setFilters(prev => ({...prev, price: value[0] + '-' + value[1]}))
-  }
+    setPage(1);
+    setProducts([]);
+    if (!value.every((item, index) => item === currentPrice[index])) {
+      setCurrentPrice(value);
+      setFilters((prev) => ({ ...prev, price: value[0] + "-" + value[1] }));
+    } else {
+      setCurrentPrice([0,10000000]);
+      setFilters((prev) => ({ ...prev, price: "" }));
+    }
+  };
+  
   const updateAuthorsCheck = ID => {
     // reset page & products
     setPage(1)
@@ -99,8 +105,8 @@ const OurStore = () => {
     const newPage = page + 1
     setPage(newPage)
     setFilters(prev => ({...prev, page: newPage}))
-  }
-
+  }  
+  
   const [filters, setFilters] = useState({})  
   // Fecth product filtering options and parse initial URL
   useEffect(() => {
@@ -174,6 +180,13 @@ const OurStore = () => {
         filterObj.dir = dir;
         setSorting(order + "-" + dir);
       }
+    }      
+    async function setCurrentCategoryFromURL() {
+      const currentCategory = getCategoryObj(location.pathname, fetchedCatesList)
+      if (currentCategory) {
+        setCurrentCategory(currentCategory)
+        filterObj.categoryID = currentCategory.ID
+      }
     }
     const getCategoryObj = (pathname, categoriesList) => {
       const pathArray = pathname.split('/');
@@ -183,15 +196,7 @@ const OurStore = () => {
               return category
           }
       }
-    }        
-    async function setCurrentCategoryFromURL() {
-      const currentCategory = getCategoryObj(location.pathname, fetchedCatesList)
-      if (currentCategory) {
-        setCurrentCategory(currentCategory)
-        filterObj.categoryID = currentCategory.ID
-      }
     }
-
     async function setFiltersObj() {
       setFilters(filterObj)
     }
@@ -310,7 +315,7 @@ const OurStore = () => {
             <div className="products-list pb-5">
               <div className="row d-flex flex-wrap">
                 {products.map(product => 
-                  <div key={product.ID} className="col-6 col-md-4 mb-1 p-1">
+                  <div key={product.ID} className="col-6 col-sm-4 col-md-3 mb-1 p-1">
                     <ProductCard product={product}/>
                   </div>
                 )}

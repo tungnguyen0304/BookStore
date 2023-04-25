@@ -184,7 +184,7 @@ const SingleProduct = () => {
                   <p className="product-data">{product.in_stock? "Còn hàng": "Ngừng kinh doanh"}</p>
                 </div>
                 <div className="d-flex align-items-center gap-15 flex-row mt-2 mb-3">
-                  {qty?
+                  {qty > 0 ?
                   <div className="">
                     <IconButton aria-label="Remove button" size="small" onClick={onDecrease}>
                       <RemoveCircleOutlineIcon />
@@ -198,12 +198,10 @@ const SingleProduct = () => {
                   <div className="d-flex align-items-center gap-30 ms-5">
                     <button
                       className="button border-0"
-                      data-bs-toggle="modal"
-                      data-bs-target="#staticBackdrop"
                       type="button"
                       onClick={onIncrease}
                     >
-                      Thêm giỏ hàng
+                      Thêm vào giỏ hàng
                     </button>
                   </div>
                   }
@@ -218,7 +216,7 @@ const SingleProduct = () => {
           <div className="col-12">
             <h4>Mô tả</h4>
             <div className="bg-white p-3">
-              <p>
+              <p style={{whiteSpace: 'pre-wrap'}}>
                 {product.description}
               </p>
             </div>
@@ -233,7 +231,7 @@ const SingleProduct = () => {
               {userRole !== '' ? (
               <div className="review-form py-4">
                 <h4>Viết đánh giá</h4>
-                <form action="" className="d-flex flex-column gap-15">
+                <form className="d-flex flex-column gap-15">
                   <div>
                     <ReactStars
                       count={5}
@@ -289,7 +287,9 @@ const SingleProduct = () => {
                   <p className="mt-3">
                     {review.content}
                   </p>
-                  <span>{VNDatetimeFormatter.format(new Date(review.comment_datetime))}</span>
+                  <div style={{fontSize: '10px'}} className="text-muted">
+                    {VNDatetimeFormatter.format(new Date(review.comment_datetime))}
+                  </div>
                 </div>                  
                 )}
               </div>

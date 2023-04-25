@@ -13,8 +13,8 @@ const divStyle = {
   backgroundSize: "contain",
   backgroundRepeat: "no-repeat",
   backgroundPosition: "center center",
-  height: "422px",
-  weight: "636px",
+  height: "300px",
+  // height: "30vh",
 };
 const slideImages = [
   {
@@ -65,20 +65,17 @@ const Home = () => {
           <div className="row">
             {" "}
             <div className="col-sm-12 col-md-6">
-              <div className="main-banner">
-                <Slide>
-                  {slideImages.map((slideImage, index) => (
-                    <div key={index}>
-                      <div
-                        style={{
-                          ...divStyle,
-                          backgroundImage: `url(${slideImage.url})`,
-                        }}
-                      ></div>
-                    </div>
-                  ))}
-                </Slide>
-              </div>
+              <Slide>
+                {slideImages.map((slideImage, index) => (
+                  <div
+                    key={index}
+                    style={{
+                      ...divStyle,
+                      backgroundImage: `url(${slideImage.url})`,
+                    }}
+                  ></div>
+                ))}
+              </Slide>
             </div>
             <div className="col-sm-12 col-md-6  my-auto">
               <div className="d-flex flex-wrap justify-content-between align-items-center">
@@ -188,7 +185,7 @@ const Home = () => {
                   </div>
                   <div className="row flex-wrap align-items-stretch">
                     {products[category.ID].map((product) => (
-                      <div key={product.ID} className="col-6 col-md-3 mb-1 p-1">
+                      <div key={product.ID} className="col-6 col-sm-4 col-md-3 mb-1 p-1">
                         <ProductCard product={product} />
                       </div>
                     ))}
@@ -209,7 +206,7 @@ const Home = () => {
               </div>
               <div className="row">
                 {products["top_sellers"].map((product) => (
-                  <div key={product.ID} className="col-6 col-md-3 mb-1 p-1">
+                  <div key={product.ID} className="col-6 col-sm-4 col-md-3 mb-1 p-1">
                     <ProductCard product={product} />
                   </div>
                 ))}

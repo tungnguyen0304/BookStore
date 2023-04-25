@@ -1,15 +1,16 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import axios from "axios";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { BiArrowBack } from "react-icons/bi";
 import Container from "../components/Container";
 import Meta from "../components/Meta";
 import OrderItems from "../webpages/user-page/OrderItem";
-import { getLocalCartContent } from '../webpages/cart-payment/setCartLocal';
-import { checkValidName, checkValidPhoneNumber } from '../webpages/FormUtil';
+import { getLocalCartContent, clearLocalCart } from '../utils/setCartLocal';
+import { checkValidName, checkValidPhoneNumber } from '../utils/FormUtil';
 
 const Checkout = () => {
+  const navigate = useNavigate()
   // user info fetched from server
   const [info, setInfo] = useState({
     name: '',
@@ -93,8 +94,8 @@ const Checkout = () => {
           console.log(order)
           axios.post('http://localhost/api/order.php', order)
           .then(response => {
-              console.log(response.data)
-              // setData(response.data); // update the state with the response data
+            clearLocalCart()
+            navigate('/orders')
           })
           .catch(error => {
               console.error(error); // handle any errors that occur
