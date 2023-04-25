@@ -127,7 +127,7 @@ const Checkout = () => {
           </div>
         </div>          
         <div className="row">
-          <div className="col-7">
+          <div className="col-12 col-md-7">
             <div className="checkout-left-data">
               <h4 className="mb-3">Thông tin nhận hàng</h4>
               <form
@@ -193,7 +193,7 @@ const Checkout = () => {
               </form>        
             </div>
           </div>
-          <div className="col-5">
+          <div className="col-12 col-md-5">
             {cartContent.map((product) => (
               <OrderItems key={product.ID} product={product}/>
             ))}            

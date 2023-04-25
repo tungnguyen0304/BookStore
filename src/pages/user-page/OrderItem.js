@@ -28,7 +28,7 @@ export default function OrderItems ({product}) {
     })  
 
     return (
-        <div className='shadowedBox secondLayerBox'>
+        <div className='shadowedBox secondLayerBox spaceBelow'>
         <Box sx={{ flexGrow: 1 }}>
           <Grid container item xs={12} spacing={1}>
               <Grid item>
