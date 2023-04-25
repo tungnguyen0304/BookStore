@@ -5,7 +5,8 @@ import { PersistGate } from 'redux-persist/integration/react'
 import { persistStore } from 'redux-persist'  
 import App from "./App";
 import axios from 'axios';
-import store from "./app/store";
+import store from "./store/store";
+
 // allow cookie to be written in CORS policy
 axios.defaults.withCredentials = true;
 
