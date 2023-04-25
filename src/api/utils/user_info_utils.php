@@ -10,28 +10,28 @@ function checkUsernameExist($conn, $username) {
     
     return mysqli_num_rows($result);
 }
-function checkEmailExist($conn, $email) {
+function checkEmailUsedByOthers($conn, $email) {
     // prepare the SELECT statement
-    $stmt = mysqli_prepare($conn, "SELECT email FROM user WHERE email = ?");
-    mysqli_stmt_bind_param($stmt, "s", $email);
+    $stmt = mysqli_prepare($conn, "SELECT email FROM user WHERE email = ? AND ID != ?");
+    mysqli_stmt_bind_param($stmt, "si", $email, $_SESSION['ID']);
     mysqli_stmt_execute($stmt);
     
     $result = mysqli_stmt_get_result($stmt);
-    // $data = mysqli_fetch_assoc($result);   
     
     return mysqli_num_rows($result);
 }
-function checkPhoneExist($conn, $phone) {
+
+function checkPhoneUsedByOthers($conn, $phone) {
     // prepare the SELECT statement
-    $stmt = mysqli_prepare($conn, "SELECT phone FROM user WHERE phone = ?");
-    mysqli_stmt_bind_param($stmt, "s", $phone);
+    $stmt = mysqli_prepare($conn, "SELECT phone FROM user WHERE phone = ? AND ID != ?");
+    mysqli_stmt_bind_param($stmt, "si", $phone, $_SESSION['ID']);
     mysqli_stmt_execute($stmt);
     
     $result = mysqli_stmt_get_result($stmt);
-    // $data = mysqli_fetch_assoc($result);   
     
     return mysqli_num_rows($result);
 }
+
 function checkName($name) {
     $nameRegex = '/^[\p{L}\s\']{1,50}$/u';
     return preg_match($nameRegex, $name);

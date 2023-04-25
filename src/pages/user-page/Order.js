@@ -54,7 +54,8 @@ export default function Order () {
 
     return (
         <>
-        <Box>
+        <div className='container-fluid'>
+        <div className='m-3'>
         <Grid container spacing={2}>
           <Grid item xs={12}>
             <div className='h3'>Đơn hàng</div>
@@ -92,7 +93,8 @@ export default function Order () {
             <div className='text-center lead'>Đơn hàng không tồn tại</div>
           )}
         </Grid>
-        </Box>
+        </div>
+        </div>
         </>
     )
 }

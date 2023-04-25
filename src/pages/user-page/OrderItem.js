@@ -35,18 +35,18 @@ export default function OrderItems ({product}) {
                   <img src={product.image} style={imgStyle} alt="product" />
               </Grid>
               <Grid container item xs>
-                <Grid item xs={12} sm={7}>
+                <Grid item xs={12}>
                     <div>
                         <div style={bookTitleStyle}>
                             {product.name}
                         </div>
                         <div>Số lượng: {product.qty}</div>
-                        <div>Giá: {VNCurrencyFormatter.format(product.price)}</div>
+                        {/* <div>Giá: {VNCurrencyFormatter.format(product.price)}</div> */}
                     </div>
                 </Grid>
-                <Grid item xs={12} sm={5}>
+                {/* <Grid item xs={12} sm={5}>
                     <div style={subtotalStyle}>{VNCurrencyFormatter.format(calSubtotal(product))}</div>
-                </Grid>
+                </Grid> */}
               </Grid>      
           </Grid>
         </Box>  
