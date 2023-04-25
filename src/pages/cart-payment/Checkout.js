@@ -126,7 +126,7 @@ const Checkout = () => {
             </Link>
           </div>
         </div>          
-        <div className="row">
+        <div className="row pt-4">
           <div className="col-12 col-md-7">
             <div className="checkout-left-data">
               <h4 className="mb-3">Thông tin nhận hàng</h4>
@@ -170,7 +170,7 @@ const Checkout = () => {
                   )}
                 </div>
               </form>
-              <h4 className="mb-3">Phương thức thanh toán</h4>
+              <h4 className="mb-3 mt-3">Phương thức thanh toán</h4>
               <form>
                 <div className="w-100">
                   {methods.map(option => (
