@@ -72,101 +72,123 @@ const OrdersAdminPage = () => {
 
   return (
     <>
-    <Meta title="Quản lý đơn hàng"/>
-    <Grid container sx={{ mb: 1, mt: 1 }}>
-      <Grid item xs={12} sm={8} md={6}>
-        <div className='h3'>Quản lý đơn hàng</div>
-      </Grid>
-      <Grid item xs={12} sm={4} md={6}>
-        <NormalSearchBar 
-        label="Nhập thông tin cần tìm" 
-        searchText={searchText} 
-        setSearchText={setSearchText} 
-        handleSearch={handleSearch}
-        />
-      </Grid>      
-    </Grid>    
-    <Box>
-      <Table aria-label="orders table" className='admin-table'>
-        <TableHead>
-          <TableRow key="header-row">
-            <TableCell>ID</TableCell>
-            <TableCell>Tên người nhận hàng</TableCell>
-            <TableCell>Thời gian đặt hàng</TableCell>
-            <TableCell>Tổng tiền</TableCell>
-            <TableCell>Trạng thái</TableCell>
-            <TableCell width="150px">Thao tác</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-         {currentOrders.map((order) => (
-            <TableRow key={order.ID}>
-              <TableCell scope="row">
-                {order.ID}
-              </TableCell>
-              <TableCell>{order.name}</TableCell>
-              <TableCell>{order.order_datetime}</TableCell>
-              <TableCell>{order.total}</TableCell>
-              <TableCell>{order.status === 1? "Đã nhận hàng": "Đang giao hàng"}</TableCell>
-              <TableCell>
-                <Tooltip title="Xem chi tiết">
-                  <IconButton  style={{color: 'green'}} onClick={() => onViewDetail(order)}>
-                    <Reviews />
-                  </IconButton>
-                </Tooltip>
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
-        <Pagination color="primary" count={pageCount} page={currentPage} onChange={handlePageChange} />
-      </Box>
-    </Box>
-    <AlertDialog title="Thông tin đơn hàng" open={!!viewOrderPopup} setView={setView}>
-      <>
-        <Table>
-            <TableBody>
-            <TableRow>
-                <TableCell variant="head">ID</TableCell>
-                <TableCell>{viewOrderPopup.ID}</TableCell>
-            </TableRow>
-            <TableRow>
-                <TableCell variant="head">Tên người nhận hàng</TableCell>
-                <TableCell>{viewOrderPopup.name}</TableCell>
-            </TableRow>
-            <TableRow>
-                <TableCell variant="head">SĐT</TableCell>
-                <TableCell>{viewOrderPopup.phone}</TableCell>
-            </TableRow>    
-            <TableRow>
-                <TableCell variant="head">Địa chỉ</TableCell>
-                <TableCell>{viewOrderPopup.address}</TableCell>
-            </TableRow>   
-            <TableRow>
-                <TableCell variant="head">Phương thức thanh toán</TableCell>
-                <TableCell>{viewOrderPopup.method == '1'? "COD": "Online"}</TableCell>
-            </TableRow>            
-            <TableRow>
-                <TableCell variant="head">Thời gian đặt hàng</TableCell>
-                <TableCell>{viewOrderPopup.order_datetime}</TableCell>
-            </TableRow>              
-            <TableRow>
-                <TableCell variant="head">Tiền vận chuyển</TableCell>
-                <TableCell>{viewOrderPopup.delivery_cost}</TableCell>
-            </TableRow>            
-            <TableRow>
-                <TableCell variant="head">Tổng tiền</TableCell>
-                <TableCell>{viewOrderPopup.total}</TableCell>
-            </TableRow>
-            <TableRow>
-                <TableCell variant="head">Trạng thái</TableCell>
-                <TableCell>{viewOrderPopup.status === 1? "Đã nhận hàng": "Đang giao hàng"}</TableCell>
-            </TableRow>                       
-            </TableBody>                                                                   
-        </Table>     
-      </>
-    </AlertDialog>
+      <Meta title="Quản lý đơn hàng" />
+      <div className="container">
+        <div className="my-3">
+          <Grid container sx={{ mb: 1, mt: 1 }}>
+            <Grid item xs={12} sm={8} md={6}>
+              <div className="h3" style={{"padding-left": "10%"}}>Quản lý đơn hàng</div>
+            </Grid>
+            <Grid item xs={12} sm={4} md={6}>
+              <NormalSearchBar
+                label="Nhập thông tin cần tìm"
+                searchText={searchText}
+                setSearchText={setSearchText}
+                handleSearch={handleSearch}
+              />
+            </Grid>
+          </Grid>
+          <Box className="table-responsive">
+            <Table aria-label="orders table" className="admin-table">
+              <TableHead>
+                <TableRow key="header-row">
+                  <TableCell>ID</TableCell>
+                  <TableCell>Tên người nhận hàng</TableCell>
+                  <TableCell>Thời gian đặt hàng</TableCell>
+                  <TableCell>Tổng tiền</TableCell>
+                  <TableCell>Trạng thái</TableCell>
+                  <TableCell width="150px">Thao tác</TableCell>
+                </TableRow>
+              </TableHead>
+              <TableBody>
+                {currentOrders.map((order) => (
+                  <TableRow key={order.ID}>
+                    <TableCell scope="row">{order.ID}</TableCell>
+                    <TableCell>{order.name}</TableCell>
+                    <TableCell>{order.order_datetime}</TableCell>
+                    <TableCell>{order.total}</TableCell>
+                    <TableCell>
+                      {order.status === 1 ? "Đã nhận hàng" : "Đang giao hàng"}
+                    </TableCell>
+                    <TableCell>
+                      <Tooltip title="Xem chi tiết">
+                        <IconButton
+                          style={{ color: "green" }}
+                          onClick={() => onViewDetail(order)}
+                        >
+                          <Reviews />
+                        </IconButton>
+                      </Tooltip>
+                    </TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+            <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
+              <Pagination
+                color="primary"
+                count={pageCount}
+                page={currentPage}
+                onChange={handlePageChange}
+              />
+            </Box>
+          </Box>
+          <AlertDialog
+            title="Thông tin đơn hàng"
+            open={!!viewOrderPopup}
+            setView={setView}
+          >
+            <>
+              <Table>
+                <TableBody>
+                  <TableRow>
+                    <TableCell variant="head">ID</TableCell>
+                    <TableCell>{viewOrderPopup.ID}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell variant="head">Tên người nhận hàng</TableCell>
+                    <TableCell>{viewOrderPopup.name}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell variant="head">SĐT</TableCell>
+                    <TableCell>{viewOrderPopup.phone}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell variant="head">Địa chỉ</TableCell>
+                    <TableCell>{viewOrderPopup.address}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell variant="head">Phương thức thanh toán</TableCell>
+                    <TableCell>
+                      {viewOrderPopup.method == "1" ? "COD" : "Online"}
+                    </TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell variant="head">Thời gian đặt hàng</TableCell>
+                    <TableCell>{viewOrderPopup.order_datetime}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell variant="head">Tiền vận chuyển</TableCell>
+                    <TableCell>{viewOrderPopup.delivery_cost}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell variant="head">Tổng tiền</TableCell>
+                    <TableCell>{viewOrderPopup.total}</TableCell>
+                  </TableRow>
+                  <TableRow>
+                    <TableCell variant="head">Trạng thái</TableCell>
+                    <TableCell>
+                      {viewOrderPopup.status === 1
+                        ? "Đã nhận hàng"
+                        : "Đang giao hàng"}
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              </Table>
+            </>
+          </AlertDialog>
+        </div>
+      </div>
     </>
   );
 };

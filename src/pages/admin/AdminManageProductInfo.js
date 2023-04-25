@@ -88,85 +88,108 @@ const AdminManageProductInfo = () => {
 
   return (
     <>
-    <div>
-      <Meta title="Quản lý thông tin sản phẩm"/>
-      <div className='h3'>Thêm tác giả mới</div>
-      <form onSubmit={handleSubmitAuthor}>
-        <Grid container spacing={2} className='secondLayerBox shadowedBox' style={{overflow:'hidden'}}>
-          <Grid item xs={12} sm={6}>
-              <FormControl fullWidth >
-              <TextField
-                  label="Tên tác giả"
-                  name="name"
-                  value={authorName}
-                  onChange={(e) => {
-                    setAuthorName(e.target.value)
-                    if (authorError) {  
-                        setAuthorError('')
-                    }
-                  }}
-                  error={!!authorError}
-                  helperText={authorError}
-              />
-              </FormControl>
-          </Grid>
-          <Grid item container justifyContent="center">
-            <button type="button" className='btn btn-success' onClick={() => setConfirmSaveAuthor(!confirmSaveAuthor)}>
-              Lưu
-            </button>
-          </Grid>                                                                       
-        </Grid>
-      </form>
-      <ConfirmDialog 
-        isOpen={confirmSaveAuthor} 
-        setOpen={setConfirmSaveAuthor} 
-        content="Bạn chắc chắn muốn thêm tác giả?"
-        confirm={handleSubmitAuthor}
-      />            
-    </div>
-    <div>
-    <div className='h3'>Thêm NSX/NXB mới</div>
-    <form onSubmit={handleSubmitManu}>
-      <Grid container spacing={2} className='secondLayerBox shadowedBox' style={{overflow:'hidden'}}>
-        <Grid item xs={12} sm={6}>
-            <FormControl fullWidth >
-            <TextField
-              label="Tên NSX/NXB"
-              name="name"
-              value={manufacturer.name}
-              onChange={handleChangeManu}
-              error={!!manufacturerError.name}
-              helperText={manufacturerError.name}
-            />
-            </FormControl>          
-        </Grid>
-        <Grid item xs={12} sm={6}>
-            <FormControl fullWidth >
-                <TextField
-                  label="Quốc gia"
-                  name="country"
-                  value={manufacturer.country}
-                  onChange={handleChangeManu}
-                  error={!!manufacturerError.country}
-                  helperText={manufacturerError.country}
-                />
-            </FormControl>   
-        </Grid>       
-        <Grid item container justifyContent="center">
-          <button type="button" className='btn btn-success' onClick={() => setConfirmSaveManu(!confirmSaveManu)}>
-            Lưu
-          </button>          
-        </Grid>                                                                       
-      </Grid>
-    </form>
-    <ConfirmDialog 
-      isOpen={confirmSaveManu} 
-      setOpen={setConfirmSaveManu} 
-      content="Bạn chắc chắn muốn thêm NSX/NXB?"
-      confirm={handleSubmitManu}
-    />            
-  </div>  
-  </>  
+      <Meta title="Quản lý thông tin sản phẩm" />
+      <div className="container">
+        <div className="my-3">
+          <div className="h3 mb-3">Thêm tác giả mới</div>
+          <form onSubmit={handleSubmitAuthor}>
+            <Grid
+              container
+              spacing={2}
+              className="secondLayerBox shadowedBox"
+              style={{ overflow: "hidden" }}
+            >
+              <Grid item xs={12} sm={6}>
+                <FormControl fullWidth>
+                  <TextField
+                    label="Tên tác giả"
+                    name="name"
+                    value={authorName}
+                    onChange={(e) => {
+                      setAuthorName(e.target.value);
+                      if (authorError) {
+                        setAuthorError("");
+                      }
+                    }}
+                    error={!!authorError}
+                    helperText={authorError}
+                  />
+                </FormControl>
+              </Grid>
+              <Grid item container justifyContent="center">
+                <button
+                  type="button"
+                  className="btn btn-success"
+                  onClick={() => setConfirmSaveAuthor(!confirmSaveAuthor)}
+                >
+                  Lưu
+                </button>
+              </Grid>
+            </Grid>
+          </form>
+          <ConfirmDialog
+            isOpen={confirmSaveAuthor}
+            setOpen={setConfirmSaveAuthor}
+            content="Bạn chắc chắn muốn thêm tác giả?"
+            confirm={handleSubmitAuthor}
+          />
+        </div>
+      </div>
+
+      <div className="container">
+        <div className="my-3">
+          <div className="h3 mb-3">Thêm NSX/NXB mới</div>
+          <form onSubmit={handleSubmitManu}>
+            <Grid
+              container
+              spacing={2}
+              className="secondLayerBox shadowedBox"
+              style={{ overflow: "hidden" }}
+            >
+              <Grid item xs={12} sm={6}>
+                <FormControl fullWidth>
+                  <TextField
+                    label="Tên NSX/NXB"
+                    name="name"
+                    value={manufacturer.name}
+                    onChange={handleChangeManu}
+                    error={!!manufacturerError.name}
+                    helperText={manufacturerError.name}
+                  />
+                </FormControl>
+              </Grid>
+              <Grid item xs={12} sm={6}>
+                <FormControl fullWidth>
+                  <TextField
+                    label="Quốc gia"
+                    name="country"
+                    value={manufacturer.country}
+                    onChange={handleChangeManu}
+                    error={!!manufacturerError.country}
+                    helperText={manufacturerError.country}
+                  />
+                </FormControl>
+              </Grid>
+              <Grid item container justifyContent="center">
+                <button
+                  type="button"
+                  className="btn btn-success"
+                  onClick={() => setConfirmSaveManu(!confirmSaveManu)}
+                >
+                  Lưu
+                </button>
+              </Grid>
+            </Grid>
+          </form>
+          <ConfirmDialog
+            isOpen={confirmSaveManu}
+            setOpen={setConfirmSaveManu}
+            content="Bạn chắc chắn muốn thêm NSX/NXB?"
+            confirm={handleSubmitManu}
+          />
+        </div>
+      </div>
+    </>
   );
 };
 

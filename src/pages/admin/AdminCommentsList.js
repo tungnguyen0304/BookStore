@@ -91,76 +91,93 @@ const CommentsAdminPage = () => {
 
   return (
     <>
-    <Meta title="Quản lý bình luận"/>
-    <Grid container sx={{ mb: 1, mt: 1 }}>
-      <Grid item xs={12} sm={8} md={6}>
-        <div className='h3'>Quản lý bình luận</div>
-      </Grid>
-      <Grid item xs={12} sm={4} md={6}>
-        <NormalSearchBar 
-        label="Nhập thông tin cần tìm" 
-        searchText={searchText} 
-        setSearchText={setSearchText} 
-        handleSearch={handleSearch}
-        />
-      </Grid>      
-    </Grid>   
-    {comments.length !== 0 ? (
-    <Box>
-      <Table aria-label="comments table" className='admin-table'>
-        <TableHead>
-          <TableRow key="header-row">
-            <TableCell>ID</TableCell>
-            <TableCell>Username</TableCell>
-            <TableCell>Tên sản phẩm</TableCell>
-            <TableCell>Nội dung</TableCell>
-            <TableCell>Thời gian bình luận</TableCell>
-            <TableCell width="150px">Thao tác</TableCell>
-          </TableRow>
-        </TableHead>
-        <TableBody>
-         {currentComments.map((comment) => (
-            <TableRow key={comment.ID}>
-              <TableCell scope="row">
-                {comment.ID}
-              </TableCell>
-              <TableCell>{comment.user_name}</TableCell>
-              <TableCell>{comment.product_name}</TableCell>
-              <TableCell>{comment.content}</TableCell>
-              <TableCell>{comment.comment_datetime}</TableCell>
-              <TableCell>
-                <Tooltip title="Tới trang sản phẩm">
-                  <Link to={"/product/" + comment.productID}>
-                      <IconButton color="secondary">
-                        <ExitToApp/>
-                      </IconButton>
-                  </Link>
-                </Tooltip>
-                {comment.status === null ? (
-                  <Tooltip title="Khóa bình luận">
-                    <IconButton style={{color:'red'}} onClick={() => handleToggleCommentStatus(comment.ID)}>
-                      <Block/>
-                    </IconButton>
-                  </Tooltip>    
-                ) : (
-                  <Tooltip title="Mở khóa bình luận">
-                    <IconButton style={{color:'green'}} onClick={() => handleToggleCommentStatus(comment.ID)}>
-                      <CheckCircle/>
-                    </IconButton>
-                  </Tooltip>    
-                )}            
-              </TableCell>
-            </TableRow>
-          ))}
-        </TableBody>
-      </Table>
-      <Box sx={{ display: 'flex', justifyContent: 'center', mt: 2 }}>
-        <Pagination color="primary" count={pageCount} page={currentPage} onChange={handlePageChange} />
-      </Box>
-    </Box>
-    ) : (
-      <div className='text-center lead'>Không có bình luận nào</div>
-    )}
+      <Meta title="Quản lý bình luận" />
+      <div className="container">
+        <div className="my-3">
+          <Grid container sx={{ mb: 1, mt: 1 }}>
+            <Grid item xs={12} sm={8} md={6}>
+              <div className="h3" style={{"padding-left": "10%"}}>Quản lý bình luận</div>
+            </Grid>
+            <Grid item xs={12} sm={4} md={6}>
+              <NormalSearchBar
+                label="Nhập thông tin cần tìm"
+                searchText={searchText}
+                setSearchText={setSearchText}
+                handleSearch={handleSearch}
+              />
+            </Grid>
+          </Grid>
+          {comments.length !== 0 ? (
+            <Box className="table-responsive">
+              <Table aria-label="comments table" className="admin-table">
+                <TableHead>
+                  <TableRow key="header-row">
+                    <TableCell>ID</TableCell>
+                    <TableCell>Username</TableCell>
+                    <TableCell>Tên sản phẩm</TableCell>
+                    <TableCell>Nội dung</TableCell>
+                    <TableCell>Thời gian bình luận</TableCell>
+                    <TableCell width="150px">Thao tác</TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {currentComments.map((comment) => (
+                    <TableRow key={comment.ID}>
+                      <TableCell scope="row">{comment.ID}</TableCell>
+                      <TableCell>{comment.user_name}</TableCell>
+                      <TableCell>{comment.product_name}</TableCell>
+                      <TableCell>{comment.content}</TableCell>
+                      <TableCell>{comment.comment_datetime}</TableCell>
+                      <TableCell>
+                        <Tooltip title="Tới trang sản phẩm">
+                          <Link to={"/product/" + comment.productID}>
+                            <IconButton color="secondary">
+                              <ExitToApp />
+                            </IconButton>
+                          </Link>
+                        </Tooltip>
+                        {comment.status === null ? (
+                          <Tooltip title="Khóa bình luận">
+                            <IconButton
+                              style={{ color: "red" }}
+                              onClick={() =>
+                                handleToggleCommentStatus(comment.ID)
+                              }
+                            >
+                              <Block />
+                            </IconButton>
+                          </Tooltip>
+                        ) : (
+                          <Tooltip title="Mở khóa bình luận">
+                            <IconButton
+                              style={{ color: "green" }}
+                              onClick={() =>
+                                handleToggleCommentStatus(comment.ID)
+                              }
+                            >
+                              <CheckCircle />
+                            </IconButton>
+                          </Tooltip>
+                        )}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+              <Box sx={{ display: "flex", justifyContent: "center", mt: 2 }}>
+                <Pagination
+                  color="primary"
+                  count={pageCount}
+                  page={currentPage}
+                  onChange={handlePageChange}
+                />
+              </Box>
+            </Box>
+          ) : (
+            <div className="text-center lead">Không có bình luận nào</div>
+          )}
+        </div>
+      </div>
     </>
   );
 };
