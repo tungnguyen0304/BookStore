@@ -115,7 +115,7 @@
 
   .header-bottom .dropdown-menu {
     background-color: var(--color-131921);
-    width: 100%;
+    /* width: 150px; */
     transform: translate3d(0px, 57px, 0px) !important;
   }
 

@@ -216,7 +216,7 @@ const SingleProduct = () => {
           <div className="col-12">
             <h4>Mô tả</h4>
             <div className="bg-white p-3">
-              <p>
+              <p style={{whiteSpace: 'pre-wrap'}}>
                 {product.description}
               </p>
             </div>

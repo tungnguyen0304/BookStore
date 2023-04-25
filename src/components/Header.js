@@ -273,7 +273,7 @@ const Header = () => {
                       </li>
                       <li>
                         <a className="dropdown-item text-white" href="/admin/products/info">
-                          Quản lý thông tin SP
+                          Quản lý thông tin sản phẩm
                         </a>
                       </li>                      
                       <li>
