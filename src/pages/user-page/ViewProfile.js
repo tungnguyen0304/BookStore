@@ -3,9 +3,11 @@ import axios from 'axios';
 import { Table, TableBody, TableCell, TableContainer, TableRow, Paper } from '@mui/material';
 import Meta from '../../components/Meta';
 import { Link } from 'react-router-dom';
+import { useSelector } from "react-redux";
 
 
 const ViewProfile = () => {
+  const userRole = useSelector((state) => state.userRole);
   const [Profile, setProfile] = useState({
     name: '',
     username: '',
@@ -31,6 +33,8 @@ const ViewProfile = () => {
   return (
     <div>
       <Meta title="Hồ sơ của bạn"/>
+      {userRole !== '' ? (
+      <>
       <div className='h3'>Hồ sơ của bạn</div>
       <Link to="/edit-profile">
         <button className='d-block btn btn-primary'>Chỉnh sửa hồ sơ</button>
@@ -61,7 +65,13 @@ const ViewProfile = () => {
         </TableBody>
       </Table>
     </TableContainer>
-      
+    </>
+    ) : (
+    <div className="text-center text-muted">
+      Bạn phải đăng nhập trước<br/>
+      <Link to="/login">Đăng nhập</Link><br/>
+    </div>
+    )}
     </div>
   );
 };

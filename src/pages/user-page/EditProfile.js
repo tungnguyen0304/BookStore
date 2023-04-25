@@ -1,12 +1,14 @@
 import { Grid, FormControl, TextField } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import ConfirmDialog from '../ConfirmDialog';
-import { useNavigate } from 'react-router-dom';
+import ConfirmDialog from '../../components/ConfirmDialog';
+import { useNavigate, Link } from 'react-router-dom';
 import Meta from '../../components/Meta';
 import {checkValidName, checkValidEmail, checkValidPhoneNumber} from '../../utils/FormUtil'
+import { useSelector } from "react-redux";
 
 const EditProfile = () => {
+  const userRole = useSelector((state) => state.userRole);
   const [profile, setProfile] = useState({
     name: '',
     address: '',
@@ -87,6 +89,8 @@ const EditProfile = () => {
   return (
     <div>
       <Meta title="Chỉnh sửa hồ sơ"/>
+      {userRole !== '' ? (
+      <>
       <div className='h3'>Chỉnh sửa hồ sơ</div>
       <form>
         <Grid container spacing={2} className='secondLayerBox shadowedBox' style={{overflow:'hidden'}}>
@@ -165,6 +169,13 @@ const EditProfile = () => {
         content="Bạn chắc chắn muốn thoát? Tất cả mọi thay đổi sẽ bị hủy bỏ"
         confirm={() => navigate(-1)}
       />            
+    </>
+    ) : (
+      <div className="text-center text-muted">
+        Bạn phải đăng nhập trước<br/>
+        <Link to="/login">Đăng nhập</Link><br/>
+      </div>
+    )}
     </div>
   );
 };

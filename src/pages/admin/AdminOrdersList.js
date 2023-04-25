@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Table, TableBody, TableCell, TableHead, TableRow, IconButton, Box, Tooltip, Grid, Pagination} from '@mui/material';
 import { Reviews } from '@mui/icons-material';
-import AlertDialog from '../AlertDialog';
+import AlertDialog from '../../components/AlertDialog';
 import NormalSearchBar from '../../components/NormalSearchBar';
 import Meta from "../../components/Meta";
 

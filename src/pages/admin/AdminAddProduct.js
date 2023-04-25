@@ -1,7 +1,7 @@
 import { Grid, FormControl, TextField, Autocomplete } from '@mui/material';
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
-import ConfirmDialog from '../ConfirmDialog';
+import ConfirmDialog from '../../components/ConfirmDialog';
 import { useNavigate } from 'react-router-dom';
 import Meta from '../../components/Meta';
 

@@ -2,21 +2,21 @@ import React from "react";
 import "./App.css";
 import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Layout from "./components/Layout";
-import Home from "./pages/Home";
-import CatalogSearch from "./pages/CatalogSearch";
-import Contact from "./pages/Contact";
-import OurStore from "./pages/OurStore";
-import Login from "./pages/Login";
-import Forgotpassword from "./pages/Forgotpassword";
-import Signup from "./pages/Signup";
-import Resetpassword from "./pages/Resetpassword";
-import PrivacyPolicy from "./pages/PrivacyPolicy";
-import RefundPolicy from "./pages/RefundPolicy";
-import ShippingPolicy from "./pages/ShippingPolicy";
-import TermAndContions from "./pages/TermAndContions";
-import SingleProduct from "./pages/SingleProduct";
-import Cart from "./pages/Cart";
-import Checkout from "./pages/Checkout";
+import Home from "./pages/product/Home";
+import CatalogSearch from "./pages/product/CatalogSearch";
+import Contact from "./pages/info-page/Contact";
+import ProductFilter from "./pages/product/ProductFilter";
+import Login from "./pages/authentication/Login";
+import Forgotpassword from "./pages/authentication/Forgotpassword";
+import Signup from "./pages/authentication/Signup";
+import Resetpassword from "./pages/authentication/Resetpassword";
+import PrivacyPolicy from "./pages/info-page/PrivacyPolicy";
+import RefundPolicy from "./pages/info-page/RefundPolicy";
+import ShippingPolicy from "./pages/info-page/ShippingPolicy";
+import TermAndContions from "./pages/info-page/TermAndContions";
+import SingleProduct from "./pages/product/SingleProduct";
+import Cart from "./pages/cart-payment/Cart";
+import Checkout from "./pages/cart-payment/Checkout";
 import ViewProfile from "./pages/user-page/ViewProfile";
 import EditProfile from "./pages/user-page/EditProfile";
 import UserOrdersList from "./pages/user-page/UserOrdersList";
@@ -38,7 +38,7 @@ function App() {
             <Route index element={<Home />} />
             <Route path="catalog-search/:q?" element={<CatalogSearch />} />
             <Route path="contact" element={<Contact />} />
-            <Route path="category/:unique_name" element={<OurStore />} />
+            <Route path="category/:unique_name" element={<ProductFilter />} />
             <Route path="product/:unique_name" element={<SingleProduct />} />
             <Route path="cart" element={<Cart />} />
             <Route path="checkout" element={<Checkout />} />

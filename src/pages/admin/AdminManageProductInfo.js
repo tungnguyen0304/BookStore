@@ -1,7 +1,7 @@
-import { Grid, FormControl, TextField, Autocomplete } from '@mui/material';
-import React, { useState, useEffect } from 'react';
+import { Grid, FormControl, TextField } from '@mui/material';
+import React, { useState } from 'react';
 import axios from 'axios';
-import ConfirmDialog from '../ConfirmDialog';
+import ConfirmDialog from '../../components/ConfirmDialog';
 import Meta from "../../components/Meta";
 
 const AdminManageProductInfo = () => {
