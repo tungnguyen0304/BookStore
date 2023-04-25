@@ -262,29 +262,29 @@ const Header = () => {
                       aria-labelledby="dropdownMenuButton1"
                     >
                       <li>
-                        <Link className="dropdown-item text-white" to="/admin/users">
+                        <a className="dropdown-item text-white" href="/admin/users">
                           Quản lý người dùng
-                        </Link>
+                        </a>
                       </li>
                       <li>
-                        <Link className="dropdown-item text-white" to="/admin/products">
+                        <a className="dropdown-item text-white" href="/admin/products">
                           Quản lý sản phẩm
-                        </Link>
+                        </a>
                       </li>
                       <li>
-                        <Link className="dropdown-item text-white" to="/admin/products/info">
+                        <a className="dropdown-item text-white" href="/admin/products/info">
                           Quản lý thông tin SP
-                        </Link>
+                        </a>
                       </li>                      
                       <li>
-                        <Link className="dropdown-item text-white" to="/admin/orders">
+                        <a className="dropdown-item text-white" href="/admin/orders">
                         Quản lý đơn hàng
-                        </Link>
+                        </a>
                       </li>
                       <li>
-                        <Link className="dropdown-item text-white" to="/admin/comments">
+                        <a className="dropdown-item text-white" href="/admin/comments">
                         Quản lý bình luận 
-                        </Link>
+                        </a>
                       </li>                                            
                     </ul>
                   </div>
@@ -309,29 +309,29 @@ const Header = () => {
                       aria-labelledby="dropdownMenuButton1"
                     >
                       <li>
-                        <Link className="dropdown-item text-white" to="/category/sach-trong-nuoc">
+                        <a className="dropdown-item text-white" href="/category/sach-trong-nuoc">
                           Sách trong nước
-                        </Link>
+                        </a>
                       </li>
                       <li>
-                        <Link className="dropdown-item text-white" to="/category/sach-ngoai-quoc">
+                        <a className="dropdown-item text-white" href="/category/sach-ngoai-quoc">
                           Sách ngoại quốc
-                        </Link>
+                        </a>
                       </li>
                       <li>
-                        <Link className="dropdown-item text-white" to="/category/van-phong-pham">
+                        <a className="dropdown-item text-white" href="/category/van-phong-pham">
                           Văn phòng phẩm
-                        </Link>
+                        </a>
                       </li>
                       <li>
-                        <Link className="dropdown-item text-white" to="/category/do-choi">
+                        <a className="dropdown-item text-white" href="/category/do-choi">
                           Đồ chơi
-                        </Link>
+                        </a>
                       </li> 
                       <li>
-                        <Link className="dropdown-item text-white" to="/category/hang-luu-niem">
+                        <a className="dropdown-item text-white" href="/category/hang-luu-niem">
                           Hàng lưu niệm
-                        </Link>
+                        </a>
                       </li>                                            
                     </ul>
                   </div>
