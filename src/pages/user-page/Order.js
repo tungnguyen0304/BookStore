@@ -54,7 +54,7 @@ export default function Order () {
 
     return (
         <>
-        <div className='container-fluid'>
+        <div className='container'>
         <div className='m-3'>
         <Grid container spacing={2}>
           <Grid item xs={12}>

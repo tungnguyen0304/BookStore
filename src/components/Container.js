@@ -3,7 +3,7 @@ import React from "react";
 const Container = (props) => {
   return (
     <section className={props.class1}>
-      <div className="container-fluid">{props.children}</div>
+      <div className="container">{props.children}</div>
     </section>
   );
 };

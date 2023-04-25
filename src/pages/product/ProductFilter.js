@@ -234,9 +234,9 @@ const OurStore = () => {
     <>
       <Meta title={currentCategory.name} />
       <BreadCrumb title={currentCategory.name} />
-      <Container className="home-wrapper-2 py-5">
+      <Container class1="home-wrapper-2 py-5">
         <div className="row">
-          <div className="col-12 col-md-3 p-1">
+          <div className="col-12 col-md-2">
             <div className="filter-card mb-3">
               <h3 className="filter-title">THỂ LOẠI</h3>
               <div>
@@ -293,7 +293,7 @@ const OurStore = () => {
               </div>
             </div>
           </div> 
-          <div className="col-12 col-md-9">
+          <div className="col-12 col-md-10">
             <div className="filter-sort-grid mb-4">
               <div className="d-inline-block mx-2">Sắp xếp theo</div>
               <div className="d-inline-block">
@@ -313,7 +313,7 @@ const OurStore = () => {
             
             {products.length !== 0 ? (
             <div className="products-list pb-5">
-              <div className="row d-flex flex-wrap">
+              <div className="d-flex flex-wrap">
                 {products.map(product => 
                   <div key={product.ID} className="col-6 col-sm-4 col-md-3 mb-1 p-1">
                     <ProductCard product={product}/>
