@@ -10,7 +10,7 @@ import {
   checkValidPhoneNumber,
 } from "../../utils/FormUtil";
 import { useSelector } from "react-redux";
-import Container from "../../components/Container";
+import Container from '../../components/Container';
 
 const EditProfile = () => {
   const userRole = useSelector((state) => state.userRole);
@@ -108,30 +108,24 @@ const EditProfile = () => {
 
   return (
     <div>
-      <Meta title="Chỉnh sửa hồ sơ" />
-      {userRole !== "" ? (
-        <>
-          <Container class1="container">
-            <div className="h3 my-5">Chỉnh sửa hồ sơ</div>
-            <form className="mb-5">
-              <Grid
-                container
-                spacing={2}
-                className="secondLayerBox shadowedBox"
-                style={{ overflow: "hidden" }}
-              >
-                <Grid item xs={12} sm={6}>
-                  <FormControl fullWidth>
-                    <label htmlFor="dob">Tên:</label>
-                    <TextField
-                      name="name"
-                      value={profile.name}
-                      onChange={handleChange}
-                      error={errors.name ? true : false}
-                      helperText={errors.name}
-                    />
-                  </FormControl>
-                </Grid>
+      <Meta title="Chỉnh sửa hồ sơ"/>
+      {userRole !== '' ? (
+      <Container class1="home-wrapper-2 py-3">
+      <div className='h3'>Chỉnh sửa hồ sơ</div>
+      <form>
+        <Grid container spacing={2} className='secondLayerBox shadowedBox' style={{overflow:'hidden'}}>
+          <Grid item xs={12} sm={6}>
+            <FormControl fullWidth >
+              <label htmlFor="dob">Tên:</label>
+              <TextField
+                name="name"
+                value={profile.name}
+                onChange={handleChange}
+                error={errors.name ? true : false}
+                helperText={errors.name}
+              />
+            </FormControl>
+          </Grid>
 
                 <Grid item xs={12} sm={6}>
                   <FormControl fullWidth>
@@ -174,46 +168,35 @@ const EditProfile = () => {
                   </FormControl>
                 </Grid>
 
-                <Grid item container justifyContent="center">
-                  <button
-                    type="button"
-                    className="btn btn-success mx-5"
-                    onClick={() => setConfirmSaving(!confirmSaving)}
-                  >
-                    Lưu
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-danger mx-5"
-                    onClick={() => setConfirmGoingBack(!confirmGoingBack)}
-                  >
-                    Thoát
-                  </button>
-                </Grid>
-              </Grid>
-            </form>
-            <ConfirmDialog
-              isOpen={confirmSaving}
-              setOpen={setConfirmSaving}
-              content="Bạn chắc chắn muốn lưu?"
-              confirm={handleSubmit}
-            />
-            <ConfirmDialog
-              isOpen={confirmGoingBack}
-              setOpen={setConfirmGoingBack}
-              content="Bạn chắc chắn muốn thoát? Tất cả mọi thay đổi sẽ bị hủy bỏ"
-              confirm={() => navigate(-1)}
-            />
-          </Container>
-        </>
-      ) : (
-        <div className="text-center text-muted">
-          Bạn phải đăng nhập trước
-          <br />
-          <Link to="/login">Đăng nhập</Link>
-          <br />
-        </div>
-      )}
+          <Grid item container justifyContent="center">
+            <button type="button" className='btn btn-success' onClick={() => setConfirmSaving(!confirmSaving)}>
+              Lưu
+            </button>
+            <button type="button" className='btn btn-danger' onClick={() => setConfirmGoingBack(!confirmGoingBack)}>
+              Thoát
+            </button>                      
+          </Grid>                                                                       
+        </Grid>
+      </form>
+      <ConfirmDialog 
+        isOpen={confirmSaving} 
+        setOpen={setConfirmSaving} 
+        content="Bạn chắc chắn muốn lưu?"
+        confirm={handleSubmit}
+      /> 
+      <ConfirmDialog 
+        isOpen={confirmGoingBack} 
+        setOpen={setConfirmGoingBack} 
+        content="Bạn chắc chắn muốn thoát? Tất cả mọi thay đổi sẽ bị hủy bỏ"
+        confirm={() => navigate(-1)}
+      />            
+    </Container>
+    ) : (
+      <div className="text-center text-muted">
+        Bạn phải đăng nhập trước<br/>
+        <Link to="/login">Đăng nhập</Link><br/>
+      </div>
+    )}
     </div>
   );
 };

@@ -239,21 +239,23 @@ const SingleProduct = () => {
           </div>
         </div>
       </Container>
+      {product.description && product.description.length !== 0 && (
       <Container class1="description-wrapper py-5 home-wrapper-2">
         <div className="row justify-content-center">
           <div className="col-10">
             <h4>Mô tả</h4>
-            <div className="bg-white p-3" style={{"border-radius" : "15px"}}>
+            <div className="bg-white p-3" style={{borderRadius : "15px"}}>
               <p style={{ whiteSpace: "pre-wrap" }}>{product.description}</p>
             </div>
           </div>
         </div>
       </Container>
+      )}
       <Container class1="reviews-wrapper home-wrapper-2">
         <div className="row justify-content-center">
           <div className="col-10 mb-3">
             <h3 id="review">Đánh giá sản phẩm</h3>
-            <div className="review-inner-wrapper" style={{"border-radius" : "15px"}}>
+            <div className="review-inner-wrapper" style={{borderRadius : "15px"}}>
               {userRole !== "" ? (
                 <div className="review-form py-4">
                   <h4>Viết đánh giá</h4>
@@ -302,31 +304,35 @@ const SingleProduct = () => {
                 </div>
               )}
               <div className="reviews mt-4">
-                {allReviews.map((review) => (
-                  <div className="review" key={review.ID}>
-                    <div className="d-flex gap-10 align-items-center">
-                      <h6 className="mb-0">{review.username}</h6>
-                      {review.userRole === "1" && (
-                        <Tooltip title="Quản trị viên">
-                          <VerifiedUserIcon />
-                        </Tooltip>
-                      )}
-                      <ReactStars
-                        count={5}
-                        size={24}
-                        value={4}
-                        edit={false}
-                        activeColor="#ffd700"
-                      />
-                    </div>
-                    <p className="mt-3">{review.content}</p>
-                    <div style={{ fontSize: "10px" }} className="text-muted">
-                      {VNDatetimeFormatter.format(
-                        new Date(review.comment_datetime)
-                      )}
-                    </div>
+                {allReviews.length !== 0 ? allReviews.map(review => 
+                <div className="review" key={review.ID}>
+                  <div className="d-flex gap-10 align-items-center">
+                    <h6 className="mb-0">{review.username}</h6>
+                    {review.userRole === '1' && (
+                    <Tooltip title="Quản trị viên">
+                      <VerifiedUserIcon/>
+                    </Tooltip>
+                    )}
+                    <ReactStars
+                      count={5}
+                      size={24}
+                      value={4}
+                      edit={false}
+                      activeColor="#ffd700"
+                    />
                   </div>
-                ))}
+                  <p className="mt-3">
+                    {review.content}
+                  </p>
+                  <div style={{fontSize: '10px'}} className="text-muted">
+                    {VNDatetimeFormatter.format(new Date(review.comment_datetime))}
+                  </div>
+                </div>                  
+                ) : (
+                  <div className="text-muted">
+                    Không có bình luận nào
+                  </div>
+                )}
               </div>
             </div>
           </div>

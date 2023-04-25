@@ -11,7 +11,8 @@ import {
 import Meta from "../../components/Meta";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import Container from "../../components/Container";
+import Container from '../../components/Container';
+
 
 const ViewProfile = () => {
   const userRole = useSelector((state) => state.userRole);
@@ -40,52 +41,48 @@ const ViewProfile = () => {
 
   return (
     <div>
-      <Meta title="Hồ sơ của bạn" />
-      {userRole !== "" ? (
-        <>
-          <Container class1="container">
-            <div className="h3 my-5">Hồ sơ của bạn</div>
-            <Link to="/edit-profile" className="mb-5">
-              <button className="d-block btn btn-primary">
-                Chỉnh sửa hồ sơ
-              </button>
-            </Link>
-            <TableContainer component={Paper}>
-              <Table>
-                <TableBody>
-                  <TableRow>
-                    <TableCell>Username:</TableCell>
-                    <TableCell>{Profile.username}</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>Tên:</TableCell>
-                    <TableCell>{Profile.name}</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>Email:</TableCell>
-                    <TableCell>{Profile.email}</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>SĐT:</TableCell>
-                    <TableCell>{Profile.phone}</TableCell>
-                  </TableRow>
-                  <TableRow>
-                    <TableCell>Địa chỉ:</TableCell>
-                    <TableCell>{Profile.address}</TableCell>
-                  </TableRow>
-                </TableBody>
-              </Table>
-            </TableContainer>
-          </Container>
-        </>
-      ) : (
-        <div className="text-center text-muted">
-          Bạn phải đăng nhập trước
-          <br />
-          <Link to="/login">Đăng nhập</Link>
-          <br />
-        </div>
-      )}
+      <Meta title="Hồ sơ của bạn"/>
+      {userRole !== '' ? (
+      <>
+      <Container class1="home-wrapper-2 py-3">
+      <div className='h3'>Hồ sơ của bạn</div>
+      <Link to="/edit-profile" className='py-3'>
+        <button className='d-block btn btn-primary'>Chỉnh sửa hồ sơ</button>
+      </Link>
+      <TableContainer component={Paper}>
+      <Table>
+        <TableBody>
+          <TableRow>
+            <TableCell>Username</TableCell>
+            <TableCell>{Profile.username}</TableCell>
+          </TableRow>          
+          <TableRow>
+            <TableCell>Tên</TableCell>
+            <TableCell>{Profile.name}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>Email</TableCell>
+            <TableCell>{Profile.email}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>SĐT</TableCell>
+            <TableCell>{Profile.phone}</TableCell>
+          </TableRow>
+          <TableRow>
+            <TableCell>Địa chỉ</TableCell>
+            <TableCell>{Profile.address}</TableCell>
+          </TableRow>
+        </TableBody>
+      </Table>
+    </TableContainer>
+    </Container>
+    </>
+    ) : (
+    <div className="text-center text-muted">
+      Bạn phải đăng nhập trước<br/>
+      <Link to="/login">Đăng nhập</Link><br/>
+    </div>
+    )}
     </div>
   );
 };

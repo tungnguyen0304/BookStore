@@ -1,6 +1,7 @@
 import React from 'react';
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
+import { Link } from 'react-router-dom';
 
 const imgStyle = {
     margin: 'auto',
@@ -19,9 +20,6 @@ const subtotalStyle = {
 }
 
 export default function OrderItems ({product}) {
-    const calSubtotal = product => {
-        return product.price * product.qty
-    }    
     const VNCurrencyFormatter = new Intl.NumberFormat('vi', {
         style: "currency",
         currency: "VND"
@@ -29,24 +27,24 @@ export default function OrderItems ({product}) {
 
     return (
         <div className='shadowedBox secondLayerBox spaceBelow'>
+        
         <Box sx={{ flexGrow: 1 }}>
           <Grid container item xs={12} spacing={1}>
               <Grid item>
+                <Link to={"/product/" + product.unique_name}>
                   <img src={product.image} style={imgStyle} alt="product" />
+                </Link>
               </Grid>
               <Grid container item xs>
-                <Grid item xs={12}>
+                <Grid item>
                     <div>
                         <div style={bookTitleStyle}>
                             {product.name}
                         </div>
                         <div>Số lượng: {product.qty}</div>
-                        {/* <div>Giá: {VNCurrencyFormatter.format(product.price)}</div> */}
+                        <div style={subtotalStyle}>{VNCurrencyFormatter.format(product.subtotal)}</div>
                     </div>
                 </Grid>
-                {/* <Grid item xs={12} sm={5}>
-                    <div style={subtotalStyle}>{VNCurrencyFormatter.format(calSubtotal(product))}</div>
-                </Grid> */}
               </Grid>      
           </Grid>
         </Box>  
