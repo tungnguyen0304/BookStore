@@ -60,8 +60,7 @@ const Home = () => {
   return (
     <>
       <Meta title={"Trang chủ"} />
-      <Container class1="home-wrapper-1 py-5">
-        <div className="container">
+        <div className="container py-5">
           <div className="row">
             {" "}
             <div className="col-sm-12 col-md-6">
@@ -111,7 +110,6 @@ const Home = () => {
             </div>
           </div>
         </div>
-      </Container>
 
       {/* <div className="home-wrapper-1 py-5">
           <div className="row">
