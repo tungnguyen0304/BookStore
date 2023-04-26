@@ -722,8 +722,8 @@
 
   .main-product-image img {
     width: 100% !important;
-    height: 600px !important;
-    object-fit: cover;
+    /* height: 600px !important;
+    object-fit: cover; */
   }
 
   .other-product-images {
