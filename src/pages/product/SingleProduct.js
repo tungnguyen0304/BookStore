@@ -143,9 +143,9 @@ const SingleProduct = () => {
       <div className="main-product-wrapper py-5 home-wrapper-2">
         <div className="container-xxl">
           {" "}
-          <div className="row justify-content-center">
+          <div className="row justify-content-center align-items-stretch">
             <div className="col-sm-12 col-md-6 col-lg-5">
-              <div className="main-product-image text-center">
+              <div className="main-product-image text-center h-100">
                 <div>
                   {Object.keys(product).length !== 0 && (
                     <ReactImageZoom {...props} />
