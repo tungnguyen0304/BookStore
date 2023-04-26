@@ -73,8 +73,8 @@ export default function Order () {
           <Grid item sm={12} md={8}>
             <Box sx={{ width: '100%' }}>
             <Stack spacing={2}>
-            {order.map((product, index) => (
-              <OrderItems key={index} product={product}/>
+            {order.map((product) => (
+              <OrderItems key={product.ID} product={product}/>
             ))}
             </Stack>
             </Box>

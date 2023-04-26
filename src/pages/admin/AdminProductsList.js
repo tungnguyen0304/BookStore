@@ -73,7 +73,7 @@ const ProductsAdminPage = () => {
         <div className="my-3">
           <Grid container sx={{ mb: 1, mt: 1 }}>
             <Grid item xs={12} sm={8} md={6}>
-              <div className="h3" style={{"padding-left": "10%"}}>Quản lý sản phẩm</div>
+              <div className="h3" style={{paddingLeft: "10%"}}>Quản lý sản phẩm</div>
             </Grid>
             <Grid item xs={12} sm={4} md={6}>
               <NormalSearchBar
@@ -84,7 +84,7 @@ const ProductsAdminPage = () => {
               />
             </Grid>
           </Grid>
-          <Grid container style={{"padding-left": "5%"}}>
+          <Grid container style={{paddingLeft: "5%"}}>
             <Link to="add">
               <Button variant="contained" color="primary" >
                 Thêm sản phẩm mới

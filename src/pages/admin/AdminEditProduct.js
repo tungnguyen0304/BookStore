@@ -157,7 +157,11 @@ const AdminEditProduct = () => {
   return (
     <div>
       <Meta title="Chỉnh sửa sản phẩm"/>
-      <div className='h3'>Chỉnh sửa sản phẩm</div>
+      <div className="container">
+      <div className="my-3">    
+      <div className='h3 py-2'>
+        Chỉnh sửa sản phẩm
+      </div>
       <form onSubmit={handleSubmit}>
         <Grid container spacing={2} className='secondLayerBox shadowedBox' style={{overflow:'hidden'}}>
           <Grid item xs={12} sm={6}>
@@ -311,6 +315,8 @@ const AdminEditProduct = () => {
           </Grid>                                                                       
         </Grid>
       </form>
+      </div>
+      </div>
       <ConfirmDialog 
         isOpen={confirmSaving} 
         setOpen={setConfirmSaving} 
