@@ -60,7 +60,7 @@ const Home = () => {
   return (
     <>
       <Meta title={"Trang chủ"} />
-        <div className="container py-5">
+        <Container class1="home-wrapper-2 py-5">
           <div className="row">
             {" "}
             <div className="col-sm-12 col-md-6">
@@ -109,7 +109,7 @@ const Home = () => {
               </div>
             </div>
           </div>
-        </div>
+        </Container>
 
       {/* <div className="home-wrapper-1 py-5">
           <div className="row">
@@ -169,8 +169,8 @@ const Home = () => {
         categoriesList.map(
           (category, index) =>
             products[category.ID].length !== 0 && (
-              <div key={index} className="featured-wrapper py-5 home-wrapper-2">
-                <div className="container">
+              <Container key={index} class1="featured-wrapper py-5 home-wrapper-2">
+                {/* <div className="container"> */}
                   <div className="row">
                     <div className="col-sm-12 col-md-6 col-8">
                       <h3 className="section-heading">{category.name}</h3>
@@ -188,15 +188,15 @@ const Home = () => {
                       </div>
                     ))}
                   </div>
-                </div>
-              </div>
+                {/* </div> */}
+              </Container>
             )
         )}
 
       {Object.keys(products).length !== 0 &&
         products["top_sellers"].length !== 0 && (
-          <div className="popular-wrapper py-5 home-wrapper-2">
-            <div className="container">
+          <Container class1="popular-wrapper py-5 home-wrapper-2">
+            {/* <div className="container"> */}
               <div className="row">
                 <div className="col-sm-12 col-md-6 col-8">
                   <h3 className="section-heading">Sản phẩm bán chạy</h3>
@@ -209,8 +209,8 @@ const Home = () => {
                   </div>
                 ))}
               </div>
-            </div>
-          </div>
+            {/* </div> */}
+          </Container>
         )}
     </>
   );

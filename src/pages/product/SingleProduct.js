@@ -140,8 +140,8 @@ const SingleProduct = () => {
     <>
       <Meta title={product.name} />
       <BreadCrumb title={product.name} />
-      <div className="main-product-wrapper py-5 home-wrapper-2">
-        <div className="container-xxl">
+      <Container class1="main-product-wrapper py-5 home-wrapper-2">
+        {/* <div className="container-xxl"> */}
           {" "}
           <div className="row justify-content-center align-items-stretch">
             <div className="col-sm-12 col-md-6 col-lg-5">
@@ -240,8 +240,8 @@ const SingleProduct = () => {
               </div>
             </div>
           </div>
-        </div>
-      </div>
+        {/* </div> */}
+      </Container>
       {product.description && product.description.length !== 0 && (
         <Container class1="description-wrapper py-5 home-wrapper-2">
           <div className="row justify-content-center">
