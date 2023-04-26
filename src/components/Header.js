@@ -18,7 +18,6 @@ import styled from '@emotion/styled';
 import { useDispatch, useSelector } from "react-redux";
 import { logout } from "../actions/userRole";
 import SuggestionSearchBar from "../components/SuggestionSearchBar";
-// import { useMediaQuery } from 'react-responsive'
 import { ListItem, ListItemAvatar, ListItemText } from '@mui/material';
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
 
@@ -174,7 +173,7 @@ const Header = () => {
                 <Link to='/' className="text-white">Book Store</Link>
               </h2>
             </div>
-            <div className="col-12 col-sm-7 col-md-6 col-lg-5">
+            <div className="col-12 col-sm-6 col-md-6 col-lg-5">
             <form onSubmit={handleSubmit}>
               <div className="input-group">
                 <SuggestionSearchBar
@@ -201,7 +200,7 @@ const Header = () => {
               </div>
             </form>
             </div>
-            <div className="col-12 col-sm-5 col-md-6 col-lg-4 mt-2">
+            <div className="col-12 col-sm-6 col-md-6 col-lg-4 mt-2">
               <div className="header-upper-links d-flex align-items-center gap-30">
                 <div>
                   <Link
@@ -212,11 +211,11 @@ const Header = () => {
                   </Link>
                 </div>   
                 {userRole === '' ? (
-                  <div className="d-flex align-items-center gap-15 justify-content-end">
+                  <div className="d-flex align-items-center gap-8 justify-content-end">
                     <div className="">
                       <Link to="/login" className="d-flex align-items-center gap-10 text-white">
                         <img src={user} alt="user" />
-                        <div className="mb-0 d-sm-block">Đăng nhập</div>
+                        <div className="small mb-0 d-sm-block">Đăng nhập</div>
                       </Link>
                     </div>
                     <div className="d-md-block">
@@ -225,7 +224,7 @@ const Header = () => {
                     <div className="d-md-block">
                       <Link to="/signup" className="d-flex align-items-center gap-10 text-white">
                         <img src={user} alt="user" />
-                        <div className="mb-0">Đăng ký</div>
+                        <div className="small mb-0">Đăng ký</div>
                       </Link>
                     </div>
                   </div>
