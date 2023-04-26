@@ -63,7 +63,7 @@ const Home = () => {
         <div className="container py-5">
           <div className="row">
             {" "}
-            <div className="col-sm-12 col-md-6">
+            <div className="col-sm-12 col-md-6 my-auto">
               <Slide>
                 {slideImages.map((slideImage, index) => (
                   <div
