@@ -130,8 +130,8 @@ const SingleProduct = () => {
     fetchData();
   }, []);
   const props = {
-    width: 594,
-    height: 600,
+    // width: 594,
+    // height: 600,
     zoomWidth: 600,
     img: product.image,
   };
@@ -145,7 +145,7 @@ const SingleProduct = () => {
           {" "}
           <div className="row justify-content-center">
             <div className="col-sm-12 col-md-6 col-lg-5">
-              <div className="main-product-image">
+              <div className="main-product-image text-center">
                 <div>
                   {Object.keys(product).length !== 0 && (
                     <ReactImageZoom {...props} />
